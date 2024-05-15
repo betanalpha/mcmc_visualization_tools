@@ -311,12 +311,36 @@ constructs and then overlays two histograms with the same binning.
 \begin{Highlighting}[]
 \NormalTok{putil.plot\_line\_hists(plot.gca(), data[}\StringTok{\textquotesingle{}x\textquotesingle{}}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\OperatorTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{, }\FloatTok{0.5}\NormalTok{)}
 \NormalTok{plot.gca().text(}\OperatorTok{{-}}\FloatTok{3.5}\NormalTok{, }\DecValTok{90}\NormalTok{, }\StringTok{"Observed}\CharTok{\textbackslash{}n}\StringTok{Inputs"}\NormalTok{, color}\OperatorTok{=}\StringTok{"black"}\NormalTok{)}
-\NormalTok{plot.gca().text(}\FloatTok{3.5}\NormalTok{, }\DecValTok{90}\NormalTok{, }\StringTok{"Observed}\CharTok{\textbackslash{}n}\StringTok{Outputs"}\NormalTok{, color}\OperatorTok{=}\NormalTok{putil.mid\_teal)}
+\NormalTok{plot.gca().text(}\FloatTok{3.5}\NormalTok{, }\DecValTok{90}\NormalTok{, }\StringTok{"Observed}\CharTok{\textbackslash{}n}\StringTok{Outputs"}\NormalTok{, color}\OperatorTok{=}\StringTok{"\#487575"}\NormalTok{)}
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
 
 \includegraphics{demo_files/figure-pdf/cell-8-output-1.pdf}
+
+We can also use the \texttt{add} argument of \texttt{plot\_line\_hist}
+to overlay multiple histogram outlines onto an existing axis.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{putil.plot\_line\_hist(plot.gca(), data[}\StringTok{\textquotesingle{}x\textquotesingle{}}\NormalTok{], }\OperatorTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+\NormalTok{                     col}\OperatorTok{=}\StringTok{"black"}\NormalTok{, add}\OperatorTok{=}\VariableTok{True}\NormalTok{)}
+\NormalTok{putil.plot\_line\_hist(plot.gca(), data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\OperatorTok{{-}}\DecValTok{4}\NormalTok{, }\DecValTok{7}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+\NormalTok{                     col}\OperatorTok{=}\StringTok{"\#487575"}\NormalTok{, add}\OperatorTok{=}\VariableTok{True}\NormalTok{)}
+
+\NormalTok{plot.gca().text(}\OperatorTok{{-}}\FloatTok{3.5}\NormalTok{, }\DecValTok{90}\NormalTok{, }\StringTok{"Observed}\CharTok{\textbackslash{}n}\StringTok{Inputs"}\NormalTok{, color}\OperatorTok{=}\StringTok{"black"}\NormalTok{)}
+\NormalTok{plot.gca().text(}\FloatTok{3.5}\NormalTok{, }\DecValTok{90}\NormalTok{, }\StringTok{"Observed}\CharTok{\textbackslash{}n}\StringTok{Outputs"}\NormalTok{, color}\OperatorTok{=}\StringTok{"\#487575"}\NormalTok{)}
+
+\NormalTok{plot.gca().set\_xlim([}\OperatorTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{])}
+\NormalTok{plot.gca().set\_xlabel(}\StringTok{""}\NormalTok{)}
+\NormalTok{plot.gca().set\_ylim([}\DecValTok{0}\NormalTok{, }\DecValTok{160}\NormalTok{])}
+\NormalTok{plot.gca().set\_ylabel(}\StringTok{"Counts"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-9-output-1.pdf}
 
 \subsection{Prior Checks}\label{prior-checks}
 
@@ -440,7 +464,7 @@ are connected into continuous polygons.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-11-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-12-output-1.pdf}
 
 Finally let's use the \texttt{plot\_conn\_pushforward\_quantiles}
 function to plot nested quantile intervals of the conditional prior
@@ -456,7 +480,7 @@ predictive behavior at each element of \texttt{data\$x\_grid}.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-12-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-13-output-1.pdf}
 
 \subsection{Posterior Inference}\label{posterior-inference}
 
@@ -560,7 +584,7 @@ p(y \mid x,
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-15-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-16-output-1.pdf}
 
 Fortunately there are no signs of tension between the posterior
 predictive distributional behaviors and the observed behaviors.
@@ -590,7 +614,7 @@ functions being introduced here.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-16-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-17-output-1.pdf}
 
 Communicating the posterior behavior of the baseline function, however,
 is facilitated with the new visualization functions.
@@ -610,7 +634,7 @@ is facilitated with the new visualization functions.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-17-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-18-output-1.pdf}
 
 Conveniently all of these visualization functions feature optional
 arguments for baseline behavior which allows us to compare our posterior
@@ -641,7 +665,7 @@ simulation studies.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-18-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-19-output-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -661,7 +685,7 @@ simulation studies.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-19-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-20-output-1.pdf}
 
 The \texttt{plot\_realizations} and
 \texttt{plot\_conn\_pushforward\_quantiles} functions also include
@@ -688,9 +712,9 @@ probabilistic behavior varies around the baseline values.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-20-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-21-output-1.pdf}
 
-\includegraphics{demo_files/figure-pdf/cell-20-output-2.pdf}
+\includegraphics{demo_files/figure-pdf/cell-21-output-2.pdf}
 
 \section{Multi-Dimensional Baseline
 Function}\label{multi-dimensional-baseline-function}
@@ -765,7 +789,7 @@ component of the observed inputs.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-21-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-22-output-1.pdf}
 
 \subsection{Prior Checks}\label{prior-checks-1}
 
@@ -916,7 +940,7 @@ predictive distribution of the histogram counts.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-24-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-25-output-1.pdf}
 
 To capture the interactions between the predictive outputs and the
 observed input components we'll need a more sophisticated summary
@@ -949,7 +973,7 @@ prior predictive behavior of these summary statistics.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-25-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-26-output-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -969,7 +993,7 @@ prior predictive behavior of these summary statistics.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-26-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-27-output-1.pdf}
 
 Now we're ready to incorporate the observed data.
 
@@ -1115,7 +1139,7 @@ behavior.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-29-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-30-output-1.pdf}
 
 Additionally the \texttt{plot\_conditional\_mean\_quantiles} and
 \texttt{plot\_conditional\_median\_quantiles} functions feature a
@@ -1152,7 +1176,7 @@ problems.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-30-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-31-output-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1182,7 +1206,7 @@ problems.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-31-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-32-output-1.pdf}
 
 With no indications of model inadequacy we can move onto our posterior
 inferences. As before we can visualize the pushforward posterior
@@ -1219,7 +1243,7 @@ distributions for each individual, one-dimensional parameter.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-32-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-33-output-1.pdf}
 
 The \texttt{plot\_disc\_pushforward\_quantiles} function plots
 disconnected, marginal nested quantile intervals for a collection of
@@ -1249,7 +1273,7 @@ of the marginal posterior distributions.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-33-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-34-output-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1263,7 +1287,7 @@ of the marginal posterior distributions.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-34-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-35-output-1.pdf}
 
 This function also includes an optional \texttt{baseline\_values}
 argument and \texttt{residual} configuration which we can use to compare
@@ -1292,7 +1316,7 @@ posterior inferences to the true values when analyzing simulated data.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-35-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-36-output-1.pdf}
 
 \section*{License}\label{license}
 \addcontentsline{toc}{section}{License}
@@ -1319,7 +1343,7 @@ Environment}\label{original-computing-environment}
 \end{Shaded}
 
 \begin{verbatim}
-Last updated: 2024-05-14T22:46:56.377455-04:00
+Last updated: 2024-05-15T11:43:46.038444-04:00
 
 Python implementation: CPython
 Python version       : 3.9.6

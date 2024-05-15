@@ -135,7 +135,27 @@ histograms with the same binning.
 ```{python}
 putil.plot_line_hists(plot.gca(), data['x'], data['y'], -6, 7, 0.5)
 plot.gca().text(-3.5, 90, "Observed\nInputs", color="black")
-plot.gca().text(3.5, 90, "Observed\nOutputs", color=putil.mid_teal)
+plot.gca().text(3.5, 90, "Observed\nOutputs", color="#487575")
+plot.show()
+```
+
+We can also use the `add` argument of `plot_line_hist` to overlay multiple
+histogram outlines onto an existing axis.
+
+```{python}
+putil.plot_line_hist(plot.gca(), data['x'], -6, 6, 0.5,
+                     col="black", add=True)
+putil.plot_line_hist(plot.gca(), data['y'], -4, 7, 0.5,
+                     col="#487575", add=True)
+
+plot.gca().text(-3.5, 90, "Observed\nInputs", color="black")
+plot.gca().text(3.5, 90, "Observed\nOutputs", color="#487575")
+
+plot.gca().set_xlim([-6, 7])
+plot.gca().set_xlabel("")
+plot.gca().set_ylim([0, 160])
+plot.gca().set_ylabel("Counts")
+
 plot.show()
 ```
 
