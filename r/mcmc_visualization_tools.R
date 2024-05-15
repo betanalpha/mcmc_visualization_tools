@@ -343,13 +343,15 @@ plot_hist_quantiles <- function(samples, val_name_prefix,
 
   # Plot
   if (is.null(display_ylim)) {
-    if (is.null(baseline_values))
+    if (is.null(baseline_values)) {
       display_ylim <- c(0, max(quantiles[9,]))
-    else
+    }
+    else {
       counts <- hist(baseline_values[bin_min <= baseline_values &
                                      baseline_values <= bin_max],
                      breaks=breaks, plot=FALSE)$counts
       display_ylim <- c(0, max(max(quantiles[9,]), max(counts)))
+    }
   }
 
   plot(1, type="n", main=main,
