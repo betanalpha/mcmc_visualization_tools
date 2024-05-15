@@ -151,6 +151,23 @@ text(3.5, 90, cex=1.25, label="Observed\nOutputs",
      pos=4, col=util$c_mid_teal)
 ```
 
+We can also use the `add` argument of `plot_line_hist` to overlay multiple
+histogram outlines onto an existing axis.
+
+```{r}
+plot(0, type="n",
+     xlim=c(-6, 7), xlab="",
+     ylim=c(0, 160), ylab="Counts")
+
+util$plot_line_hist(data$x, -6, 6, 0.5, col="black", add=TRUE)
+util$plot_line_hist(data$y, -4, 7, 0.5, col=util$c_mid_teal, add=TRUE)
+
+text(-3.5, 90, cex=1.25, label="Observed\nInputs",
+     pos=4, col="black")
+text(3.5, 90, cex=1.25, label="Observed\nOutputs",
+     pos=4, col=util$c_mid_teal)
+```
+
 ## Prior Checks
 
 Here we'll be exceptionally thorough and start with an investigation of the
