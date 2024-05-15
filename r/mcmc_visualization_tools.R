@@ -194,15 +194,15 @@ plot_line_hist <- function(values,
   counts <- hist(values[bin_min <= values & values <= bin_max],
                  breaks=breaks, plot=FALSE)$counts
 
+  ylab <- "Counts"
+  if (prob) {
+    ylab <- "Empirical Bin Probability / Bin Width"
+    counts <- counts / (delta * sum(counts))
+  }
+
   if (add) {
     lines(plot_xs, counts[plot_idxs], col=col, lwd=2)
   } else {
-    ylab <- "Counts"
-    if (prob) {
-      ylab <- "Empirical Bin Probability / Bin Width"
-      counts <- counts / (delta * sum(counts))
-    }
-
     # Plot
     plot(plot_xs, counts[plot_idxs], main=main,
          type="l", col=col, lwd=2,
