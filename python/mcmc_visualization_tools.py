@@ -4,7 +4,8 @@
 # new BSD (3-clause) license:
 #  https://opensource.org/licenses/BSD-3-Clause
 #
-# For more information see LINK.
+# For more information see
+#  https://github.com/betanalpha/mcmc_visualization_tools.
 #
 ################################################################################
 
