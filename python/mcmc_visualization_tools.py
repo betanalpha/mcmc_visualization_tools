@@ -158,11 +158,15 @@ def configure_bin_plotting(breaks):
 # @param prob Boolean determining whether bin contents should be normalized so
 #             that the histogram approximates a probability density function;
 #             defaults to FALSE
+# @param col Color of histogram; defaults to "black"
+# @param add Boolean determining whether to add histogram outline to existing
+#            plot or to create new axes; defaults to False
 # @param xlabel Label for x-axis; defaults to empty string.
 # @param title Plot title; defaults to empty string.
 def plot_line_hist(ax, values,
                    bin_min=None, bin_max=None, bin_delta=None,
-                   prob=False, xlabel="", title=""):
+                   prob=False, col="black", add=False,
+                   xlabel="", title=""):
   # Remove any nan values
   values = numpy.array(values)
   values = values[~numpy.isnan(values)]
@@ -188,14 +192,14 @@ def plot_line_hist(ax, values,
     counts = [ c / norm for c in counts ]
 
   # Plot
-  ax.plot(plot_xs, counts[plot_idxs], color="black")
-
-  ax.set_title(title)
-  ax.set_xlim([bin_min, bin_max])
-  ax.set_xlabel(xlabel)
-  ax.set_ylim([0, 1.1 * max(counts)])
-  ax.set_ylabel(ylabel)
-  ax.get_yaxis().set_visible(False)
+  ax.plot(plot_xs, counts[plot_idxs], color=col)
+  
+  if add:
+    ax.set_title(title)
+    ax.set_xlim([bin_min, bin_max])
+    ax.set_xlabel(xlabel)
+    ax.set_ylim([0, 1.1 * max(counts)])
+    ax.set_ylabel(ylabel)
 
 # Plot the overlay of two line histograms.
 # @ax Matplotlib axis object
