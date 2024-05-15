@@ -1,0 +1,702 @@
+---
+title: "Markov Chain Monte Carlo Visualization Functions"
+author: "Michael Betancourt"
+date: "May 2024"
+toc: true
+number-sections: true
+highlight: pygments
+crossref:
+  lst-title: "Stan Program"
+filters:
+   - include-code-files
+format:
+  html:
+    html-math-method: katex
+    theme:
+      - lux
+      - custom.scss
+    standalone: true
+    embed-resources: true
+    code-overflow: wrap
+    linkcolor: "#B97C7C"
+  pdf:
+    keep-tex: true
+    fig-width: 5.5
+    fig-height: 5.5
+    code-overflow: wrap
+    monofontoptions:
+      - Scale=0.5
+knitr:
+  opts_chunk:
+    comment: ''
+  opts_knit:
+    global.par: TRUE
+format-links: false
+---
+
+In this note I will review a suite of `R` functions that implement various
+visualizations of probabilistic behavior using the output of a Markov chain
+Monte Carlo algorithm.
+
+Most of these visualizations utilize nested quantile intervals to visualize
+one-dimensional pushforward behavior as described in
+[Chapter 7, Section 5](https://betanalpha.github.io/assets/chapters_html/transforming_probability_spaces.html#sec:1d-pushforward-characterizations)
+of my probability theory material.  The individual quantiles are consistently
+estimated as the empirical average of the empirical quantiles derived from
+individual Markov chains.  Because they do not communicate the quantile
+estimator errors these visualizations can be misleading if the Markov chains do
+not contain enough information.
+
+# Initial Setup
+
+First and foremost we have to set up our local `R` environment.
+
+```{r}
+#| echo: !expr knitr::is_html_output()
+#| eval: !expr knitr::is_html_output()
+par(family="sans", las=1, bty="l",
+    cex.axis=1, cex.lab=1, cex.main=1,
+    xaxs="i", yaxs="i", mar = c(5, 5, 3, 1))
+  
+```
+
+```{r}
+#| echo: !expr knitr::is_latex_output()
+#| eval: !expr knitr::is_latex_output()
+par(family="serif", las=1, bty="l", cex.axis=1, cex.lab=1, cex.main=1,
+    xaxs="i", yaxs="i", mar = c(5, 5, 3, 5))
+```
+
+This includes loading up `RStan`.
+
+```{r}
+#| warning: false
+#| message: false
+
+library(rstan)
+rstan_options(auto_write = TRUE)            # Cache compiled Stan programs
+options(mc.cores = parallel::detectCores()) # Parallelize chains
+parallel:::setDefaultClusterOptions(setup_strategy = "sequential")
+```
+
+Finally we'll load my recommended
+[Markov chain Monte Carlo analysis tools](https://github.com/betanalpha/mcmc_diagnostics)
+and the visualization functions themselves.
+
+```{r}
+util <- new.env()
+source('mcmc_analysis_tools_rstan.R', local=util)
+```
+
+
+```{r}
+source('mcmc_visualization_tools.R', local=util)
+```
+
+# One-Dimensional Baseline Function
+
+Our first example is one-dimensional curve-fitting, i.e. regression, model with
+a linear baseline function,
+$$
+p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
+=
+\text{normal}(y_{n} \mid \alpha + \beta \, x_{n}, \sigma).
+$$
+
+## Data Exploration
+
+What is data if not an opportunity to explore?
+
+```{r}
+data <- read_rdump("data/uni_data.R")
+```
+
+The `plot_line_hist` function constructs a histogram but then plots only its
+outline, without lines separating the interior histogram bins.  Here we can
+plot histograms summarizing the observed inputs
+$$
+\{ \tilde{x}_{1}, \ldots, \tilde{x}_{n}, \ldots, \tilde{x}_{N} \}
+$$
+and the observed outputs,
+$$
+\{ \tilde{y}_{1}, \ldots, \tilde{y}_{n}, \ldots, \tilde{y}_{N} \}.
+$$
+
+```{r}
+par(mfrow=c(1, 2))
+
+util$plot_line_hist(data$x, -6, 6, 0.5,
+                    xlab="x", main="Observed Inputs")
+
+util$plot_line_hist(data$y, -4, 7, 0.5,
+                    xlab="y", main="Observed Outputs")
+```
+
+This presentation is a bit cleaner than conventional histogram plots, especially
+when there is no ambiguity about the binning.  That said the implementation here
+is a bit rigid in that it only allows for uniform bin widths.
+
+A key advantage of reducing a histogram to its outline is that it is much easier
+to overlay multiple histograms on top of each other without compromising
+legibility.  The `plot_line_hists` function constructs and then overlays two
+histograms with the same binning.
+
+```{r}
+par(mfrow=c(1, 1))
+
+util$plot_line_hists(data$x, data$y, -6, 7, 0.5, xlab="")
+text(-3.5, 90, cex=1.25, label="Observed\nInputs",
+     pos=4, col="black")
+text(3.5, 90, cex=1.25, label="Observed\nOutputs",
+     pos=4, col=util$c_mid_teal)
+```
+
+## Prior Checks
+
+Here we'll be exceptionally thorough and start with an investigation of the
+prior model and its consequences.  In addition to the individual parameters
+we'll look at the prior behavior of baseline function and the prior predictive
+distribution along a grid of inputs defined by the `x_grid` array.
+
+```{.stan include="stan_programs/uni_prior_model.stan" filename="uni\\_prior\\_model.stan" eval=FALSE}
+```
+
+Note that I'm using a less-aggressive step size adaptation here because the
+half-normal prior model for $\sigma$ results in an slightly awkward tail for the
+unconstrained $\log(\sigma)$ values that can be a bit difficult to navigate.
+
+```{r}
+#| warning: false
+#| message: false
+data$N_grid <- 1000
+data$x_grid <- seq(-6, 6, 12 / (data$N_grid - 1))
+
+fit <- stan(file='stan_programs/uni_prior_model.stan',
+            data=data, seed=5838299,
+            warmup=1000, iter=2024, refresh=0,
+            control=list('adapt_delta' = 0.9))
+```
+
+Of course we always consult our diagnostics first to make sure that our Markov
+chains, and hence any visualization we derive from them, accurately characterize
+the exact target distribution, in this case the prior distribution of our model.
+
+```{r}
+diagnostics <- util$extract_hmc_diagnostics(fit)
+util$check_all_hmc_diagnostics(diagnostics)
+
+samples <- util$extract_expectands(fit)
+base_samples <- util$filter_expectands(samples,
+                                       c('alpha', 'beta', 'sigma'))
+util$check_all_expectand_diagnostics(base_samples)
+```
+
+We can visualize the probability distribution of baseline functions in two ways.
+Firstly we can plot a subset of baseline function configurations.  Secondly we
+can plot nested quantile intervals that quantify the marginal behavior of the
+function output at each input.  Neither of these visualizations fully
+characterize the probabilistic behavior but together they capture the most
+important features.
+
+The `plot_realizations` function plots a selection of values corresponding to
+the `f_names` array against `data$x_grid` while the
+`plot_conn_pushforward_quantiles` function plots nested quantile intervals of
+those values for each element of `data$x_grid`.  Here "conn" refers to
+"connected" as the individual marginal quantiles are connected into continuous
+polygons.
+
+```{r}
+par(mfrow=c(2, 1))
+
+f_names <- sapply(1:data$N_grid,
+                  function(n) paste0('f_grid[', n, ']'))
+util$plot_realizations(samples, f_names, data$x_grid,
+                       xlab="x", ylab="f")
+util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
+                                     xlab="x", ylab="f")
+```
+
+Finally let's use the `plot_conn_pushforward_quantiles` function to plot nested
+quantile intervals of the conditional prior predictive behavior at each element
+of `data$x_grid`.
+
+```{r}
+par(mfrow=c(1, 1))
+
+pred_names <- sapply(1:data$N_grid,
+                     function(n) paste0('y_pred_grid[', n, ']'))
+util$plot_conn_pushforward_quantiles(samples, pred_names, data$x_grid,
+                                     xlab="x", ylab="y")
+```
+
+## Posterior Inference
+
+Having thoroughly investigated our prior model and its consequences and not
+found any undesired behavior we can move on to constructing posterior
+inferences.
+
+```{.stan include="stan_programs/uni_full_model.stan" filename="uni\\_full\\_model.stan" eval=FALSE}
+```
+
+```{r}
+#| warning: false
+#| message: false
+fit <- stan(file='stan_programs/uni_full_model.stan',
+            data=data, seed=5838299,
+            warmup=1000, iter=2024, refresh=0)
+```
+
+There are no signs of trouble from the computational diagnostics.
+
+```{r}
+diagnostics <- util$extract_hmc_diagnostics(fit)
+util$check_all_hmc_diagnostics(diagnostics)
+
+samples <- util$extract_expectands(fit)
+base_samples <- util$filter_expectands(samples,
+                                       c('alpha', 'beta', 'sigma'))
+util$check_all_expectand_diagnostics(base_samples)
+```
+
+Before examining any posterior inferences, however, we need to validate that our
+model is adequately capturing the relevant features of the observed data.  For
+this one-dimensional baseline function model we can implement an informative
+retrodictive check by comparing the conditional posterior predictive
+distributions at each input,
+$$
+p(y \mid x,
+         \tilde{x}_{1}, \tilde{y}_{1}, \ldots, \tilde{x}_{N}, \tilde{y}_{N}),
+$$
+to the observed input-output pairs, $(x_{n}, y_{n})$.
+
+```{r}
+par(mfrow=c(1, 1))
+
+pred_names <- sapply(1:data$N_grid,
+                     function(n) paste0('y_pred_grid[', n, ']'))
+util$plot_conn_pushforward_quantiles(samples, pred_names, data$x_grid,
+                                     xlab="x", ylab="y")
+points(data$x, data$y, pch=16, cex=1.0, col="white")
+points(data$x, data$y, pch=16, cex=0.8, col="black")
+```
+
+Fortunately there are no signs of tension between the posterior predictive
+distributional behaviors and the observed behaviors.  Confident in the adequacy
+of our model we can move onto visualizing posterior inferences.
+
+For example we can visualize the pushforward, or marginal, probability
+distributions for each parameter.  Note that the `plot_expectand_pushforward`
+function is already part of my Markov chain Monte Carlo analysis tools and not
+one of the visualization functions being introduced here.
+
+```{r}
+par(mfrow=c(1, 3))
+
+util$plot_expectand_pushforward(samples[["alpha"]], 25,
+                                display_name="alpha")
+
+util$plot_expectand_pushforward(samples[["beta"]], 25,
+                                display_name="beta")
+
+util$plot_expectand_pushforward(samples[["sigma"]], 25,
+                                display_name="sigma")
+
+```
+
+Communicating the posterior behavior of the baseline function, however, is
+facilitated with the new visualization functions.
+
+```{r}
+par(mfrow=c(2, 1))
+
+f_names <- sapply(1:data$N_grid,
+                  function(n) paste0('f_grid[', n, ']'))
+util$plot_realizations(samples, f_names, data$x_grid,
+                       xlab="x", ylab="f")
+util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
+                                     xlab="x", ylab="f")
+```
+
+Conveniently all of these visualization functions feature optional arguments
+for baseline behavior which allows us to compare our posterior inferences to
+the true behavior when it is known, for example in simulation studies.
+
+```{r}
+true_alpha <- 1.5
+true_beta <- -0.75
+true_sigma <- 0.33
+
+par(mfrow=c(1, 3))
+
+util$plot_expectand_pushforward(samples[["alpha"]], 25,
+                                display_name="alpha",
+                                baseline=true_alpha)
+
+util$plot_expectand_pushforward(samples[["beta"]], 25,
+                                display_name="beta",
+                                baseline=true_beta)
+
+util$plot_expectand_pushforward(samples[["sigma"]], 25,
+                                display_name="sigma",
+                                baseline=true_sigma)
+```
+
+```{r}
+true_fs <- true_alpha + true_beta * data$x_grid
+
+par(mfrow=c(2, 1))
+
+util$plot_realizations(samples, f_names, data$x_grid,
+                       baseline_values=true_fs,
+                       xlab="x", ylab="f")
+util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
+                                     baseline_values=true_fs ,
+                                     xlab="x", ylab="f")
+```
+
+The `plot_realizations` and `plot_conn_pushforward_quantiles` functions also
+include `residual` arguments that allow us to directly visualize how the
+probabilistic behavior varies around the baseline values.
+
+```{r}
+par(mfrow=c(2, 1))
+
+util$plot_realizations(samples, f_names, data$x_grid,
+                       baseline_values=true_fs,
+                       residual=TRUE,
+                       xlab="x", ylab="f")
+util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
+                                     baseline_values=true_fs,
+                                     residual=TRUE,
+                                     xlab="x", ylab="f")
+```
+
+# Multi-Dimensional Baseline Function
+
+Now that we're warmed up let's consider a three-dimensional curve-fitting model
+with a quadratic baseline function,
+$$
+p(y_{n} \mid \mathbf{x}_{n}, \alpha, \beta, \sigma)
+=
+\text{normal}(y_{n}   \mid \beta_{0}
+                    + \boldsymbol{\beta}^{T} \cdot \mathbf{x}
+                    + \mathbf{x}^{T} \cdot \mathbf{B} \cdot \mathbf{x}, \sigma),
+$$
+where $\mathbf{B}$ is a positive-definite matrix whose three diagonal elements
+are organized into the vector $\boldsymbol{\beta}_{d}$ and three off-diagonal
+elements are organized into the vector $\boldsymbol{\beta}_{o}$.
+
+## Plot Data
+
+The `plot_line_hist` allows us to cleanly visualize each component of the
+observed inputs.
+
+```{r}
+data <- read_rdump("data/multi_data.R")
+
+par(mfrow=c(3, 3), mar = c(5, 5, 2, 1))
+
+util$plot_line_hist(data$X[,1], -9, 9, 1, xlab="x1")
+util$plot_line_hist(data$X[,2], -9, 9, 1, xlab="x1")
+util$plot_line_hist(data$X[,3], -9, 9, 1, xlab="x1")
+
+plot(data$X[,1], data$X[,2], pch=16, cex=1.0, col="black",
+     main="", xlim=c(-9, 9), xlab="x1", ylim=c(-9, 9), ylab="x2")
+
+plot(data$X[,1], data$X[,3], pch=16, cex=1.0, col="black",
+     main="", xlim=c(-9, 9), xlab="x1", ylim=c(-9, 9), ylab="x3")
+
+plot(data$X[,2], data$X[,3], pch=16, cex=1.0, col="black",
+     main="", xlim=c(-9, 9), xlab="x2", ylim=c(-9, 9), ylab="x3")
+
+plot(data$X[,1], data$y, pch=16, cex=1.0, col="black",
+     main="", xlim=c(-9, 9), xlab="x1", ylim=c(-25, 325), ylab="y")
+
+plot(data$X[,2], data$y, pch=16, cex=1.0, col="black",
+     main="", xlim=c(-9, 9), xlab="x2", ylim=c(-25, 325), ylab="y")
+
+plot(data$X[,3], data$y, pch=16, cex=1.0, col="black",
+     main="", xlim=c(-9, 9), xlab="x3", ylim=c(-25, 325), ylab="y")
+```
+
+## Prior Checks
+
+As before we'll first investigate the consequences of our prior model.
+
+For a discussion of why the quadratic baseline model is implemented in this way
+see Section 2.3.2 of my
+[Taylor regression modeling chapter](https://betanalpha.github.io/assets/case_studies/taylor_models.html#232_Higher-Order_Implementations).
+
+```{.stan include="stan_programs/multi_prior_model.stan" filename="multi\\_prior\\_model.stan" eval=FALSE}
+```
+
+```{r}
+#| warning: false
+#| message: false
+fit <- stan(file='stan_programs/multi_prior_model.stan',
+            data=data, seed=5838299,
+            warmup=1000, iter=2024, refresh=0)
+```
+
+Higher-dimensional probability distributions are no trouble for Hamiltonian
+Monte Carlo.
+
+```{r}
+diagnostics <- util$extract_hmc_diagnostics(fit)
+util$check_all_hmc_diagnostics(diagnostics)
+
+samples <- util$extract_expectands(fit)
+base_samples <- util$filter_expectands(samples,
+                                       c('beta0', 'beta1',
+                                         'beta2_d', 'beta2_o',
+                                         'sigma'),
+                                       TRUE)
+util$check_all_expectand_diagnostics(base_samples)
+```
+
+With a multi-dimensional input space we can no longer visualize the baseline
+functional behavior nor the conditional prior predictive behavior directly.
+We can, however, visualize many of its features.
+
+For example we might consider the marginal behavior of the predicted outputs,
+regardless of the corresponding observed inputs.  Here we'll summarize this
+marginal behavior with a histogram, and use the `plot_hist_quantiles` function
+to visualize the prior predictive distribution of the histogram counts.
+
+```{r}
+par(mfrow=c(1, 1))
+
+util$plot_hist_quantiles(samples, 'y_pred')
+```
+
+To capture the interactions between the predictive outputs and the observed
+input components we'll need a more sophisticated summary statistic.  Here we'll
+use the empirical mean and medians of the predictive outputs within bins of each
+input component.  For a detailed discussion of how this summary statistic is
+constructed see Section 2.5 of my
+[Taylor regression modeling chapter](https://betanalpha.github.io/assets/case_studies/taylor_models.html#25_Posterior_Retrodictive_Checks).
+
+Conveniently the `plot_conditional_mean_quantiles` and
+`plot_conditional_median_quantiles` functions visualize the prior predictive
+behavior of these summary statistics.
+
+```{r}
+par(mfrow=c(1, 3))
+
+pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
+                                     -9, 9, 1, xlab="x1")
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
+                                     -9, 9, 1,xlab="x2")
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
+                                     -9, 9, 1, xlab="x3")
+```
+
+```{r}
+par(mfrow=c(1, 3))
+
+pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
+                                       -9, 9, 1, xlab="x1")
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
+                                       -9, 9, 1, xlab="x2")
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
+                                       -9, 9, 1, xlab="x3")
+```
+
+## Posterior Inference
+
+Now we're ready to incorporate the observed data.
+
+```{.stan include="stan_programs/multi_full_model.stan" filename="multi\\_full\\_model.stan" eval=FALSE}
+```
+
+```{r}
+#| warning: false
+#| message: false
+fit <- stan(file='stan_programs/multi_full_model.stan',
+            data=data, seed=5838299,
+            warmup=1000, iter=2024, refresh=0)
+```
+
+Fortunately our computational fortune has persisted.
+
+```{r}
+diagnostics <- util$extract_hmc_diagnostics(fit)
+util$check_all_hmc_diagnostics(diagnostics)
+
+samples <- util$extract_expectands(fit)
+base_samples <- util$filter_expectands(samples,
+                                       c('beta0', 'beta1',
+                                         'beta2_d', 'beta2_o',
+                                         'sigma'),
+                                       TRUE)
+util$check_all_expectand_diagnostics(base_samples)
+```
+
+The summary statistics that we used above to implement our prior predictive
+checks are equally useful for implementing informative posterior retrodictive
+checks.  Conveniently the visualization functions all feature `baseline_values`
+functions that we can use to visualize the observed behavior along with the
+posterior predictive behavior.
+
+```{r}
+par(mfrow=c(1, 1))
+
+util$plot_hist_quantiles(samples, 'y_pred', baseline_values=data$y)
+```
+
+Additionally the `plot_conditional_mean_quantiles` and
+`plot_conditional_median_quantiles` functions feature a `residual` option that
+plots the posterior predictive behaviors relative to the baseline values.  Any
+deviations from zero in these plots suggests retrodictive tension; here,
+however, there don't seem to be any problems.
+
+```{r}
+par(mfrow=c(2, 3))
+
+pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
+                                     -9, 9, 1, data$y, xlab="x1")
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
+                                     -9, 9, 1, data$y, xlab="x2")
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
+                                     -9, 9, 1, data$y, xlab="x3")
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
+                                     -9, 9, 1, data$y, TRUE, xlab="x1")
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
+                                     -9, 9, 1, data$y, TRUE, xlab="x2")
+util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
+                                     -9, 9, 1, data$y, TRUE, xlab="x3")
+```
+
+```{r}
+par(mfrow=c(2, 3))
+
+pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
+                                       -9, 9, 1, data$y, xlab="x1")
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
+                                       -9, 9, 1, data$y, xlab="x2")
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
+                                       -9, 9, 1, data$y, xlab="x3")
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
+                                       -9, 9, 1, data$y, TRUE, xlab="x1")
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
+                                       -9, 9, 1, data$y, TRUE, xlab="x2")
+util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
+                                       -9, 9, 1, data$y, TRUE, xlab="x3")
+```
+
+With no indications of model inadequacy we can move onto our posterior
+inferences.  As before we can visualize the pushforward posterior distributions
+for each individual, one-dimensional parameter.
+
+```{r}
+par(mfrow=c(4, 3))
+
+util$plot_expectand_pushforward(samples[["beta0"]], 25,
+                                display_name="beta0")
+
+plot.new()
+
+util$plot_expectand_pushforward(samples[["sigma"]], 25,
+                                display_name="sigma")
+
+for (m in 1:data$M) {
+  name <- paste0('beta1[', m, ']')
+  util$plot_expectand_pushforward(samples[[name]], 25,
+                                  display_name=name)
+}
+
+for (m in 1:data$M) {
+  name <- paste0('beta2_d[', m, ']')
+  util$plot_expectand_pushforward(samples[[name]], 25,
+                                  display_name=name)
+}
+
+for (m in 1:data$M) {
+  name <- paste0('beta2_o[', m, ']')
+  util$plot_expectand_pushforward(samples[[name]], 25,
+                                  display_name=name)
+}
+```
+
+The `plot_disc_pushforward_quantiles` function plots disconnected, marginal
+nested quantile intervals for a collection of one-dimensional variables.  This
+allows for a more compact visualization of the marginal posterior distributions.
+
+```{r}
+par(mfrow=c(1, 3))
+
+names <- sapply(1:data$M, function(m) paste0('beta1[', m, ']'))
+util$plot_disc_pushforward_quantiles(samples, names,
+                                     xlab="beta1",
+                                     ylab="Marginal Posterior Quantiles")
+
+names <- sapply(1:data$M, function(m) paste0('beta2_d[', m, ']'))
+util$plot_disc_pushforward_quantiles(samples, names,
+                                     xlab="beta2_d",
+                                     ylab="Marginal Posterior Quantiles")
+
+names <- sapply(1:data$M, function(m) paste0('beta2_o[', m, ']'))
+util$plot_disc_pushforward_quantiles(samples, names,
+                                     xlab="beta2_o",
+                                     ylab="Marginal Posterior Quantiles")
+```
+
+```{r}
+par(mfrow=c(1, 1))
+
+names <- c(sapply(1:data$M, function(m) paste0('beta1[', m, ']')),
+           sapply(1:data$M, function(m) paste0('beta2_d[', m, ']')),
+           sapply(1:data$M, function(m) paste0('beta2_o[', m, ']')))
+util$plot_disc_pushforward_quantiles(samples, names,
+                                     xlab="All Slopes",
+                                     ylab="Marginal Posterior Quantiles")
+```
+
+This function also includes an optional `baseline_values` argument and
+`residual` configuration which we can use to compare the probabilistic to the
+point values, for example our marginal posterior inferences to the true values
+when analyzing simulated data.
+
+```{r}
+true_slopes <- c(-6.00, -1.50, 13.00,  0.50, 0.25,
+                 1.00, -0.50, -2.00, -1.00)
+
+par(mfrow=c(2, 1))
+
+util$plot_disc_pushforward_quantiles(samples, names,
+                                     baseline_values=true_slopes,
+                                     xlab="All Slopes",
+                                     ylab="Marginal Posterior Quantiles")
+
+util$plot_disc_pushforward_quantiles(samples, names,
+                                     baseline_values=true_slopes,
+                                     residual=TRUE,
+                                     xlab="All Slopes",
+                                     ylab="Marginal Posterior Quantile Residuals")
+```
+
+# License {-}
+
+The code in this case study is copyrighted by Michael Betancourt and licensed
+under the new BSD (3-clause) license:
+
+https://opensource.org/licenses/BSD-3-Clause
+
+The text and figures in this case study are copyrighted by Michael Betancourt
+and licensed under the CC BY-NC 4.0 license:
+
+https://creativecommons.org/licenses/by-nc/4.0/
+
+# Original Computing Environment {-}
+
+```{r, comment=NA}
+writeLines(readLines(file.path(Sys.getenv("HOME"), ".R/Makevars")))
+```
+
+```{r, comment=NA}
+sessionInfo()
+```
