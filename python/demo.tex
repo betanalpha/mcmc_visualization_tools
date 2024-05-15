@@ -1,0 +1,1352 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Stan
+
+Program}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Markov Chain Monte Carlo Visualization Functions},
+  pdfauthor={Michael Betancourt},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Markov Chain Monte Carlo Visualization Functions}
+\author{Michael Betancourt}
+\date{2024-05-01}
+
+\begin{document}
+\maketitle
+
+\renewcommand*\contentsname{Table of contents}
+{
+\hypersetup{linkcolor=}
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+In this note I will review a suite of \texttt{python} functions that
+implement various visualizations of probabilistic behavior using the
+output of a Markov chain Monte Carlo algorithm.
+
+Most of these visualizations utilize nested quantile intervals to
+visualize one-dimensional pushforward behavior as described in
+\href{https://betanalpha.github.io/assets/chapters_html/transforming_probability_spaces.html\#sec:1d-pushforward-characterizations}{Chapter
+7, Section 5} of my probability theory material. The individual
+quantiles are consistently estimated as the empirical average of the
+empirical quantiles derived from individual Markov chains. Because they
+do not communicate the quantile estimator errors these visualizations
+can be misleading if the Markov chains do not contain enough
+information.
+
+\section{Initial Setup}\label{initial-setup}
+
+First and foremost we have to set up our local \texttt{python}
+environment.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ matplotlib}
+\ImportTok{import}\NormalTok{ matplotlib.pyplot }\ImportTok{as}\NormalTok{ plot}
+\NormalTok{plot.rcParams[}\StringTok{\textquotesingle{}figure.figsize\textquotesingle{}}\NormalTok{] }\OperatorTok{=}\NormalTok{ [}\DecValTok{6}\NormalTok{, }\DecValTok{8}\NormalTok{]}
+\NormalTok{plot.rcParams[}\StringTok{\textquotesingle{}figure.dpi\textquotesingle{}}\NormalTok{] }\OperatorTok{=} \DecValTok{100}
+\NormalTok{plot.rcParams[}\StringTok{\textquotesingle{}font.family\textquotesingle{}}\NormalTok{] }\OperatorTok{=} \StringTok{"Serif"}
+
+\ImportTok{import}\NormalTok{ numpy}
+\ImportTok{import}\NormalTok{ scipy.stats }\ImportTok{as}\NormalTok{ stats}
+\ImportTok{import}\NormalTok{ math}
+
+\ImportTok{import}\NormalTok{ json}
+\end{Highlighting}
+\end{Shaded}
+
+This includes loading up \texttt{pystan}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Needed to run pystan through a jupyter kernel}
+\ImportTok{import}\NormalTok{ nest\_asyncio}
+\NormalTok{nest\_asyncio.}\BuiltInTok{apply}\NormalTok{()}
+
+\ImportTok{import}\NormalTok{ stan}
+\end{Highlighting}
+\end{Shaded}
+
+Finally we'll load my recommended
+\href{https://github.com/betanalpha/mcmc_diagnostics}{Markov chain Monte
+Carlo analysis tools} and the visualization functions themselves.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ mcmc\_analysis\_tools\_pystan3 }\ImportTok{as}\NormalTok{ util}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{import}\NormalTok{ mcmc\_visualization\_tools }\ImportTok{as}\NormalTok{ putil}
+\end{Highlighting}
+\end{Shaded}
+
+\section{One-Dimensional Baseline
+Function}\label{one-dimensional-baseline-function}
+
+Our first example is one-dimensional curve-fitting, i.e.~regression,
+model with a linear baseline function, \[
+p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
+=
+\text{normal}(y_{n} \mid \alpha + \beta \, x_{n}, \sigma).
+\]
+
+\subsection{Data Exploration}\label{data-exploration}
+
+What is data if not an opportunity to explore?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{"data/uni\_data.json"}\NormalTok{,}\StringTok{"r"}\NormalTok{) }\ImportTok{as}\NormalTok{ infile:}
+\NormalTok{  data }\OperatorTok{=}\NormalTok{ json.load(infile)}
+\end{Highlighting}
+\end{Shaded}
+
+The \texttt{plot\_line\_hist} function constructs a histogram but then
+plots only its outline, without lines separating the interior histogram
+bins. Here we can plot histograms summarizing the observed inputs \[
+\{ \tilde{x}_{1}, \ldots, \tilde{x}_{n}, \ldots, \tilde{x}_{N} \}
+\] and the observed outputs, \[
+\{ \tilde{y}_{1}, \ldots, \tilde{y}_{n}, \ldots, \tilde{y}_{N} \}.
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}x\textquotesingle{}}\NormalTok{], }\OperatorTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+\NormalTok{                     xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, title}\OperatorTok{=}\StringTok{"Observed Inputs"}\NormalTok{)}
+\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\OperatorTok{{-}}\DecValTok{4}\NormalTok{, }\DecValTok{7}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+\NormalTok{                     xlabel}\OperatorTok{=}\StringTok{"y"}\NormalTok{, title}\OperatorTok{=}\StringTok{"Observed Outputs"}\NormalTok{)}
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-7-output-1.pdf}
+
+This presentation is a bit cleaner than conventional histogram plots,
+especially when there is no ambiguity about the binning. That said the
+implementation here is a bit rigid in that it only allows for uniform
+bin widths.
+
+A key advantage of reducing a histogram to its outline is that it is
+much easier to overlay multiple histograms on top of each other without
+compromising legibility. The \texttt{plot\_line\_hists} function
+constructs and then overlays two histograms with the same binning.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{putil.plot\_line\_hists(plot.gca(), data[}\StringTok{\textquotesingle{}x\textquotesingle{}}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\OperatorTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{, }\FloatTok{0.5}\NormalTok{)}
+\NormalTok{plot.gca().text(}\OperatorTok{{-}}\FloatTok{3.5}\NormalTok{, }\DecValTok{90}\NormalTok{, }\StringTok{"Observed}\CharTok{\textbackslash{}n}\StringTok{Inputs"}\NormalTok{, color}\OperatorTok{=}\StringTok{"black"}\NormalTok{)}
+\NormalTok{plot.gca().text(}\FloatTok{3.5}\NormalTok{, }\DecValTok{90}\NormalTok{, }\StringTok{"Observed}\CharTok{\textbackslash{}n}\StringTok{Outputs"}\NormalTok{, color}\OperatorTok{=}\NormalTok{putil.mid\_teal)}
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-8-output-1.pdf}
+
+\subsection{Prior Checks}\label{prior-checks}
+
+Here we'll be exceptionally thorough and start with an investigation of
+the prior model and its consequences. In addition to the individual
+parameters we'll look at the prior behavior of baseline function and the
+prior predictive distribution along a grid of inputs defined by the
+\texttt{x\_grid} array.
+
+\begin{codelisting}
+
+\caption{\texttt{uni\textbackslash\_prior\textbackslash\_model.stan}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{ \{}
+  \DataTypeTok{int}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{1}\NormalTok{\textgreater{} N;}
+  \DataTypeTok{vector}\NormalTok{[N] x; }\CommentTok{// Observed inputs}
+  \DataTypeTok{vector}\NormalTok{[N] y; }\CommentTok{// Observed outputs}
+
+  \DataTypeTok{int}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{1}\NormalTok{\textgreater{} N\_grid; }\CommentTok{// Number of grid points for quantifying functional behavior}
+  \DataTypeTok{vector}\NormalTok{[N\_grid] x\_grid; }\CommentTok{// Grid points for quantifying functional behavior}
+\NormalTok{\}}
+
+\KeywordTok{parameters}\NormalTok{ \{}
+  \DataTypeTok{real}\NormalTok{ alpha;}
+  \DataTypeTok{real}\NormalTok{ beta;}
+  \DataTypeTok{real}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{0}\NormalTok{\textgreater{} sigma;}
+\NormalTok{\}}
+
+\KeywordTok{model}\NormalTok{ \{}
+\NormalTok{  alpha \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{3}\NormalTok{ / }\FloatTok{2.32}\NormalTok{);}
+\NormalTok{  beta \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{3}\NormalTok{ / }\FloatTok{2.32}\NormalTok{);}
+\NormalTok{  sigma \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{ / }\FloatTok{2.57}\NormalTok{);}
+\NormalTok{\}}
+
+\KeywordTok{generated quantities}\NormalTok{ \{}
+  \DataTypeTok{vector}\NormalTok{[N\_grid] f\_grid = alpha + beta * x\_grid;}
+  \DataTypeTok{array}\NormalTok{[N\_grid] }\DataTypeTok{real}\NormalTok{ y\_pred\_grid = normal\_rng(f\_grid, sigma);}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\end{codelisting}
+
+Note that I'm using a less-aggressive step size adaptation here because
+the half-normal prior model for \(\sigma\) results in an slightly
+awkward tail for the unconstrained \(\log(\sigma)\) values that can be a
+bit difficult to navigate.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{] }\OperatorTok{=} \DecValTok{1000}
+\NormalTok{data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{] }\OperatorTok{=}\NormalTok{ numpy.arange(}\OperatorTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{12} \OperatorTok{/}\NormalTok{ data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{])}
+
+\ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{\textquotesingle{}stan\_programs/uni\_prior\_model.stan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}r\textquotesingle{}}\NormalTok{) }\ImportTok{as} \BuiltInTok{file}\NormalTok{:}
+\NormalTok{  stan\_program }\OperatorTok{=} \BuiltInTok{file}\NormalTok{.read()}
+\NormalTok{model }\OperatorTok{=}\NormalTok{ stan.build(stan\_program, random\_seed}\OperatorTok{=}\DecValTok{5838299}\NormalTok{, data}\OperatorTok{=}\NormalTok{data)}
+\NormalTok{fit }\OperatorTok{=}\NormalTok{ model.sample(num\_samples}\OperatorTok{=}\DecValTok{1024}\NormalTok{, refresh}\OperatorTok{=}\DecValTok{0}\NormalTok{, delta}\OperatorTok{=}\FloatTok{0.9}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Building...
+\end{verbatim}
+
+Of course we always consult our diagnostics first to make sure that our
+Markov chains, and hence any visualization we derive from them,
+accurately characterize the exact target distribution, in this case the
+prior distribution of our model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{diagnostics }\OperatorTok{=}\NormalTok{ util.extract\_hmc\_diagnostics(fit)}
+\NormalTok{util.check\_all\_hmc\_diagnostics(diagnostics)}
+
+\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectands(fit)}
+\NormalTok{base\_samples }\OperatorTok{=}\NormalTok{ util.filter\_expectands(samples,}
+\NormalTok{                                      [}\StringTok{\textquotesingle{}alpha\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{])}
+\NormalTok{util.check\_all\_expectand\_diagnostics(base\_samples)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+All Hamiltonian Monte Carlo diagnostics are consistent with accurate
+Markov chain Monte Carlo.
+ 
+All expectands checked appear to be behaving well enough for reliable
+Markov chain Monte Carlo estimation.
+ 
+\end{verbatim}
+
+We can visualize the probability distribution of baseline functions in
+two ways. Firstly we can plot a subset of baseline function
+configurations. Secondly we can plot nested quantile intervals that
+quantify the marginal behavior of the function output at each input.
+Neither of these visualizations fully characterize the probabilistic
+behavior but together they capture the most important features.
+
+The \texttt{plot\_realizations} function plots a selection of values
+corresponding to the \texttt{f\_names} array against
+\texttt{data\$x\_grid} while the
+\texttt{plot\_conn\_pushforward\_quantiles} function plots nested
+quantile intervals of those values for each element of
+\texttt{data{[}\textquotesingle{}x\_grid\textquotesingle{}{]}}. Here
+``conn'' refers to ``connected'' as the individual marginal quantiles
+are connected into continuous polygons.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{f\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}f\_grid[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_realizations(axarr[}\DecValTok{0}\NormalTok{], samples, f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                        xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples,}
+\NormalTok{                                      f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-11-output-1.pdf}
+
+Finally let's use the \texttt{plot\_conn\_pushforward\_quantiles}
+function to plot nested quantile intervals of the conditional prior
+predictive behavior at each element of \texttt{data\$x\_grid}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred\_grid[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(plot.gca(), samples,}
+\NormalTok{                                      pred\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-12-output-1.pdf}
+
+\subsection{Posterior Inference}\label{posterior-inference}
+
+Having thoroughly investigated our prior model and its consequences and
+not found any undesired behavior we can move on to constructing
+posterior inferences.
+
+\begin{codelisting}
+
+\caption{\texttt{uni\textbackslash\_full\textbackslash\_model.stan}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{ \{}
+  \DataTypeTok{int}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{1}\NormalTok{\textgreater{} N;}
+  \DataTypeTok{vector}\NormalTok{[N] x; }\CommentTok{// Observed inputs}
+  \DataTypeTok{vector}\NormalTok{[N] y; }\CommentTok{// Observed outputs}
+  
+  \DataTypeTok{int}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{1}\NormalTok{\textgreater{} N\_grid; }\CommentTok{// Number of grid points for quantifying functional behavior}
+  \DataTypeTok{vector}\NormalTok{[N\_grid] x\_grid; }\CommentTok{// Grid points for quantifying functional behavior}
+\NormalTok{\}}
+
+\KeywordTok{parameters}\NormalTok{ \{ }
+  \DataTypeTok{real}\NormalTok{ alpha;}
+  \DataTypeTok{real}\NormalTok{ beta;}
+  \DataTypeTok{real}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{0}\NormalTok{\textgreater{} sigma;}
+\NormalTok{\}}
+
+\KeywordTok{model}\NormalTok{ \{}
+\NormalTok{  alpha \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{3}\NormalTok{ / }\FloatTok{2.32}\NormalTok{);}
+\NormalTok{  beta \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{3}\NormalTok{ / }\FloatTok{2.32}\NormalTok{);}
+\NormalTok{  sigma \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{ / }\FloatTok{2.57}\NormalTok{);}
+  
+\NormalTok{  y \textasciitilde{} normal(alpha + beta * x, sigma);}
+\NormalTok{\}}
+
+\KeywordTok{generated quantities}\NormalTok{ \{}
+  \DataTypeTok{vector}\NormalTok{[N\_grid] f\_grid = alpha + beta * x\_grid;}
+  \DataTypeTok{array}\NormalTok{[N\_grid] }\DataTypeTok{real}\NormalTok{ y\_pred\_grid = normal\_rng(f\_grid, sigma);}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\end{codelisting}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{\textquotesingle{}stan\_programs/uni\_full\_model.stan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}r\textquotesingle{}}\NormalTok{) }\ImportTok{as} \BuiltInTok{file}\NormalTok{:}
+\NormalTok{  stan\_program }\OperatorTok{=} \BuiltInTok{file}\NormalTok{.read()}
+\NormalTok{model }\OperatorTok{=}\NormalTok{ stan.build(stan\_program, random\_seed}\OperatorTok{=}\DecValTok{5838299}\NormalTok{, data}\OperatorTok{=}\NormalTok{data)}
+\NormalTok{fit }\OperatorTok{=}\NormalTok{ model.sample(num\_samples}\OperatorTok{=}\DecValTok{1024}\NormalTok{, refresh}\OperatorTok{=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Building...
+\end{verbatim}
+
+There are no signs of trouble from the computational diagnostics.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{diagnostics }\OperatorTok{=}\NormalTok{ util.extract\_hmc\_diagnostics(fit)}
+\NormalTok{util.check\_all\_hmc\_diagnostics(diagnostics)}
+
+\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectands(fit)}
+\NormalTok{base\_samples }\OperatorTok{=}\NormalTok{ util.filter\_expectands(samples,}
+\NormalTok{                                      [}\StringTok{\textquotesingle{}alpha\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{])}
+\NormalTok{util.check\_all\_expectand\_diagnostics(base\_samples)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+All Hamiltonian Monte Carlo diagnostics are consistent with accurate
+Markov chain Monte Carlo.
+ 
+All expectands checked appear to be behaving well enough for reliable
+Markov chain Monte Carlo estimation.
+ 
+\end{verbatim}
+
+Before examining any posterior inferences, however, we need to validate
+that our model is adequately capturing the relevant features of the
+observed data. For this one-dimensional baseline function model we can
+implement an informative retrodictive check by comparing the conditional
+posterior predictive distributions at each input, \[
+p(y \mid x,
+         \tilde{x}_{1}, \tilde{y}_{1}, \ldots, \tilde{x}_{N}, \tilde{y}_{N}),
+\] to the observed input-output pairs, \((x_{n}, y_{n})\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred\_grid[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(plot.gca(), samples,}
+\NormalTok{                                      pred\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{plot.scatter(data[}\StringTok{\textquotesingle{}x\textquotesingle{}}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], s}\OperatorTok{=}\DecValTok{1}\NormalTok{, color}\OperatorTok{=}\StringTok{"white"}\NormalTok{)}
+\NormalTok{plot.scatter(data[}\StringTok{\textquotesingle{}x\textquotesingle{}}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], s}\OperatorTok{=}\FloatTok{0.8}\NormalTok{, color}\OperatorTok{=}\StringTok{"black"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-15-output-1.pdf}
+
+Fortunately there are no signs of tension between the posterior
+predictive distributional behaviors and the observed behaviors.
+Confident in the adequacy of our model we can move onto visualizing
+posterior inferences.
+
+For example we can visualize the pushforward, or marginal, probability
+distributions for each parameter. Note that the
+\texttt{plot\_expectand\_pushforward} function is already part of my
+Markov chain Monte Carlo analysis tools and not one of the visualization
+functions being introduced here.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{util.plot\_expectand\_pushforward(axarr[}\DecValTok{0}\NormalTok{], samples[}\StringTok{\textquotesingle{}alpha\textquotesingle{}}\NormalTok{],}
+                                \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\StringTok{"alpha"}\NormalTok{)}
+
+\NormalTok{util.plot\_expectand\_pushforward(axarr[}\DecValTok{1}\NormalTok{], samples[}\StringTok{\textquotesingle{}beta\textquotesingle{}}\NormalTok{],}
+                                \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\StringTok{"beta"}\NormalTok{)}
+
+\NormalTok{util.plot\_expectand\_pushforward(axarr[}\DecValTok{2}\NormalTok{], samples[}\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{],}
+                                \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\StringTok{"sigma"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-16-output-1.pdf}
+
+Communicating the posterior behavior of the baseline function, however,
+is facilitated with the new visualization functions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{f\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}f\_grid[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_realizations(axarr[}\DecValTok{0}\NormalTok{], samples, f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                        xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples,}
+\NormalTok{                                      f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-17-output-1.pdf}
+
+Conveniently all of these visualization functions feature optional
+arguments for baseline behavior which allows us to compare our posterior
+inferences to the true behavior when it is known, for example in
+simulation studies.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{true\_alpha }\OperatorTok{=} \FloatTok{1.5}
+\NormalTok{true\_beta }\OperatorTok{=} \OperatorTok{{-}}\FloatTok{0.75}
+\NormalTok{true\_sigma }\OperatorTok{=} \FloatTok{0.33}
+
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{util.plot\_expectand\_pushforward(axarr[}\DecValTok{0}\NormalTok{], samples[}\StringTok{\textquotesingle{}alpha\textquotesingle{}}\NormalTok{],}
+                                \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\StringTok{"alpha"}\NormalTok{,}
+\NormalTok{                                baseline}\OperatorTok{=}\NormalTok{true\_alpha)}
+
+\NormalTok{util.plot\_expectand\_pushforward(axarr[}\DecValTok{1}\NormalTok{], samples[}\StringTok{\textquotesingle{}beta\textquotesingle{}}\NormalTok{],}
+                                \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\StringTok{"beta"}\NormalTok{,}
+\NormalTok{                                baseline}\OperatorTok{=}\NormalTok{true\_beta)}
+
+\NormalTok{util.plot\_expectand\_pushforward(axarr[}\DecValTok{2}\NormalTok{], samples[}\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{],}
+                                \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\StringTok{"sigma"}\NormalTok{,}
+\NormalTok{                                baseline}\OperatorTok{=}\NormalTok{true\_sigma)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-18-output-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{true\_fs }\OperatorTok{=}\NormalTok{ [ true\_alpha }\OperatorTok{+}\NormalTok{ true\_beta }\OperatorTok{*}\NormalTok{ x }\ControlFlowTok{for}\NormalTok{ x }\KeywordTok{in}\NormalTok{ data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{] ]}
+
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+\NormalTok{putil.plot\_realizations(axarr[}\DecValTok{0}\NormalTok{], samples,}
+\NormalTok{                        f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                        baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
+\NormalTok{                        xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples,}
+\NormalTok{                                      f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                                      baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-19-output-1.pdf}
+
+The \texttt{plot\_realizations} and
+\texttt{plot\_conn\_pushforward\_quantiles} functions also include
+\texttt{residual} arguments that allow us to directly visualize how the
+probabilistic behavior varies around the baseline values.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+\NormalTok{putil.plot\_realizations(axarr[}\DecValTok{0}\NormalTok{], samples,}
+\NormalTok{                        f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                        baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
+\NormalTok{                        residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{                        xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples,}
+\NormalTok{                                      f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{                                      residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{                                      baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-20-output-1.pdf}
+
+\includegraphics{demo_files/figure-pdf/cell-20-output-2.pdf}
+
+\section{Multi-Dimensional Baseline
+Function}\label{multi-dimensional-baseline-function}
+
+Now that we're warmed up let's consider a three-dimensional
+curve-fitting model with a quadratic baseline function, \[
+p(y_{n} \mid \mathbf{x}_{n}, \alpha, \beta, \sigma)
+=
+\text{normal}(y_{n}   \mid \beta_{0}
+                    + \boldsymbol{\beta}^{T} \cdot \mathbf{x}
+                    + \mathbf{x}^{T} \cdot \mathbf{B} \cdot \mathbf{x}, \sigma),
+\] where \(\mathbf{B}\) is a positive-definite matrix whose three
+diagonal elements are organized into the vector
+\(\boldsymbol{\beta}_{d}\) and three off-diagonal elements are organized
+into the vector \(\boldsymbol{\beta}_{o}\).
+
+\subsection{Plot Data}\label{plot-data}
+
+The \texttt{plot\_line\_hist} allows us to cleanly visualize each
+component of the observed inputs.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{"data/multi\_data.json"}\NormalTok{,}\StringTok{"r"}\NormalTok{) }\ImportTok{as}\NormalTok{ infile:}
+\NormalTok{  data }\OperatorTok{=}\NormalTok{ json.load(infile)}
+\NormalTok{data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{] }\OperatorTok{=}\NormalTok{ numpy.asarray(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{])}
+
+
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{3}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
+
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_xlabel(}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_ylabel(}\StringTok{"x2"}\NormalTok{)}
+
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_xlabel(}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_ylabel(}\StringTok{"x3"}\NormalTok{)}
+
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_xlabel(}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_ylabel(}\StringTok{"x3"}\NormalTok{)}
+
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_xlabel(}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_ylabel(}\StringTok{"y"}\NormalTok{)}
+
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_xlabel(}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_ylabel(}\StringTok{"y"}\NormalTok{)}
+
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_xlabel(}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{])}
+\NormalTok{axarr[}\DecValTok{2}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_ylabel(}\StringTok{"y"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-21-output-1.pdf}
+
+\subsection{Prior Checks}\label{prior-checks-1}
+
+As before we'll first investigate the consequences of our prior model.
+
+For a discussion of why the quadratic baseline model is implemented in
+this way see Section 2.3.2 of my
+\href{https://betanalpha.github.io/assets/case_studies/taylor_models.html\#232_Higher-Order_Implementations}{Taylor
+regression modeling chapter}.
+
+\begin{codelisting}
+
+\caption{\texttt{multi\textbackslash\_prior\textbackslash\_model.stan}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{ \{}
+  \DataTypeTok{int}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{0}\NormalTok{\textgreater{} M;  }\CommentTok{// Number of covariates}
+  \DataTypeTok{int}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{0}\NormalTok{\textgreater{} N;  }\CommentTok{// Number of observations}
+  
+  \DataTypeTok{vector}\NormalTok{[M] x0;    }\CommentTok{// Covariate baselines}
+  \DataTypeTok{matrix}\NormalTok{[N, M] X;  }\CommentTok{// Covariate design matrix}
+\NormalTok{\}}
+
+\KeywordTok{transformed data}\NormalTok{ \{}
+  \DataTypeTok{matrix}\NormalTok{[N, M * (M + }\DecValTok{3}\NormalTok{) / }\DecValTok{2}\NormalTok{ + }\DecValTok{1}\NormalTok{] deltaX;}
+  \ControlFlowTok{for}\NormalTok{ (n }\ControlFlowTok{in} \DecValTok{1}\NormalTok{:N) \{}
+\NormalTok{    deltaX[n, }\DecValTok{1}\NormalTok{] = }\DecValTok{1}\NormalTok{;}
+    
+    \ControlFlowTok{for}\NormalTok{ (m1 }\ControlFlowTok{in} \DecValTok{1}\NormalTok{:M) \{}
+      \CommentTok{// Linear perturbations}
+\NormalTok{      deltaX[n, m1 + }\DecValTok{1}\NormalTok{] = X[n, m1] {-} x0[m1];}
+\NormalTok{    \}}
+    
+    \ControlFlowTok{for}\NormalTok{ (m1 }\ControlFlowTok{in} \DecValTok{1}\NormalTok{:M) \{}
+      \CommentTok{// On{-}diagonal quadratic perturbations}
+\NormalTok{      deltaX[n, M + m1 + }\DecValTok{1}\NormalTok{] }
+\NormalTok{        = deltaX[n, m1 + }\DecValTok{1}\NormalTok{] * deltaX[n, m1 + }\DecValTok{1}\NormalTok{];}
+  
+      \ControlFlowTok{for}\NormalTok{ (m2 }\ControlFlowTok{in}\NormalTok{ (m1 + }\DecValTok{1}\NormalTok{):M) \{}
+        \DataTypeTok{int}\NormalTok{ m3 = (}\DecValTok{2}\NormalTok{ * M {-} m1) * (m1 {-} }\DecValTok{1}\NormalTok{) / }\DecValTok{2}\NormalTok{ + m2 {-} m1;}
+          
+        \CommentTok{// Off{-}diagonal quadratic perturbations}
+        \CommentTok{// Factor of 2 ensures that beta parameters have the}
+        \CommentTok{// same interpretation as the expanded implementation}
+\NormalTok{        deltaX[n, }\DecValTok{2}\NormalTok{ * M + m3 + }\DecValTok{1}\NormalTok{] }
+\NormalTok{          = }\DecValTok{2}\NormalTok{ * deltaX[n, m1 + }\DecValTok{1}\NormalTok{] * deltaX[n, m2 + }\DecValTok{1}\NormalTok{];}
+\NormalTok{      \}}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\KeywordTok{parameters}\NormalTok{ \{}
+  \DataTypeTok{real}\NormalTok{ beta0;                      }\CommentTok{// Intercept}
+  \DataTypeTok{vector}\NormalTok{[M] beta1;                 }\CommentTok{// Linear slopes}
+  \DataTypeTok{vector}\NormalTok{[M] beta2\_d;               }\CommentTok{// On{-}diagonal quadratic slopes}
+  \DataTypeTok{vector}\NormalTok{[M * (M {-} }\DecValTok{1}\NormalTok{) / }\DecValTok{2}\NormalTok{] beta2\_o; }\CommentTok{// Off{-}diagonal quadratic slopes}
+  \DataTypeTok{real}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{0}\NormalTok{\textgreater{} sigma;             }\CommentTok{// Measurement Variability}
+\NormalTok{\}}
+
+\KeywordTok{model}\NormalTok{ \{}
+  \DataTypeTok{vector}\NormalTok{[M * (M + }\DecValTok{3}\NormalTok{) / }\DecValTok{2}\NormalTok{ + }\DecValTok{1}\NormalTok{] beta}
+\NormalTok{    = append\_row(}
+\NormalTok{        append\_row(}
+\NormalTok{          append\_row(beta0, beta1), }
+\NormalTok{        beta2\_d), }
+\NormalTok{      beta2\_o);}
+  
+  \CommentTok{// Prior model}
+\NormalTok{  beta0 \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{);}
+\NormalTok{  beta1 \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{);}
+\NormalTok{  beta2\_d \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{);}
+\NormalTok{  beta2\_o \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{);}
+\NormalTok{  sigma \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{5}\NormalTok{);}
+\NormalTok{\}}
+
+\KeywordTok{generated quantities}\NormalTok{ \{}
+  \CommentTok{// Posterior predictions}
+  \DataTypeTok{array}\NormalTok{[N] }\DataTypeTok{real}\NormalTok{ y\_pred;}
+\NormalTok{  \{}
+    \DataTypeTok{vector}\NormalTok{[M * (M + }\DecValTok{3}\NormalTok{) / }\DecValTok{2}\NormalTok{ + }\DecValTok{1}\NormalTok{] beta}
+\NormalTok{      = append\_row(}
+\NormalTok{          append\_row(}
+\NormalTok{            append\_row(beta0, beta1), }
+\NormalTok{          beta2\_d),}
+\NormalTok{        beta2\_o);}
+\NormalTok{    y\_pred = normal\_rng(deltaX * beta, sigma);}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\end{codelisting}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{\textquotesingle{}stan\_programs/multi\_prior\_model.stan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}r\textquotesingle{}}\NormalTok{) }\ImportTok{as} \BuiltInTok{file}\NormalTok{:}
+\NormalTok{  stan\_program }\OperatorTok{=} \BuiltInTok{file}\NormalTok{.read()}
+\NormalTok{model }\OperatorTok{=}\NormalTok{ stan.build(stan\_program, random\_seed}\OperatorTok{=}\DecValTok{5838299}\NormalTok{, data}\OperatorTok{=}\NormalTok{data)}
+\NormalTok{fit }\OperatorTok{=}\NormalTok{ model.sample(num\_samples}\OperatorTok{=}\DecValTok{1024}\NormalTok{, refresh}\OperatorTok{=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Building...
+\end{verbatim}
+
+Higher-dimensional probability distributions are no trouble for
+Hamiltonian Monte Carlo.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{diagnostics }\OperatorTok{=}\NormalTok{ util.extract\_hmc\_diagnostics(fit)}
+\NormalTok{util.check\_all\_hmc\_diagnostics(diagnostics)}
+
+\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectands(fit)}
+\NormalTok{base\_samples }\OperatorTok{=}\NormalTok{ util.filter\_expectands(samples,}
+\NormalTok{                                      [}\StringTok{\textquotesingle{}beta0\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta1\textquotesingle{}}\NormalTok{,}
+                                       \StringTok{\textquotesingle{}beta2\_d\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta2\_o\textquotesingle{}}\NormalTok{,}
+                                       \StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{],}
+                                      \VariableTok{True}\NormalTok{)}
+\NormalTok{util.check\_all\_expectand\_diagnostics(base\_samples)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+All Hamiltonian Monte Carlo diagnostics are consistent with accurate
+Markov chain Monte Carlo.
+ 
+All expectands checked appear to be behaving well enough for reliable
+Markov chain Monte Carlo estimation.
+ 
+\end{verbatim}
+
+With a multi-dimensional input space we can no longer visualize the
+baseline functional behavior nor the conditional prior predictive
+behavior directly. We can, however, visualize many of its features.
+
+For example we might consider the marginal behavior of the predicted
+outputs, regardless of the corresponding observed inputs. Here we'll
+summarize this marginal behavior with a histogram, and use the
+\texttt{plot\_hist\_quantiles} function to visualize the prior
+predictive distribution of the histogram counts.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{putil.plot\_hist\_quantiles(plot.gca(), samples, }\StringTok{\textquotesingle{}y\_pred\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-24-output-1.pdf}
+
+To capture the interactions between the predictive outputs and the
+observed input components we'll need a more sophisticated summary
+statistic. Here we'll use the empirical mean and medians of the
+predictive outputs within bins of each input component. For a detailed
+discussion of how this summary statistic is constructed see Section 2.5
+of my
+\href{https://betanalpha.github.io/assets/case_studies/taylor_models.html\#25_Posterior_Retrodictive_Checks}{Taylor
+regression modeling chapter}.
+
+Conveniently the \texttt{plot\_conditional\_mean\_quantiles} and
+\texttt{plot\_conditional\_median\_quantiles} functions visualize the
+prior predictive behavior of these summary statistics.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-25-output-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-26-output-1.pdf}
+
+Now we're ready to incorporate the observed data.
+
+\begin{codelisting}
+
+\caption{\texttt{multi\textbackslash\_full\textbackslash\_model.stan}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{data}\NormalTok{ \{}
+  \DataTypeTok{int}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{0}\NormalTok{\textgreater{} M;  }\CommentTok{// Number of covariates}
+  \DataTypeTok{int}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{0}\NormalTok{\textgreater{} N;  }\CommentTok{// Number of observations}
+  
+  \DataTypeTok{vector}\NormalTok{[M] x0;    }\CommentTok{// Covariate baselines}
+  \DataTypeTok{matrix}\NormalTok{[N, M] X;  }\CommentTok{// Covariate design matrix}
+  
+  \DataTypeTok{array}\NormalTok{[N] }\DataTypeTok{real}\NormalTok{ y; }\CommentTok{// Variates}
+\NormalTok{\}}
+
+\KeywordTok{transformed data}\NormalTok{ \{}
+  \DataTypeTok{matrix}\NormalTok{[N, M * (M + }\DecValTok{3}\NormalTok{) / }\DecValTok{2}\NormalTok{ + }\DecValTok{1}\NormalTok{] deltaX;}
+  \ControlFlowTok{for}\NormalTok{ (n }\ControlFlowTok{in} \DecValTok{1}\NormalTok{:N) \{}
+\NormalTok{    deltaX[n, }\DecValTok{1}\NormalTok{] = }\DecValTok{1}\NormalTok{;}
+    
+    \ControlFlowTok{for}\NormalTok{ (m1 }\ControlFlowTok{in} \DecValTok{1}\NormalTok{:M) \{}
+      \CommentTok{// Linear perturbations}
+\NormalTok{      deltaX[n, m1 + }\DecValTok{1}\NormalTok{] = X[n, m1] {-} x0[m1];}
+\NormalTok{    \}}
+    
+    \ControlFlowTok{for}\NormalTok{ (m1 }\ControlFlowTok{in} \DecValTok{1}\NormalTok{:M) \{}
+      \CommentTok{// On{-}diagonal quadratic perturbations}
+\NormalTok{      deltaX[n, M + m1 + }\DecValTok{1}\NormalTok{] }
+\NormalTok{        = deltaX[n, m1 + }\DecValTok{1}\NormalTok{] * deltaX[n, m1 + }\DecValTok{1}\NormalTok{];}
+  
+      \ControlFlowTok{for}\NormalTok{ (m2 }\ControlFlowTok{in}\NormalTok{ (m1 + }\DecValTok{1}\NormalTok{):M) \{}
+        \DataTypeTok{int}\NormalTok{ m3 = (}\DecValTok{2}\NormalTok{ * M {-} m1) * (m1 {-} }\DecValTok{1}\NormalTok{) / }\DecValTok{2}\NormalTok{ + m2 {-} m1;}
+          
+        \CommentTok{// Off{-}diagonal quadratic perturbations}
+        \CommentTok{// Factor of 2 ensures that beta parameters have the}
+        \CommentTok{// same interpretation as the expanded implementation}
+\NormalTok{        deltaX[n, }\DecValTok{2}\NormalTok{ * M + m3 + }\DecValTok{1}\NormalTok{] }
+\NormalTok{          = }\DecValTok{2}\NormalTok{ * deltaX[n, m1 + }\DecValTok{1}\NormalTok{] * deltaX[n, m2 + }\DecValTok{1}\NormalTok{];}
+\NormalTok{      \}}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\KeywordTok{parameters}\NormalTok{ \{}
+  \DataTypeTok{real}\NormalTok{ beta0;                      }\CommentTok{// Intercept}
+  \DataTypeTok{vector}\NormalTok{[M] beta1;                 }\CommentTok{// Linear slopes}
+  \DataTypeTok{vector}\NormalTok{[M] beta2\_d;               }\CommentTok{// On{-}diagonal quadratic slopes}
+  \DataTypeTok{vector}\NormalTok{[M * (M {-} }\DecValTok{1}\NormalTok{) / }\DecValTok{2}\NormalTok{] beta2\_o; }\CommentTok{// Off{-}diagonal quadratic slopes}
+  \DataTypeTok{real}\NormalTok{\textless{}}\KeywordTok{lower}\NormalTok{=}\DecValTok{0}\NormalTok{\textgreater{} sigma;             }\CommentTok{// Measurement Variability}
+\NormalTok{\}}
+
+\KeywordTok{model}\NormalTok{ \{}
+  \DataTypeTok{vector}\NormalTok{[M * (M + }\DecValTok{3}\NormalTok{) / }\DecValTok{2}\NormalTok{ + }\DecValTok{1}\NormalTok{] beta}
+\NormalTok{    = append\_row(}
+\NormalTok{        append\_row(}
+\NormalTok{          append\_row(beta0, beta1), }
+\NormalTok{        beta2\_d), }
+\NormalTok{      beta2\_o);}
+  
+  \CommentTok{// Prior model}
+\NormalTok{  beta0 \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{);}
+\NormalTok{  beta1 \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{10}\NormalTok{);}
+\NormalTok{  beta2\_d \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{);}
+\NormalTok{  beta2\_o \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{);}
+\NormalTok{  sigma \textasciitilde{} normal(}\DecValTok{0}\NormalTok{, }\DecValTok{5}\NormalTok{);}
+
+  \CommentTok{// Observation model}
+\NormalTok{  y \textasciitilde{} normal(deltaX * beta, sigma);}
+\NormalTok{\}}
+
+\KeywordTok{generated quantities}\NormalTok{ \{}
+  \CommentTok{// Posterior predictions}
+  \DataTypeTok{array}\NormalTok{[N] }\DataTypeTok{real}\NormalTok{ y\_pred;}
+\NormalTok{  \{}
+    \DataTypeTok{vector}\NormalTok{[M * (M + }\DecValTok{3}\NormalTok{) / }\DecValTok{2}\NormalTok{ + }\DecValTok{1}\NormalTok{] beta}
+\NormalTok{      = append\_row(}
+\NormalTok{          append\_row(}
+\NormalTok{            append\_row(beta0, beta1), }
+\NormalTok{          beta2\_d),}
+\NormalTok{        beta2\_o);}
+\NormalTok{    y\_pred = normal\_rng(deltaX * beta, sigma);}
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\end{codelisting}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{with} \BuiltInTok{open}\NormalTok{(}\StringTok{\textquotesingle{}stan\_programs/multi\_full\_model.stan\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}r\textquotesingle{}}\NormalTok{) }\ImportTok{as} \BuiltInTok{file}\NormalTok{:}
+\NormalTok{  stan\_program }\OperatorTok{=} \BuiltInTok{file}\NormalTok{.read()}
+\NormalTok{model }\OperatorTok{=}\NormalTok{ stan.build(stan\_program, random\_seed}\OperatorTok{=}\DecValTok{5838299}\NormalTok{, data}\OperatorTok{=}\NormalTok{data)}
+\NormalTok{fit }\OperatorTok{=}\NormalTok{ model.sample(num\_samples}\OperatorTok{=}\DecValTok{1024}\NormalTok{, refresh}\OperatorTok{=}\DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Building...
+\end{verbatim}
+
+Fortunately our computational fortune has persisted.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{diagnostics }\OperatorTok{=}\NormalTok{ util.extract\_hmc\_diagnostics(fit)}
+\NormalTok{util.check\_all\_hmc\_diagnostics(diagnostics)}
+
+\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectands(fit)}
+\NormalTok{base\_samples }\OperatorTok{=}\NormalTok{ util.filter\_expectands(samples,}
+\NormalTok{                                      [}\StringTok{\textquotesingle{}beta0\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta1\textquotesingle{}}\NormalTok{,}
+                                       \StringTok{\textquotesingle{}beta2\_d\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta2\_o\textquotesingle{}}\NormalTok{,}
+                                       \StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{],}
+                                      \VariableTok{True}\NormalTok{)}
+\NormalTok{util.check\_all\_expectand\_diagnostics(base\_samples)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+All Hamiltonian Monte Carlo diagnostics are consistent with accurate
+Markov chain Monte Carlo.
+ 
+All expectands checked appear to be behaving well enough for reliable
+Markov chain Monte Carlo estimation.
+ 
+\end{verbatim}
+
+The summary statistics that we used above to implement our prior
+predictive checks are equally useful for implementing informative
+posterior retrodictive checks. Conveniently the visualization functions
+all feature \texttt{baseline\_values} functions that we can use to
+visualize the observed behavior along with the posterior predictive
+behavior.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{putil.plot\_hist\_quantiles(plot.gca(), samples, }\StringTok{\textquotesingle{}y\_pred\textquotesingle{}}\NormalTok{,}
+\NormalTok{                          baseline\_values}\OperatorTok{=}\NormalTok{data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-29-output-1.pdf}
+
+Additionally the \texttt{plot\_conditional\_mean\_quantiles} and
+\texttt{plot\_conditional\_median\_quantiles} functions feature a
+\texttt{residual} option that plots the posterior predictive behaviors
+relative to the baseline values. Any deviations from zero in these plots
+suggests retrodictive tension; here, however, there don't seem to be any
+problems.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
+
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\VariableTok{True}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\VariableTok{True}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\VariableTok{True}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-30-output-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
+
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\VariableTok{True}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\VariableTok{True}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], }\VariableTok{True}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-31-output-1.pdf}
+
+With no indications of model inadequacy we can move onto our posterior
+inferences. As before we can visualize the pushforward posterior
+distributions for each individual, one-dimensional parameter.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{4}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{util.plot\_expectand\_pushforward(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{], samples[}\StringTok{\textquotesingle{}beta0\textquotesingle{}}\NormalTok{],}
+                                \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\StringTok{"beta0"}\NormalTok{)}
+
+\NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{].axis(}\StringTok{\textquotesingle{}off\textquotesingle{}}\NormalTok{)}
+
+\NormalTok{util.plot\_expectand\_pushforward(axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{], samples[}\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{],}
+                                \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\StringTok{"sigma"}\NormalTok{)}
+
+\ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]):}
+\NormalTok{  name }\OperatorTok{=} \SpecialStringTok{f\textquotesingle{}beta1[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+\NormalTok{  util.plot\_expectand\_pushforward(axarr[}\DecValTok{1}\NormalTok{, m], samples[name],}
+                                  \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\NormalTok{name)}
+
+\ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]):}
+\NormalTok{  name }\OperatorTok{=} \SpecialStringTok{f\textquotesingle{}beta2\_d[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+\NormalTok{  util.plot\_expectand\_pushforward(axarr[}\DecValTok{2}\NormalTok{, m], samples[name],}
+                                  \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\NormalTok{name)}
+
+\ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]):}
+\NormalTok{  name }\OperatorTok{=} \SpecialStringTok{f\textquotesingle{}beta2\_o[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+\NormalTok{  util.plot\_expectand\_pushforward(axarr[}\DecValTok{3}\NormalTok{, m], samples[name],}
+                                  \DecValTok{25}\NormalTok{, display\_name}\OperatorTok{=}\NormalTok{name)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-32-output-1.pdf}
+
+The \texttt{plot\_disc\_pushforward\_quantiles} function plots
+disconnected, marginal nested quantile intervals for a collection of
+one-dimensional variables. This allows for a more compact visualization
+of the marginal posterior distributions.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta1[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, names,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"beta1"}\NormalTok{,}
+\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta2\_o[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, names,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"beta2\_d"}\NormalTok{,}
+\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta2\_d[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, names,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"beta2\_o"}\NormalTok{,}
+\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-33-output-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta1[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ] }\OperatorTok{+} \OperatorTok{\textbackslash{}}
+\NormalTok{        [ }\SpecialStringTok{f\textquotesingle{}beta2\_o[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ] }\OperatorTok{+} \OperatorTok{\textbackslash{}}
+\NormalTok{        [ }\SpecialStringTok{f\textquotesingle{}beta2\_d[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(plot.gca(), samples, names,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{,}
+\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-34-output-1.pdf}
+
+This function also includes an optional \texttt{baseline\_values}
+argument and \texttt{residual} configuration which we can use to compare
+the probabilistic to the point values, for example our marginal
+posterior inferences to the true values when analyzing simulated data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{true\_slopes }\OperatorTok{=}\NormalTok{ [}\OperatorTok{{-}}\FloatTok{6.00}\NormalTok{, }\OperatorTok{{-}}\FloatTok{1.50}\NormalTok{, }\FloatTok{13.00}\NormalTok{,  }\FloatTok{0.50}\NormalTok{, }\FloatTok{0.25}\NormalTok{,}
+               \FloatTok{1.00}\NormalTok{, }\OperatorTok{{-}}\FloatTok{0.50}\NormalTok{, }\OperatorTok{{-}}\FloatTok{2.00}\NormalTok{, }\OperatorTok{{-}}\FloatTok{1.00}\NormalTok{]}
+
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, names,}
+\NormalTok{                                        baseline\_values}\OperatorTok{=}\NormalTok{true\_slopes,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{,}
+\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, names,}
+\NormalTok{                                      baseline\_values}\OperatorTok{=}\NormalTok{true\_slopes,}
+\NormalTok{                                      residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{,}
+\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-35-output-1.pdf}
+
+\section*{License}\label{license}
+\addcontentsline{toc}{section}{License}
+
+The code in this case study is copyrighted by Michael Betancourt and
+licensed under the new BSD (3-clause) license:
+
+https://opensource.org/licenses/BSD-3-Clause
+
+The text and figures in this case study are copyrighted by Michael
+Betancourt and licensed under the CC BY-NC 4.0 license:
+
+https://creativecommons.org/licenses/by-nc/4.0/
+
+\section*{Original Computing
+Environment}\label{original-computing-environment}
+\addcontentsline{toc}{section}{Original Computing Environment}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ImportTok{from}\NormalTok{ watermark }\ImportTok{import}\NormalTok{ watermark}
+\BuiltInTok{print}\NormalTok{(watermark())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Last updated: 2024-05-14T22:46:56.377455-04:00
+
+Python implementation: CPython
+Python version       : 3.9.6
+IPython version      : 8.16.1
+
+Compiler    : Clang 12.0.0 (clang-1200.0.32.29)
+OS          : Darwin
+Release     : 23.4.0
+Machine     : x86_64
+Processor   : i386
+CPU cores   : 16
+Architecture: 64bit
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\BuiltInTok{print}\NormalTok{(watermark(packages}\OperatorTok{=}\StringTok{"matplotlib, numpy, json, stan"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+matplotlib: 3.8.0
+ numpy    : not installed
+ json     : not installed
+ stan     : not installed
+\end{verbatim}
+
+
+
+\end{document}

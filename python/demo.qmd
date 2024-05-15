@@ -1,0 +1,752 @@
+---
+title: "Markov Chain Monte Carlo Visualization Functions"
+author: "Michael Betancourt"
+date: "May 2024"
+toc: true
+number-sections: true
+highlight: pygments
+crossref:
+  lst-title: "Stan Program"
+filters:
+   - include-code-files
+format:
+  html:
+    html-math-method: katex
+    theme:
+      - lux
+      - custom.scss
+    standalone: true
+    embed-resources: true
+    code-overflow: wrap
+    linkcolor: "#B97C7C"
+  pdf:
+    keep-tex: true
+    fig-width: 5.5
+    fig-height: 5.5
+    code-overflow: wrap
+    monofontoptions:
+      - Scale=0.5
+jupyter: pystan3_env
+format-links: false
+---
+
+In this note I will review a suite of `python` functions that implement various
+visualizations of probabilistic behavior using the output of a Markov chain
+Monte Carlo algorithm.
+
+Most of these visualizations utilize nested quantile intervals to visualize
+one-dimensional pushforward behavior as described in
+[Chapter 7, Section 5](https://betanalpha.github.io/assets/chapters_html/transforming_probability_spaces.html#sec:1d-pushforward-characterizations)
+of my probability theory material.  The individual quantiles are consistently
+estimated as the empirical average of the empirical quantiles derived from
+individual Markov chains.  Because they do not communicate the quantile
+estimator errors these visualizations can be misleading if the Markov chains do
+not contain enough information.
+
+# Initial Setup
+
+First and foremost we have to set up our local `python` environment.
+
+```{python}
+import matplotlib
+import matplotlib.pyplot as plot
+plot.rcParams['figure.figsize'] = [6, 8]
+plot.rcParams['figure.dpi'] = 100
+plot.rcParams['font.family'] = "Serif"
+
+import numpy
+import scipy.stats as stats
+import math
+
+import json
+```
+
+This includes loading up `pystan`.
+
+```{python}
+# Needed to run pystan through a jupyter kernel
+import nest_asyncio
+nest_asyncio.apply()
+
+import stan
+```
+
+Finally we'll load my recommended
+[Markov chain Monte Carlo analysis tools](https://github.com/betanalpha/mcmc_diagnostics)
+and the visualization functions themselves.
+
+```{python}
+import mcmc_analysis_tools_pystan3 as util
+```
+
+
+```{python}
+import mcmc_visualization_tools as putil
+```
+
+# One-Dimensional Baseline Function
+
+Our first example is one-dimensional curve-fitting, i.e. regression, model with
+a linear baseline function,
+$$
+p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
+=
+\text{normal}(y_{n} \mid \alpha + \beta \, x_{n}, \sigma).
+$$
+
+## Data Exploration
+
+What is data if not an opportunity to explore?
+
+```{python}
+with open("data/uni_data.json","r") as infile:
+  data = json.load(infile)
+```
+
+The `plot_line_hist` function constructs a histogram but then plots only its
+outline, without lines separating the interior histogram bins.  Here we can
+plot histograms summarizing the observed inputs
+$$
+\{ \tilde{x}_{1}, \ldots, \tilde{x}_{n}, \ldots, \tilde{x}_{N} \}
+$$
+and the observed outputs,
+$$
+\{ \tilde{y}_{1}, \ldots, \tilde{y}_{n}, \ldots, \tilde{y}_{N} \}.
+$$
+
+```{python}
+f, axarr = plot.subplots(1, 2, layout="constrained")
+putil.plot_line_hist(axarr[0], data['x'], -6, 6, 0.5,
+                     xlabel="x", title="Observed Inputs")
+putil.plot_line_hist(axarr[1], data['y'], -4, 7, 0.5,
+                     xlabel="y", title="Observed Outputs")
+plot.show()
+```
+
+This presentation is a bit cleaner than conventional histogram plots, especially
+when there is no ambiguity about the binning.  That said the implementation here
+is a bit rigid in that it only allows for uniform bin widths.
+
+A key advantage of reducing a histogram to its outline is that it is much easier
+to overlay multiple histograms on top of each other without compromising
+legibility.  The `plot_line_hists` function constructs and then overlays two
+histograms with the same binning.
+
+```{python}
+putil.plot_line_hists(plot.gca(), data['x'], data['y'], -6, 7, 0.5)
+plot.gca().text(-3.5, 90, "Observed\nInputs", color="black")
+plot.gca().text(3.5, 90, "Observed\nOutputs", color=putil.mid_teal)
+plot.show()
+```
+
+## Prior Checks
+
+Here we'll be exceptionally thorough and start with an investigation of the
+prior model and its consequences.  In addition to the individual parameters
+we'll look at the prior behavior of baseline function and the prior predictive
+distribution along a grid of inputs defined by the `x_grid` array.
+
+```{.stan include="stan_programs/uni_prior_model.stan" filename="uni\\_prior\\_model.stan" eval=FALSE}
+```
+
+Note that I'm using a less-aggressive step size adaptation here because the
+half-normal prior model for $\sigma$ results in an slightly awkward tail for the
+unconstrained $\log(\sigma)$ values that can be a bit difficult to navigate.
+
+```{python }
+#| warning: false
+#| message: false
+data['N_grid'] = 1000
+data['x_grid'] = numpy.arange(-6, 6, 12 / data['N_grid'])
+
+with open('stan_programs/uni_prior_model.stan', 'r') as file:
+  stan_program = file.read()
+model = stan.build(stan_program, random_seed=5838299, data=data)
+fit = model.sample(num_samples=1024, refresh=0, delta=0.9)
+```
+
+Of course we always consult our diagnostics first to make sure that our Markov
+chains, and hence any visualization we derive from them, accurately characterize
+the exact target distribution, in this case the prior distribution of our model.
+
+```{python}
+diagnostics = util.extract_hmc_diagnostics(fit)
+util.check_all_hmc_diagnostics(diagnostics)
+
+samples = util.extract_expectands(fit)
+base_samples = util.filter_expectands(samples,
+                                      ['alpha', 'beta', 'sigma'])
+util.check_all_expectand_diagnostics(base_samples)
+```
+
+We can visualize the probability distribution of baseline functions in two ways.
+Firstly we can plot a subset of baseline function configurations.  Secondly we
+can plot nested quantile intervals that quantify the marginal behavior of the
+function output at each input.  Neither of these visualizations fully
+characterize the probabilistic behavior but together they capture the most
+important features.
+
+The `plot_realizations` function plots a selection of values corresponding to
+the `f_names` array against `data$x_grid` while the
+`plot_conn_pushforward_quantiles` function plots nested quantile intervals of
+those values for each element of `data['x_grid']`.  Here "conn" refers to
+"connected" as the individual marginal quantiles are connected into continuous
+polygons.
+
+```{python}
+f, axarr = plot.subplots(1, 2, layout="constrained")
+
+f_names = [ f'f_grid[{n + 1}]' for n in range(data['N_grid']) ]
+putil.plot_realizations(axarr[0], samples, f_names, data['x_grid'],
+                        xlabel="x", ylabel="f")
+putil.plot_conn_pushforward_quantiles(axarr[1], samples,
+                                      f_names, data['x_grid'],
+                                      xlabel="x", ylabel="f")
+
+plot.show()
+```
+
+Finally let's use the `plot_conn_pushforward_quantiles` function to plot nested
+quantile intervals of the conditional prior predictive behavior at each element
+of `data$x_grid`.
+
+```{python}
+pred_names = [ f'y_pred_grid[{n + 1}]' for n in range(data['N_grid']) ]
+putil.plot_conn_pushforward_quantiles(plot.gca(), samples,
+                                      pred_names, data['x_grid'],
+                                      xlabel="x", ylabel="f")
+plot.show()
+```
+
+## Posterior Inference
+
+Having thoroughly investigated our prior model and its consequences and not
+found any undesired behavior we can move on to constructing posterior
+inferences.
+
+```{.stan include="stan_programs/uni_full_model.stan" filename="uni\\_full\\_model.stan" eval=FALSE}
+```
+
+```{python}
+#| warning: false
+#| message: false
+with open('stan_programs/uni_full_model.stan', 'r') as file:
+  stan_program = file.read()
+model = stan.build(stan_program, random_seed=5838299, data=data)
+fit = model.sample(num_samples=1024, refresh=0)
+```
+
+There are no signs of trouble from the computational diagnostics.
+
+```{python}
+diagnostics = util.extract_hmc_diagnostics(fit)
+util.check_all_hmc_diagnostics(diagnostics)
+
+samples = util.extract_expectands(fit)
+base_samples = util.filter_expectands(samples,
+                                      ['alpha', 'beta', 'sigma'])
+util.check_all_expectand_diagnostics(base_samples)
+```
+
+Before examining any posterior inferences, however, we need to validate that our
+model is adequately capturing the relevant features of the observed data.  For
+this one-dimensional baseline function model we can implement an informative
+retrodictive check by comparing the conditional posterior predictive
+distributions at each input,
+$$
+p(y \mid x,
+         \tilde{x}_{1}, \tilde{y}_{1}, \ldots, \tilde{x}_{N}, \tilde{y}_{N}),
+$$
+to the observed input-output pairs, $(x_{n}, y_{n})$.
+
+```{python}
+pred_names = [ f'y_pred_grid[{n + 1}]' for n in range(data['N_grid']) ]
+putil.plot_conn_pushforward_quantiles(plot.gca(), samples,
+                                      pred_names, data['x_grid'],
+                                      xlabel="x", ylabel="f")
+plot.scatter(data['x'], data['y'], s=1, color="white")
+plot.scatter(data['x'], data['y'], s=0.8, color="black")
+
+plot.show()
+```
+
+Fortunately there are no signs of tension between the posterior predictive
+distributional behaviors and the observed behaviors.  Confident in the adequacy
+of our model we can move onto visualizing posterior inferences.
+
+For example we can visualize the pushforward, or marginal, probability
+distributions for each parameter.  Note that the `plot_expectand_pushforward`
+function is already part of my Markov chain Monte Carlo analysis tools and not
+one of the visualization functions being introduced here.
+
+```{python}
+f, axarr = plot.subplots(1, 3, layout="constrained")
+
+util.plot_expectand_pushforward(axarr[0], samples['alpha'],
+                                25, display_name="alpha")
+
+util.plot_expectand_pushforward(axarr[1], samples['beta'],
+                                25, display_name="beta")
+
+util.plot_expectand_pushforward(axarr[2], samples['sigma'],
+                                25, display_name="sigma")
+
+plot.show()
+```
+
+Communicating the posterior behavior of the baseline function, however, is
+facilitated with the new visualization functions.
+
+```{python}
+f, axarr = plot.subplots(1, 2, layout="constrained")
+
+f_names = [ f'f_grid[{n + 1}]' for n in range(data['N_grid']) ]
+putil.plot_realizations(axarr[0], samples, f_names, data['x_grid'],
+                        xlabel="x", ylabel="f")
+putil.plot_conn_pushforward_quantiles(axarr[1], samples,
+                                      f_names, data['x_grid'],
+                                      xlabel="x", ylabel="f")
+
+plot.show()
+```
+
+Conveniently all of these visualization functions feature optional arguments
+for baseline behavior which allows us to compare our posterior inferences to
+the true behavior when it is known, for example in simulation studies.
+
+```{python}
+true_alpha = 1.5
+true_beta = -0.75
+true_sigma = 0.33
+
+f, axarr = plot.subplots(1, 3, layout="constrained")
+
+util.plot_expectand_pushforward(axarr[0], samples['alpha'],
+                                25, display_name="alpha",
+                                baseline=true_alpha)
+
+util.plot_expectand_pushforward(axarr[1], samples['beta'],
+                                25, display_name="beta",
+                                baseline=true_beta)
+
+util.plot_expectand_pushforward(axarr[2], samples['sigma'],
+                                25, display_name="sigma",
+                                baseline=true_sigma)
+
+plot.show()
+```
+
+```{python}
+true_fs = [ true_alpha + true_beta * x for x in data['x_grid'] ]
+
+f, axarr = plot.subplots(1, 2, layout="constrained")
+putil.plot_realizations(axarr[0], samples,
+                        f_names, data['x_grid'],
+                        baseline_values=true_fs,
+                        xlabel="x", ylabel="f")
+putil.plot_conn_pushforward_quantiles(axarr[1], samples,
+                                      f_names, data['x_grid'],
+                                      baseline_values=true_fs,
+                                      xlabel="x", ylabel="f")
+
+plot.show()
+```
+
+The `plot_realizations` and `plot_conn_pushforward_quantiles` functions also
+include `residual` arguments that allow us to directly visualize how the
+probabilistic behavior varies around the baseline values.
+
+```{python}
+f, axarr = plot.subplots(1, 2, layout="constrained")
+
+f, axarr = plot.subplots(1, 2, layout="constrained")
+putil.plot_realizations(axarr[0], samples,
+                        f_names, data['x_grid'],
+                        baseline_values=true_fs,
+                        residual=True,
+                        xlabel="x", ylabel="f")
+putil.plot_conn_pushforward_quantiles(axarr[1], samples,
+                                      f_names, data['x_grid'],
+                                      residual=True,
+                                      baseline_values=true_fs,
+                                      xlabel="x", ylabel="f")
+
+plot.show()
+```
+
+# Multi-Dimensional Baseline Function
+
+Now that we're warmed up let's consider a three-dimensional curve-fitting model
+with a quadratic baseline function,
+$$
+p(y_{n} \mid \mathbf{x}_{n}, \alpha, \beta, \sigma)
+=
+\text{normal}(y_{n}   \mid \beta_{0}
+                    + \boldsymbol{\beta}^{T} \cdot \mathbf{x}
+                    + \mathbf{x}^{T} \cdot \mathbf{B} \cdot \mathbf{x}, \sigma),
+$$
+where $\mathbf{B}$ is a positive-definite matrix whose three diagonal elements
+are organized into the vector $\boldsymbol{\beta}_{d}$ and three off-diagonal
+elements are organized into the vector $\boldsymbol{\beta}_{o}$.
+
+## Plot Data
+
+The `plot_line_hist` allows us to cleanly visualize each component of the
+observed inputs.
+
+```{python}
+with open("data/multi_data.json","r") as infile:
+  data = json.load(infile)
+data['X'] = numpy.asarray(data['X'])
+
+
+f, axarr = plot.subplots(3, 3, layout="constrained")
+
+putil.plot_line_hist(axarr[0, 0], data['X'][:,0], -9, 9, 1, xlabel="x1")
+putil.plot_line_hist(axarr[0, 1], data['X'][:,1], -9, 9, 1, xlabel="x2")
+putil.plot_line_hist(axarr[0, 2], data['X'][:,2], -9, 9, 1, xlabel="x3")
+
+axarr[1, 0].scatter(data['X'][:,0], data['X'][:,1], color="black", s=2)
+axarr[1, 0].set_xlim([-9, 9])
+axarr[1, 0].set_xlabel("x1")
+axarr[1, 0].set_ylim([-9, 9])
+axarr[1, 0].set_ylabel("x2")
+
+axarr[1, 1].scatter(data['X'][:,0], data['X'][:,2], color="black", s=2)
+axarr[1, 1].set_xlim([-9, 9])
+axarr[1, 1].set_xlabel("x1")
+axarr[1, 1].set_ylim([-9, 9])
+axarr[1, 1].set_ylabel("x3")
+
+axarr[1, 2].scatter(data['X'][:,1], data['X'][:,2], color="black", s=2)
+axarr[1, 2].set_xlim([-9, 9])
+axarr[1, 2].set_xlabel("x2")
+axarr[1, 2].set_ylim([-9, 9])
+axarr[1, 2].set_ylabel("x3")
+
+axarr[2, 0].scatter(data['X'][:,0], data['y'], color="black", s=2)
+axarr[2, 0].set_xlim([-9, 9])
+axarr[2, 0].set_xlabel("x1")
+axarr[2, 0].set_ylim([-25, 325])
+axarr[2, 0].set_ylabel("y")
+
+axarr[2, 1].scatter(data['X'][:,1], data['y'], color="black", s=2)
+axarr[2, 1].set_xlim([-9, 9])
+axarr[2, 1].set_xlabel("x2")
+axarr[2, 1].set_ylim([-25, 325])
+axarr[2, 1].set_ylabel("y")
+
+axarr[2, 2].scatter(data['X'][:,2], data['y'], color="black", s=2)
+axarr[2, 2].set_xlim([-9, 9])
+axarr[2, 2].set_xlabel("x3")
+axarr[2, 2].set_ylim([-25, 325])
+axarr[2, 2].set_ylabel("y")
+
+plot.show()
+```
+
+## Prior Checks
+
+As before we'll first investigate the consequences of our prior model.
+
+For a discussion of why the quadratic baseline model is implemented in this way
+see Section 2.3.2 of my
+[Taylor regression modeling chapter](https://betanalpha.github.io/assets/case_studies/taylor_models.html#232_Higher-Order_Implementations).
+
+```{.stan include="stan_programs/multi_prior_model.stan" filename="multi\\_prior\\_model.stan" eval=FALSE}
+```
+
+```{python}
+#| warning: false
+#| message: false
+with open('stan_programs/multi_prior_model.stan', 'r') as file:
+  stan_program = file.read()
+model = stan.build(stan_program, random_seed=5838299, data=data)
+fit = model.sample(num_samples=1024, refresh=0)
+```
+
+Higher-dimensional probability distributions are no trouble for Hamiltonian
+Monte Carlo.
+
+```{python}
+diagnostics = util.extract_hmc_diagnostics(fit)
+util.check_all_hmc_diagnostics(diagnostics)
+
+samples = util.extract_expectands(fit)
+base_samples = util.filter_expectands(samples,
+                                      ['beta0', 'beta1',
+                                       'beta2_d', 'beta2_o',
+                                       'sigma'],
+                                      True)
+util.check_all_expectand_diagnostics(base_samples)
+```
+
+With a multi-dimensional input space we can no longer visualize the baseline
+functional behavior nor the conditional prior predictive behavior directly.
+We can, however, visualize many of its features.
+
+For example we might consider the marginal behavior of the predicted outputs,
+regardless of the corresponding observed inputs.  Here we'll summarize this
+marginal behavior with a histogram, and use the `plot_hist_quantiles` function
+to visualize the prior predictive distribution of the histogram counts.
+
+```{python}
+putil.plot_hist_quantiles(plot.gca(), samples, 'y_pred')
+```
+
+To capture the interactions between the predictive outputs and the observed
+input components we'll need a more sophisticated summary statistic.  Here we'll
+use the empirical mean and medians of the predictive outputs within bins of each
+input component.  For a detailed discussion of how this summary statistic is
+constructed see Section 2.5 of my
+[Taylor regression modeling chapter](https://betanalpha.github.io/assets/case_studies/taylor_models.html#25_Posterior_Retrodictive_Checks).
+
+Conveniently the `plot_conditional_mean_quantiles` and
+`plot_conditional_median_quantiles` functions visualize the prior predictive
+behavior of these summary statistics.
+
+```{python}
+f, axarr = plot.subplots(1, 3, layout="constrained")
+
+pred_names = [ f'y_pred[{n + 1}]' for n in range(data['N']) ]
+putil.plot_conditional_mean_quantiles(axarr[0], samples, pred_names,
+                                      data['X'][:,0], -9, 9, 1,
+                                      xlabel="x1")
+putil.plot_conditional_mean_quantiles(axarr[1], samples, pred_names,
+                                      data['X'][:,1], -9, 9, 1,
+                                      xlabel="x2")
+putil.plot_conditional_mean_quantiles(axarr[2], samples, pred_names,
+                                      data['X'][:,2], -9, 9, 1,
+                                      xlabel="x3")
+plot.show()
+```
+
+```{python}
+f, axarr = plot.subplots(1, 3, layout="constrained")
+
+pred_names = [ f'y_pred[{n + 1}]' for n in range(data['N']) ]
+putil.plot_conditional_median_quantiles(axarr[0], samples, pred_names,
+                                        data['X'][:,0], -9, 9, 1,
+                                        xlabel="x1")
+putil.plot_conditional_median_quantiles(axarr[1], samples, pred_names,
+                                        data['X'][:,1], -9, 9, 1,
+                                        xlabel="x2")
+putil.plot_conditional_median_quantiles(axarr[2], samples, pred_names,
+                                        data['X'][:,2], -9, 9, 1,
+                                        xlabel="x3")
+plot.show()
+```
+
+Now we're ready to incorporate the observed data.
+
+```{.stan include="stan_programs/multi_full_model.stan" filename="multi\\_full\\_model.stan" eval=FALSE}
+```
+
+```{python}
+#| warning: false
+#| message: false
+with open('stan_programs/multi_full_model.stan', 'r') as file:
+  stan_program = file.read()
+model = stan.build(stan_program, random_seed=5838299, data=data)
+fit = model.sample(num_samples=1024, refresh=0)
+```
+
+Fortunately our computational fortune has persisted.
+
+```{python}
+diagnostics = util.extract_hmc_diagnostics(fit)
+util.check_all_hmc_diagnostics(diagnostics)
+
+samples = util.extract_expectands(fit)
+base_samples = util.filter_expectands(samples,
+                                      ['beta0', 'beta1',
+                                       'beta2_d', 'beta2_o',
+                                       'sigma'],
+                                      True)
+util.check_all_expectand_diagnostics(base_samples)
+```
+
+The summary statistics that we used above to implement our prior predictive
+checks are equally useful for implementing informative posterior retrodictive
+checks.  Conveniently the visualization functions all feature `baseline_values`
+functions that we can use to visualize the observed behavior along with the
+posterior predictive behavior.
+
+```{python}
+putil.plot_hist_quantiles(plot.gca(), samples, 'y_pred',
+                          baseline_values=data['y'])
+```
+
+Additionally the `plot_conditional_mean_quantiles` and
+`plot_conditional_median_quantiles` functions feature a `residual` option that
+plots the posterior predictive behaviors relative to the baseline values.  Any
+deviations from zero in these plots suggests retrodictive tension; here,
+however, there don't seem to be any problems.
+
+```{python}
+f, axarr = plot.subplots(2, 3, layout="constrained")
+
+pred_names = [ f'y_pred[{n + 1}]' for n in range(data['N']) ]
+putil.plot_conditional_mean_quantiles(axarr[0, 0], samples, pred_names,
+                                      data['X'][:,0], -9, 9, 1,
+                                      data['y'], xlabel="x1")
+putil.plot_conditional_mean_quantiles(axarr[0, 1], samples, pred_names,
+                                      data['X'][:,1], -9, 9, 1,
+                                      data['y'], xlabel="x2")
+putil.plot_conditional_mean_quantiles(axarr[0, 2], samples, pred_names,
+                                      data['X'][:,2], -9, 9, 1,
+                                      data['y'], xlabel="x3")
+
+putil.plot_conditional_mean_quantiles(axarr[1, 0], samples, pred_names,
+                                      data['X'][:,0], -9, 9, 1,
+                                      data['y'], True, xlabel="x1")
+putil.plot_conditional_mean_quantiles(axarr[1, 1], samples, pred_names,
+                                      data['X'][:,1], -9, 9, 1,
+                                      data['y'], True, xlabel="x2")
+putil.plot_conditional_mean_quantiles(axarr[1, 2], samples, pred_names,
+                                      data['X'][:,2], -9, 9, 1,
+                                      data['y'], True, xlabel="x3")
+plot.show()
+```
+
+```{python}
+f, axarr = plot.subplots(2, 3, layout="constrained")
+
+pred_names = [ f'y_pred[{n + 1}]' for n in range(data['N']) ]
+putil.plot_conditional_median_quantiles(axarr[0, 0], samples, pred_names,
+                                        data['X'][:,0], -9, 9, 1,
+                                        data['y'], xlabel="x1")
+putil.plot_conditional_median_quantiles(axarr[0, 1], samples, pred_names,
+                                        data['X'][:,1], -9, 9, 1,
+                                        data['y'], xlabel="x2")
+putil.plot_conditional_median_quantiles(axarr[0, 2], samples, pred_names,
+                                        data['X'][:,2], -9, 9, 1,
+                                        data['y'], xlabel="x3")
+
+putil.plot_conditional_median_quantiles(axarr[1, 0], samples, pred_names,
+                                        data['X'][:,0], -9, 9, 1,
+                                        data['y'], True, xlabel="x1")
+putil.plot_conditional_median_quantiles(axarr[1, 1], samples, pred_names,
+                                        data['X'][:,1], -9, 9, 1,
+                                        data['y'], True, xlabel="x2")
+putil.plot_conditional_median_quantiles(axarr[1, 2], samples, pred_names,
+                                        data['X'][:,2], -9, 9, 1,
+                                        data['y'], True, xlabel="x3")
+plot.show()
+```
+
+With no indications of model inadequacy we can move onto our posterior
+inferences.  As before we can visualize the pushforward posterior distributions
+for each individual, one-dimensional parameter.
+
+```{python}
+f, axarr = plot.subplots(4, 3, layout="constrained")
+
+util.plot_expectand_pushforward(axarr[0, 0], samples['beta0'],
+                                25, display_name="beta0")
+
+axarr[0, 1].axis('off')
+
+util.plot_expectand_pushforward(axarr[0, 2], samples['sigma'],
+                                25, display_name="sigma")
+
+for m in range(data['M']):
+  name = f'beta1[{m + 1}]'
+  util.plot_expectand_pushforward(axarr[1, m], samples[name],
+                                  25, display_name=name)
+
+for m in range(data['M']):
+  name = f'beta2_d[{m + 1}]'
+  util.plot_expectand_pushforward(axarr[2, m], samples[name],
+                                  25, display_name=name)
+
+for m in range(data['M']):
+  name = f'beta2_o[{m + 1}]'
+  util.plot_expectand_pushforward(axarr[3, m], samples[name],
+                                  25, display_name=name)
+
+plot.show()
+```
+
+The `plot_disc_pushforward_quantiles` function plots disconnected, marginal
+nested quantile intervals for a collection of one-dimensional variables.  This
+allows for a more compact visualization of the marginal posterior distributions.
+
+```{python}
+f, axarr = plot.subplots(1, 3, layout="constrained")
+
+names = [ f'beta1[{m + 1}]' for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles(axarr[0], samples, names,
+                                      xlabel="beta1",
+                                      ylabel="Marginal Posterior Quantiles")
+
+names = [ f'beta2_o[{m + 1}]' for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles(axarr[1], samples, names,
+                                      xlabel="beta2_d",
+                                      ylabel="Marginal Posterior Quantiles")
+
+names = [ f'beta2_d[{m + 1}]' for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles(axarr[2], samples, names,
+                                      xlabel="beta2_o",
+                                      ylabel="Marginal Posterior Quantiles")
+
+plot.show()
+```
+
+```{python}
+names = [ f'beta1[{m + 1}]' for m in range(data['M']) ] + \
+        [ f'beta2_o[{m + 1}]' for m in range(data['M']) ] + \
+        [ f'beta2_d[{m + 1}]' for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles(plot.gca(), samples, names,
+                                      xlabel="All Slopes",
+                                      ylabel="Marginal Posterior Quantiles")
+plot.show()
+```
+
+This function also includes an optional `baseline_values` argument and
+`residual` configuration which we can use to compare the probabilistic to the
+point values, for example our marginal posterior inferences to the true values
+when analyzing simulated data.
+
+```{python}
+true_slopes = [-6.00, -1.50, 13.00,  0.50, 0.25,
+               1.00, -0.50, -2.00, -1.00]
+
+f, axarr = plot.subplots(2, 1, layout="constrained")
+
+putil.plot_disc_pushforward_quantiles(axarr[0], samples, names,
+                                        baseline_values=true_slopes,
+                                      xlabel="All Slopes",
+                                      ylabel="Marginal Posterior Quantiles")
+
+putil.plot_disc_pushforward_quantiles(axarr[1], samples, names,
+                                      baseline_values=true_slopes,
+                                      residual=True,
+                                      xlabel="All Slopes",
+                                      ylabel="Marginal Posterior Quantiles")
+
+plot.show()
+```
+
+# License {-}
+
+The code in this case study is copyrighted by Michael Betancourt and licensed
+under the new BSD (3-clause) license:
+
+https://opensource.org/licenses/BSD-3-Clause
+
+The text and figures in this case study are copyrighted by Michael Betancourt
+and licensed under the CC BY-NC 4.0 license:
+
+https://creativecommons.org/licenses/by-nc/4.0/
+
+# Original Computing Environment {-}
+
+```{python}
+from watermark import watermark
+print(watermark())
+```
+
+```{python}
+print(watermark(packages="matplotlib, numpy, json, stan"))
+```
