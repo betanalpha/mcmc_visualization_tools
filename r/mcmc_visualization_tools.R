@@ -155,7 +155,7 @@ configure_bin_plotting <- function(breaks) {
 # Data Visualizations
 ################################################################################
 
-# Plot line histogram.
+# Plot histogram outline.
 # @param values Values that comprise the histogram
 # @param bin_min Lower threshold
 # @param bin_max Upper threshold
@@ -163,11 +163,15 @@ configure_bin_plotting <- function(breaks) {
 # @param prob Boolean determining whether bin contents should be normalized so
 #             that the histogram approximates a probability density function;
 #             defaults to FALSE
+# @param col Color of histogram; defaults to "black"
+# @param add Boolean determining whether to add histogram outline to existing
+#            plot or to create new axes; defaults to FALSE
 # @param xlab Label for x-axis; defaults to empty string.
 # @param main Plot title; defaults to empty string.
 plot_line_hist <- function(values,
                            bin_min=NULL, bin_max=NULL, bin_delta=NULL,
-                           prob=FALSE, xlab="", main="") {
+                           prob=FALSE, col="black", add=FALSE,
+                           xlab="", main="") {
   # Remove any NA values
   values <- values[!is.na(values)]
 
@@ -190,17 +194,21 @@ plot_line_hist <- function(values,
   counts <- hist(values[bin_min <= values & values <= bin_max],
                  breaks=breaks, plot=FALSE)$counts
 
-  ylab <- "Counts"
-  if (prob) {
-    ylab <- "Empirical Bin Probability / Bin Width"
-    counts <- counts / (delta * sum(counts))
-  }
+  if (add) {
+    lines(plot_xs, counts[plot_idxs], col=col, lwd=2)
+  } else {
+    ylab <- "Counts"
+    if (prob) {
+      ylab <- "Empirical Bin Probability / Bin Width"
+      counts <- counts / (delta * sum(counts))
+    }
 
-  # Plot
-  plot(plot_xs, counts[plot_idxs], main=main,
-       type="l", col="black", lwd=2,
-       xlab=xlab, xlim=c(bin_min, bin_max),
-       ylab=ylab, ylim=c(0, 1.1 * max(counts)))
+    # Plot
+    plot(plot_xs, counts[plot_idxs], main=main,
+         type="l", col=col, lwd=2,
+         xlab=xlab, xlim=c(bin_min, bin_max),
+         ylab=ylab, ylim=c(0, 1.1 * max(counts)))
+  }
 }
 
 # Plot the overlay of two line histograms.
