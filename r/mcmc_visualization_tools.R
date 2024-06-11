@@ -291,12 +291,13 @@ plot_line_hists <- function(values1, values2,
 # @param bin_delta Bin width
 # @param baseline_values Baseline values for constructing a baseline histogram;
 #                        defaults to NULL
+# @param baseline_col Color for plotting baseline value; defaults to "black"
 # @param xlab Label for x-axis; defaults to empty string
 # @param display_ylim Plot limits for y-axis; defaults to NULL
 # @param main Plot title; defaults to empty string
 plot_hist_quantiles <- function(samples, val_name_prefix,
                                 bin_min=NULL, bin_max=NULL, bin_delta=NULL,
-                                baseline_values=NULL,
+                                baseline_values=NULL, baseline_col="black",
                                 xlab="", display_ylim=NULL, main="") {
   # Construct relevant variable names and format corresponding values.
   # Order of the variables does not affect the shape of the histogram.
@@ -393,7 +394,7 @@ plot_hist_quantiles <- function(samples, val_name_prefix,
                            lapply(plot_idxs, function(n) counts[n]))
 
     lines(plot_xs, plot_counts, col="white", lty=1, lw=4)
-    lines(plot_xs, plot_counts, col="black", lty=1, lw=2)
+    lines(plot_xs, plot_counts, col=baseline_col, lty=1, lw=2)
   }
 }
 
@@ -408,6 +409,7 @@ plot_hist_quantiles <- function(samples, val_name_prefix,
 #                indexes the sequential states within each Markov chain.
 # @param names List of relevant variable names
 # @param baseline_values Baseline values; defaults to NULL
+# @param baseline_col Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlab Label for x-axis; defaults to empty string
@@ -417,6 +419,7 @@ plot_hist_quantiles <- function(samples, val_name_prefix,
 # @param main Plot title; defaults to empty string
 plot_disc_pushforward_quantiles <- function(samples, names,
                                             baseline_values=NULL,
+                                            baseline_col="black",
                                             residual=FALSE,
                                             xlab="", xticklabs=NULL,
                                             ylab=NULL, display_ylim=NULL,
@@ -541,7 +544,7 @@ plot_disc_pushforward_quantiles <- function(samples, names,
         lines(plot_xs[idx1:idx2], rep(baseline_values[n], 2),
               col="white", lwd=4)
         lines(plot_xs[idx1:idx2], rep(baseline_values[n], 2),
-              col="black", lwd=2)
+              col=baseline_col, lwd=2)
       }
     }
   }
@@ -560,6 +563,7 @@ plot_disc_pushforward_quantiles <- function(samples, names,
 # @param plot_xs One-dimensional array of x-axis values
 #                associated with each variable.
 # @param baseline_values Baseline values; defaults to NULL
+# @param baseline_col Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlab Label for x-axis; defaults to empty string
@@ -569,6 +573,7 @@ plot_disc_pushforward_quantiles <- function(samples, names,
 # @param main Plot title; defaults to empty string
 plot_conn_pushforward_quantiles <- function(samples, names, plot_xs,
                                             baseline_values=NULL,
+                                            baseline_col="black",
                                             residual=FALSE,
                                             xlab="", display_xlim=NULL,
                                             ylab=NULL, display_ylim=NULL,
@@ -663,7 +668,7 @@ plot_conn_pushforward_quantiles <- function(samples, names, plot_xs,
       abline(h=0, col="#DDDDDD", lwd=2, lty=3)
     } else {
       lines(plot_xs, baseline_values, col="white", lwd=4)
-      lines(plot_xs, baseline_values, col="black", lwd=2)
+      lines(plot_xs, baseline_values, col=baseline_col, lwd=2)
     }
   }
 }
@@ -679,6 +684,7 @@ plot_conn_pushforward_quantiles <- function(samples, names, plot_xs,
 #                associated with each variable.
 # @param N_plots Number of realizations to plot
 # @param baseline_values Baseline values; defaults to NULL
+# @param baseline_col Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlab Label for x-axis; defaults to empty string
@@ -688,6 +694,7 @@ plot_conn_pushforward_quantiles <- function(samples, names, plot_xs,
 # @param main Plot title; defaults to empty string
 plot_realizations <- function(samples, names, plot_xs, N_plots=50,
                               baseline_values=NULL,
+                              baseline_col="black",
                               residual=FALSE,
                               xlab="", display_xlim=NULL,
                               ylab=NULL, display_ylim=NULL,
@@ -768,7 +775,7 @@ plot_realizations <- function(samples, names, plot_xs, N_plots=50,
       abline(h=0, col="#DDDDDD", lwd=2, lty=3)
     } else {
       lines(plot_xs, baseline_values, col="white", lwd=4)
-      lines(plot_xs, baseline_values, col="black", lwd=2)
+      lines(plot_xs, baseline_values, col=baseline_col, lwd=2)
     }
   }
 }
@@ -788,6 +795,7 @@ plot_realizations <- function(samples, names, plot_xs, N_plots=50,
 # @param bin_max Upper threshold for conditioning
 # @param bin_delta Bin width for conditioning
 # @param baseline_values Baseline values; defaults to NULL
+# @param baseline_col Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlab Label for x-axis; defaults to empty string
@@ -798,6 +806,7 @@ plot_conditional_mean_quantiles <- function(samples, names, obs_xs,
                                             bin_min=NULL, bin_max=NULL,
                                             bin_delta=NULL,
                                             baseline_values=NULL,
+                                            baseline_col="black",
                                             residual=FALSE,
                                             xlab="",
                                             ylab=NULL, display_ylim=NULL,
@@ -935,7 +944,7 @@ plot_conditional_mean_quantiles <- function(samples, names, obs_xs,
           lines(plot_xs[idx1:idx2], c(obs_means[b], obs_means[b]),
                 col="white", lwd=4)
           lines(plot_xs[idx1:idx2], c(obs_means[b], obs_means[b]),
-                col="black", lwd=2)
+                col=baseline_col, lwd=2)
         }
       }
     }
@@ -958,6 +967,7 @@ plot_conditional_mean_quantiles <- function(samples, names, obs_xs,
 # @param bin_max Upper threshold for conditioning
 # @param bin_delta Bin width for conditioning
 # @param baseline_values Baseline values; defaults to NULL
+# @param baseline_col Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlab Label for x-axis; defaults to empty string
@@ -968,6 +978,7 @@ plot_conditional_median_quantiles <- function(samples, names, obs_xs,
                                               bin_min=NULL, bin_max=NULL,
                                               bin_delta=NULL,
                                               baseline_values=NULL,
+                                              baseline_col="black",
                                               residual=FALSE,
                                               xlab="",
                                               ylab=NULL, display_ylim=NULL,
@@ -1105,7 +1116,7 @@ plot_conditional_median_quantiles <- function(samples, names, obs_xs,
           lines(plot_xs[idx1:idx2], c(obs_medians[b], obs_medians[b]),
                 col="white", lwd=4)
           lines(plot_xs[idx1:idx2], c(obs_medians[b], obs_medians[b]),
-                col="black", lwd=2)
+                col=baseline_col, lwd=2)
         }
       }
     }
