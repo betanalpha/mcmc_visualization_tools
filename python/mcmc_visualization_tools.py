@@ -194,7 +194,7 @@ def plot_line_hist(ax, values,
   # Plot
   ax.plot(plot_xs, counts[plot_idxs], color=col)
   
-  if add:
+  if not add:
     ax.set_title(title)
     ax.set_xlim([bin_min, bin_max])
     ax.set_xlabel(xlabel)
@@ -280,12 +280,13 @@ def plot_line_hists(ax, values1, values2,
 # @param bin_delta Bin width
 # @param baseline_values Baseline values for constructing a baseline histogram;
 #                        defaults to None
+# @param baseline_color Color for plotting baseline value; defaults to "black"
 # @param xlabel Label for x-axis; defaults to empty string
 # @param display_ylim Plot limits for y-axis; defaults to None
 # @param title Plot title; defaults to empty string
 def plot_hist_quantiles(ax, samples, val_name_prefix,
                         bin_min=None, bin_max=None, bin_delta=None,
-                        baseline_values=None,
+                        baseline_values=None, baseline_color="black",
                         xlabel="", display_ylim=None, title=""):
   # Construct relevant variable names and format corresponding values.
   # Order of the variables does not affect the shape of the histogram.
@@ -374,7 +375,7 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
     baseline_counts = numpy.histogram(baseline_values, bins=breaks)[0]
     plot_counts = [ baseline_counts[idx] for idx in plot_idxs ]
     ax.plot(plot_xs, plot_counts, color="white", linewidth=4)
-    ax.plot(plot_xs, plot_counts, color="black", linewidth=2)
+    ax.plot(plot_xs, plot_counts, color=baseline_color, linewidth=2)
 
   ax.set_title(title)
   ax.set_xlabel(xlabel)
@@ -394,6 +395,7 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
 #                indexes the sequential states within each Markov chain.
 # @param names List of relevant variable names
 # @param baseline_values Baseline values; defaults to None
+# @param baseline_color Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlabel Label for x-axis; defaults to empty string
@@ -403,6 +405,7 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
 # @param title Plot title; defaults to empty string
 def plot_disc_pushforward_quantiles(ax, samples, names,
                                     baseline_values=None,
+                                    baseline_color="black",
                                     residual=False,
                                     xlabel="", xticklabels=None,
                                     ylabel="", display_ylim=None,
@@ -510,10 +513,10 @@ def plot_disc_pushforward_quantiles(ax, samples, names,
         idx2 = 2 * n + 1
         ax.plot([plot_xs[idx1], plot_xs[idx2]],
                 [baseline_values[n], baseline_values[n]],
-                color = "white", linewidth=4)
+                color="white", linewidth=4)
         ax.plot([plot_xs[idx1], plot_xs[idx2]],
                 [baseline_values[n], baseline_values[n]],
-                color = "black", linewidth=2)
+                color=baseline_color, linewidth=2)
 
   ax.set_title(title)
   ax.set_xlabel(xlabel)
@@ -535,6 +538,7 @@ def plot_disc_pushforward_quantiles(ax, samples, names,
 # @param plot_xs One-dimensional array of x-axis values
 #                associated with each variable.
 # @param baseline_values Baseline values; defaults to None
+# @param baseline_color Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlabel Label for x-axis; defaults to empty string
@@ -544,6 +548,7 @@ def plot_disc_pushforward_quantiles(ax, samples, names,
 # @param title Plot title; defaults to empty string
 def plot_conn_pushforward_quantiles(ax, samples, names, plot_xs,
                                     baseline_values=None,
+                                    baseline_color="black",
                                     residual=None,
                                     xlabel="", display_xlim=None,
                                     ylabel="", display_ylim=None,
@@ -627,7 +632,7 @@ def plot_conn_pushforward_quantiles(ax, samples, names, plot_xs,
       ax.axhline(y=0, linewidth=2, linestyle="dashed", color='#DDDDDD')
     else:
       ax.plot(plot_xs, baseline_values, color="white", linewidth=4)
-      ax.plot(plot_xs, baseline_values, color="black", linewidth=2)
+      ax.plot(plot_xs, baseline_values, color=baseline_color, linewidth=2)
 
   ax.set_title(title)
   ax.set_xlabel(xlabel)
@@ -647,6 +652,7 @@ def plot_conn_pushforward_quantiles(ax, samples, names, plot_xs,
 #                associated with each variable.
 # @param N_plots Number of realizations to plot
 # @param baseline_values Baseline values; defaults to None
+# @param baseline_color Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlab Label for x-axis; defaults to empty string
@@ -656,6 +662,7 @@ def plot_conn_pushforward_quantiles(ax, samples, names, plot_xs,
 # @param main Plot title; defaults to empty string
 def plot_realizations(ax, samples, names, plot_xs, N_plots=50,
                       baseline_values=None,
+                      baseline_color="black",
                       residual=False,
                       xlabel="", display_xlim=None,
                       ylabel="", display_ylim=None,
@@ -728,7 +735,7 @@ def plot_realizations(ax, samples, names, plot_xs, N_plots=50,
       ax.axhline(y=0, linewidth=2, linestyle="dashed", color='#DDDDDD')
     else:
       ax.plot(plot_xs, baseline_values, color="white", linewidth=4)
-      ax.plot(plot_xs, baseline_values, color="black", linewidth=2)
+      ax.plot(plot_xs, baseline_values, color=baseline_color, linewidth=2)
 
   ax.set_title(title)
   ax.set_xlabel(xlabel)
@@ -753,6 +760,7 @@ def plot_realizations(ax, samples, names, plot_xs, N_plots=50,
 # @param bin_max Upper threshold for conditioning
 # @param bin_delta Bin width for conditioning
 # @param baseline_values Baseline values; defaults to None
+# @param baseline_color Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlabel Label for x-axis; defaults to empty string
@@ -762,6 +770,7 @@ def plot_realizations(ax, samples, names, plot_xs, N_plots=50,
 def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
                                     bin_min=None, bin_max=None, bin_delta=None,
                                     baseline_values=None,
+                                    baseline_color="black",
                                     residual=False,
                                     xlabel="",
                                     ylabel=None, display_ylim=None,
@@ -903,7 +912,7 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
                   color="white", linewidth=4)
           ax.plot([plot_xs[idx1], plot_xs[idx2]],
                   [obs_means[b], obs_means[b]],
-                  color="black", linewidth=2)
+                  color=baseline_color, linewidth=2)
 
   ax.set_title(title)
   ax.set_xlabel(xlabel)
@@ -927,6 +936,7 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
 # @param bin_max Upper threshold for conditioning
 # @param bin_delta Bin width for conditioning
 # @param baseline_values Baseline values; defaults to None
+# @param baseline_color Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlabel Label for x-axis; defaults to empty string
@@ -936,7 +946,9 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
 def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
                                       bin_min=None, bin_max=None,
                                       bin_delta=None,
-                                      baseline_values=None, residual=False,
+                                      baseline_values=None,
+                                      baseline_color="black",
+                                      residual=False,
                                       xlabel="",
                                       ylabel=None, display_ylim=None,
                                       title=""):
@@ -1077,7 +1089,7 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
                   color="white", linewidth=4)
           ax.plot([plot_xs[idx1], plot_xs[idx2]],
                   [obs_medians[b], obs_medians[b]],
-                  color="black", linewidth=2)
+                  color=baseline_color, linewidth=2)
 
   ax.set_title(title)
   ax.set_xlabel(xlabel)
