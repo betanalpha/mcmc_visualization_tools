@@ -466,11 +466,11 @@ def plot_disc_pushforward_quantiles(ax, samples, names,
 
   if xticklabels is not None:
     if len(xticklabels) == N:
+      ax.set_xticks([ n + 1 for n in range(N) ])
       ax.set_xticklabels(xticklabels)
     else:
       print('The list of x tick labels has the wrong dimension '
             'and baselines will not be plotted.')
-
   for n in range(N):
     idx1 = 2 * n
     idx2 = 2 * n + 1
