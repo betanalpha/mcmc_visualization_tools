@@ -636,15 +636,18 @@ simulation studies.
 
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_expectand\_pushforward}\NormalTok{(samples[[}\StringTok{"alpha"}\NormalTok{]], }\DecValTok{25}\NormalTok{,}
                                 \AttributeTok{display\_name=}\StringTok{"alpha"}\NormalTok{,}
-                                \AttributeTok{baseline=}\NormalTok{true\_alpha)}
+                                \AttributeTok{baseline=}\NormalTok{true\_alpha,}
+                                \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal)}
 
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_expectand\_pushforward}\NormalTok{(samples[[}\StringTok{"beta"}\NormalTok{]], }\DecValTok{25}\NormalTok{,}
                                 \AttributeTok{display\_name=}\StringTok{"beta"}\NormalTok{,}
-                                \AttributeTok{baseline=}\NormalTok{true\_beta)}
+                                \AttributeTok{baseline=}\NormalTok{true\_beta,}
+                                \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal)}
 
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_expectand\_pushforward}\NormalTok{(samples[[}\StringTok{"sigma"}\NormalTok{]], }\DecValTok{25}\NormalTok{,}
                                 \AttributeTok{display\_name=}\StringTok{"sigma"}\NormalTok{,}
-                                \AttributeTok{baseline=}\NormalTok{true\_sigma)}
+                                \AttributeTok{baseline=}\NormalTok{true\_sigma,}
+                                \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -658,9 +661,11 @@ simulation studies.
 
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_realizations}\NormalTok{(samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
                        \AttributeTok{baseline\_values=}\NormalTok{true\_fs,}
+                       \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal,}
                        \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
-                                     \AttributeTok{baseline\_values=}\NormalTok{true\_fs ,}
+                                     \AttributeTok{baseline\_values=}\NormalTok{true\_fs,}
+                                     \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal,}
                                      \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -1107,11 +1112,14 @@ problems.
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
                                      \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
+                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
+                                     \AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
+                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
+                                     \AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
+                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
+                                     \AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1129,11 +1137,14 @@ problems.
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
                                        \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
+                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
+                                       \AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
+                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
+                                       \AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
+                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
+                                       \AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1234,14 +1245,15 @@ posterior inferences to the true values when analyzing simulated data.
 
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(samples, names,}
                                      \AttributeTok{baseline\_values=}\NormalTok{true\_slopes,}
+                                     \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal,}
                                      \AttributeTok{xlab=}\StringTok{"All Slopes"}\NormalTok{,}
-                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior}\SpecialCharTok{\textbackslash{}n}\StringTok{Quantiles"}\NormalTok{)}
 
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(samples, names,}
                                      \AttributeTok{baseline\_values=}\NormalTok{true\_slopes,}
                                      \AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
                                      \AttributeTok{xlab=}\StringTok{"All Slopes"}\NormalTok{,}
-                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantile Residuals"}\NormalTok{)}
+                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior}\SpecialCharTok{\textbackslash{}n}\StringTok{Quantile Residuals"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 

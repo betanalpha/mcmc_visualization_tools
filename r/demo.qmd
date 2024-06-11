@@ -347,15 +347,18 @@ par(mfrow=c(1, 3))
 
 util$plot_expectand_pushforward(samples[["alpha"]], 25,
                                 display_name="alpha",
-                                baseline=true_alpha)
+                                baseline=true_alpha,
+                                baseline_col=util$c_mid_teal)
 
 util$plot_expectand_pushforward(samples[["beta"]], 25,
                                 display_name="beta",
-                                baseline=true_beta)
+                                baseline=true_beta,
+                                baseline_col=util$c_mid_teal)
 
 util$plot_expectand_pushforward(samples[["sigma"]], 25,
                                 display_name="sigma",
-                                baseline=true_sigma)
+                                baseline=true_sigma,
+                                baseline_col=util$c_mid_teal)
 ```
 
 ```{r}
@@ -365,9 +368,11 @@ par(mfrow=c(2, 1))
 
 util$plot_realizations(samples, f_names, data$x_grid,
                        baseline_values=true_fs,
+                       baseline_col=util$c_mid_teal,
                        xlab="x", ylab="f")
 util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
-                                     baseline_values=true_fs ,
+                                     baseline_values=true_fs,
+                                     baseline_col=util$c_mid_teal,
                                      xlab="x", ylab="f")
 ```
 
@@ -580,11 +585,14 @@ util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
                                      -9, 9, 1, data$y, xlab="x3")
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
-                                     -9, 9, 1, data$y, TRUE, xlab="x1")
+                                     -9, 9, 1, data$y, residual=TRUE,
+                                     xlab="x1")
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
-                                     -9, 9, 1, data$y, TRUE, xlab="x2")
+                                     -9, 9, 1, data$y, residual=TRUE,
+                                     xlab="x2")
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
-                                     -9, 9, 1, data$y, TRUE, xlab="x3")
+                                     -9, 9, 1, data$y, residual=TRUE,
+                                     xlab="x3")
 ```
 
 ```{r}
@@ -598,11 +606,14 @@ util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
                                        -9, 9, 1, data$y, xlab="x3")
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
-                                       -9, 9, 1, data$y, TRUE, xlab="x1")
+                                       -9, 9, 1, data$y, residual=TRUE,
+                                       xlab="x1")
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
-                                       -9, 9, 1, data$y, TRUE, xlab="x2")
+                                       -9, 9, 1, data$y, residual=TRUE,
+                                       xlab="x2")
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
-                                       -9, 9, 1, data$y, TRUE, xlab="x3")
+                                       -9, 9, 1, data$y, residual=TRUE,
+                                       xlab="x3")
 ```
 
 With no indications of model inadequacy we can move onto our posterior
@@ -686,14 +697,15 @@ par(mfrow=c(2, 1))
 
 util$plot_disc_pushforward_quantiles(samples, names,
                                      baseline_values=true_slopes,
+                                     baseline_col=util$c_mid_teal,
                                      xlab="All Slopes",
-                                     ylab="Marginal Posterior Quantiles")
+                                     ylab="Marginal Posterior\nQuantiles")
 
 util$plot_disc_pushforward_quantiles(samples, names,
                                      baseline_values=true_slopes,
                                      residual=TRUE,
                                      xlab="All Slopes",
-                                     ylab="Marginal Posterior Quantile Residuals")
+                                     ylab="Marginal Posterior\nQuantile Residuals")
 ```
 
 # License {-}
