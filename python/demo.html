@@ -3191,7 +3191,7 @@ window.Quarto = {
 <section id="initial-setup" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Initial Setup</h1>
 <p>First and foremost we have to set up our local <code>python</code> environment.</p>
-<div id="36729651" class="cell" data-execution_count="1">
+<div id="968ed0e4" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plot</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>plot.rcParams[<span class="st">&#39;figure.figsize&#39;</span>] <span class="op">=</span> [<span class="dv">5</span>, <span class="fl">2.5</span>]</span>
@@ -3205,7 +3205,7 @@ window.Quarto = {
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This includes loading up <code>pystan</code>.</p>
-<div id="fa7abe67" class="cell" data-execution_count="2">
+<div id="9455320f" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Needed to run pystan through a jupyter kernel</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nest_asyncio</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>nest_asyncio.<span class="bu">apply</span>()</span>
@@ -3213,10 +3213,10 @@ window.Quarto = {
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> stan</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally we’ll load my recommended <a href="https://github.com/betanalpha/mcmc_diagnostics">Markov chain Monte Carlo analysis tools</a> and the visualization functions themselves.</p>
-<div id="ae811d95" class="cell" data-execution_count="3">
+<div id="a1c4a977" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mcmc_analysis_tools_pystan3 <span class="im">as</span> util</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="81f1aae0" class="cell" data-execution_count="4">
+<div id="a8064a15" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> mcmc_visualization_tools <span class="im">as</span> putil</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
@@ -3230,7 +3230,7 @@ p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
 <section id="data-exploration" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="data-exploration"><span class="header-section-number">2.1</span> Data Exploration</h2>
 <p>What is data if not an opportunity to explore?</p>
-<div id="1c1bd721" class="cell" data-execution_count="5">
+<div id="efd75543" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;data/uni_data.json&quot;</span>,<span class="st">&quot;r&quot;</span>) <span class="im">as</span> infile:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  data <span class="op">=</span> json.load(infile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -3239,7 +3239,7 @@ p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
 </span> and the observed outputs, <span class="math display">
 \{ \tilde{y}_{1}, \ldots, \tilde{y}_{n}, \ldots, \tilde{y}_{N} \}.
 </span></p>
-<div id="09c6d23a" class="cell" data-execution_count="6">
+<div id="5a5c35c5" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">2</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>putil.plot_line_hist(axarr[<span class="dv">0</span>], data[<span class="st">&#39;x&#39;</span>], <span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="fl">0.5</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                     xlabel<span class="op">=</span><span class="st">&quot;x&quot;</span>, title<span class="op">=</span><span class="st">&quot;Observed Inputs&quot;</span>)</span>
@@ -3256,7 +3256,7 @@ p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
 </div>
 <p>This presentation is a bit cleaner than conventional histogram plots, especially when there is no ambiguity about the binning. That said the implementation here is a bit rigid in that it only allows for uniform bin widths.</p>
 <p>A key advantage of reducing a histogram to its outline is that it is much easier to overlay multiple histograms on top of each other without compromising legibility. The <code>plot_line_hists</code> function constructs and then overlays two histograms with the same binning.</p>
-<div id="22cff59f" class="cell" data-execution_count="7">
+<div id="a001ec4a" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>putil.plot_line_hists(plot.gca(), data[<span class="st">&#39;x&#39;</span>], data[<span class="st">&#39;y&#39;</span>], <span class="op">-</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="fl">0.5</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>plot.gca().text(<span class="op">-</span><span class="fl">3.5</span>, <span class="dv">90</span>, <span class="st">&quot;Observed</span><span class="ch">\n</span><span class="st">Inputs&quot;</span>, color<span class="op">=</span><span class="st">&quot;black&quot;</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>plot.gca().text(<span class="fl">3.5</span>, <span class="dv">90</span>, <span class="st">&quot;Observed</span><span class="ch">\n</span><span class="st">Outputs&quot;</span>, color<span class="op">=</span>putil.mid_teal)</span>
@@ -3270,7 +3270,7 @@ p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
 </div>
 </div>
 <p>We can also use the <code>add</code> argument of <code>plot_line_hist</code> to overlay multiple histogram outlines onto an existing axis.</p>
-<div id="e9355c46" class="cell" data-execution_count="8">
+<div id="d5d0c7ad" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>putil.plot_line_hist(plot.gca(), data[<span class="st">&#39;x&#39;</span>], <span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="fl">0.5</span>,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                     col<span class="op">=</span><span class="st">&quot;black&quot;</span>, add<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>putil.plot_line_hist(plot.gca(), data[<span class="st">&#39;y&#39;</span>], <span class="op">-</span><span class="dv">4</span>, <span class="dv">7</span>, <span class="fl">0.5</span>,</span>
@@ -3328,7 +3328,7 @@ p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note that I’m using a less-aggressive step size adaptation here because the half-normal prior model for <span class="math inline">\sigma</span> results in an slightly awkward tail for the unconstrained <span class="math inline">\log(\sigma)</span> values that can be a bit difficult to navigate.</p>
-<div id="4a1aeea9" class="cell" data-message="false" data-execution_count="9">
+<div id="8df38cad" class="cell" data-message="false" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data[<span class="st">&#39;N_grid&#39;</span>] <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data[<span class="st">&#39;x_grid&#39;</span>] <span class="op">=</span> numpy.arange(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">12</span> <span class="op">/</span> data[<span class="st">&#39;N_grid&#39;</span>])</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3341,7 +3341,7 @@ p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
 </div>
 </div>
 <p>Of course we always consult our diagnostics first to make sure that our Markov chains, and hence any visualization we derive from them, accurately characterize the exact target distribution, in this case the prior distribution of our model.</p>
-<div id="39bcdd1a" class="cell" data-execution_count="10">
+<div id="bddecc46" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>diagnostics <span class="op">=</span> util.extract_hmc_diagnostics(fit)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>util.check_all_hmc_diagnostics(diagnostics)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3360,7 +3360,7 @@ Markov chain Monte Carlo estimation.
 </div>
 <p>We can visualize the probability distribution of baseline functions in two ways. Firstly we can plot a subset of baseline function configurations. Secondly we can plot nested quantile intervals that quantify the marginal behavior of the function output at each input. Neither of these visualizations fully characterize the probabilistic behavior but together they capture the most important features.</p>
 <p>The <code>plot_realizations</code> function plots a selection of values corresponding to the <code>f_names</code> array against <code>data$x_grid</code> while the <code>plot_conn_pushforward_quantiles</code> function plots nested quantile intervals of those values for each element of <code>data[&#39;x_grid&#39;]</code>. Here “conn” refers to “connected” as the individual marginal quantiles are connected into continuous polygons.</p>
-<div id="c2f7feb8" class="cell" data-execution_count="11">
+<div id="87203d19" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">2</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>f_names <span class="op">=</span> [ <span class="ss">f&#39;f_grid[</span><span class="sc">{</span>n <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">]&#39;</span> <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(data[<span class="st">&#39;N_grid&#39;</span>]) ]</span>
@@ -3380,7 +3380,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 <p>Finally let’s use the <code>plot_conn_pushforward_quantiles</code> function to plot nested quantile intervals of the conditional prior predictive behavior at each element of <code>data$x_grid</code>.</p>
-<div id="feaa2665" class="cell" data-execution_count="12">
+<div id="5378e3b5" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pred_names <span class="op">=</span> [ <span class="ss">f&#39;y_pred_grid[</span><span class="sc">{</span>n <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">]&#39;</span> <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(data[<span class="st">&#39;N_grid&#39;</span>]) ]</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>putil.plot_conn_pushforward_quantiles(plot.gca(), samples,</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                      pred_names, data[<span class="st">&#39;x_grid&#39;</span>],</span>
@@ -3430,7 +3430,7 @@ Markov chain Monte Carlo estimation.
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N_grid] <span class="dt">real</span> y_pred_grid = normal_rng(f_grid, sigma);</span>
 <span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="525f14c4" class="cell" data-message="false" data-execution_count="13">
+<div id="23e92669" class="cell" data-message="false" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;stan_programs/uni_full_model.stan&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  stan_program <span class="op">=</span> <span class="bu">file</span>.read()</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> stan.build(stan_program, random_seed<span class="op">=</span><span class="dv">5838299</span>, data<span class="op">=</span>data)</span>
@@ -3440,7 +3440,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 <p>There are no signs of trouble from the computational diagnostics.</p>
-<div id="ff7aa3c0" class="cell" data-execution_count="14">
+<div id="3f14660e" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>diagnostics <span class="op">=</span> util.extract_hmc_diagnostics(fit)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>util.check_all_hmc_diagnostics(diagnostics)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3461,7 +3461,7 @@ Markov chain Monte Carlo estimation.
 p(y \mid x,
          \tilde{x}_{1}, \tilde{y}_{1}, \ldots, \tilde{x}_{N}, \tilde{y}_{N}),
 </span> to the observed input-output pairs, <span class="math inline">(x_{n}, y_{n})</span>.</p>
-<div id="ec93ff16" class="cell" data-execution_count="15">
+<div id="ce2f22e7" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>pred_names <span class="op">=</span> [ <span class="ss">f&#39;y_pred_grid[</span><span class="sc">{</span>n <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">]&#39;</span> <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(data[<span class="st">&#39;N_grid&#39;</span>]) ]</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>putil.plot_conn_pushforward_quantiles(plot.gca(), samples,</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                      pred_names, data[<span class="st">&#39;x_grid&#39;</span>],</span>
@@ -3480,7 +3480,7 @@ p(y \mid x,
 </div>
 <p>Fortunately there are no signs of tension between the posterior predictive distributional behaviors and the observed behaviors. Confident in the adequacy of our model we can move onto visualizing posterior inferences.</p>
 <p>For example we can visualize the pushforward, or marginal, probability distributions for each parameter. Note that the <code>plot_expectand_pushforward</code> function is already part of my Markov chain Monte Carlo analysis tools and not one of the visualization functions being introduced here.</p>
-<div id="5f35975b" class="cell" data-execution_count="16">
+<div id="930ac87f" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">3</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>util.plot_expectand_pushforward(axarr[<span class="dv">0</span>], samples[<span class="st">&#39;alpha&#39;</span>],</span>
@@ -3502,7 +3502,7 @@ p(y \mid x,
 </div>
 </div>
 <p>Communicating the posterior behavior of the baseline function, however, is facilitated with the new visualization functions.</p>
-<div id="78ac309d" class="cell" data-execution_count="17">
+<div id="ac7ea8ab" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">2</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>f_names <span class="op">=</span> [ <span class="ss">f&#39;f_grid[</span><span class="sc">{</span>n <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">]&#39;</span> <span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(data[<span class="st">&#39;N_grid&#39;</span>]) ]</span>
@@ -3522,7 +3522,7 @@ p(y \mid x,
 </div>
 </div>
 <p>Conveniently all of these visualization functions feature optional arguments for baseline behavior which allows us to compare our posterior inferences to the true behavior when it is known, for example in simulation studies.</p>
-<div id="e70571c4" class="cell" data-execution_count="18">
+<div id="6c60acbf" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>true_alpha <span class="op">=</span> <span class="fl">1.5</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>true_beta <span class="op">=</span> <span class="op">-</span><span class="fl">0.75</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>true_sigma <span class="op">=</span> <span class="fl">0.33</span></span>
@@ -3553,7 +3553,7 @@ p(y \mid x,
 </div>
 </div>
 </div>
-<div id="cc52d45b" class="cell" data-execution_count="19">
+<div id="1aad0af4" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>true_fs <span class="op">=</span> [ true_alpha <span class="op">+</span> true_beta <span class="op">*</span> x <span class="cf">for</span> x <span class="kw">in</span> data[<span class="st">&#39;x_grid&#39;</span>] ]</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">2</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
@@ -3578,7 +3578,7 @@ p(y \mid x,
 </div>
 </div>
 <p>The <code>plot_realizations</code> and <code>plot_conn_pushforward_quantiles</code> functions also include <code>residual</code> arguments that allow us to directly visualize how the probabilistic behavior varies around the baseline values.</p>
-<div id="fad2c792" class="cell" data-execution_count="20">
+<div id="163fe286" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">2</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>putil.plot_realizations(axarr[<span class="dv">0</span>], samples,</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                        f_names, data[<span class="st">&#39;x_grid&#39;</span>],</span>
@@ -3614,7 +3614,7 @@ p(y_{n} \mid \mathbf{x}_{n}, \alpha, \beta, \sigma)
 <section id="plot-data" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="plot-data"><span class="header-section-number">3.1</span> Plot Data</h2>
 <p>The <code>plot_line_hist</code> allows us to cleanly visualize each component of the observed inputs.</p>
-<div id="b097cab8" class="cell" data-execution_count="21">
+<div id="348703a6" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;data/multi_data.json&quot;</span>,<span class="st">&quot;r&quot;</span>) <span class="im">as</span> infile:</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  data <span class="op">=</span> json.load(infile)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>data[<span class="st">&#39;X&#39;</span>] <span class="op">=</span> numpy.asarray(data[<span class="st">&#39;X&#39;</span>])</span>
@@ -3765,7 +3765,7 @@ p(y_{n} \mid \mathbf{x}_{n}, \alpha, \beta, \sigma)
 <span id="cb28-72"><a href="#cb28-72" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb28-73"><a href="#cb28-73" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="f2264734" class="cell" data-message="false" data-execution_count="22">
+<div id="f801a427" class="cell" data-message="false" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;stan_programs/multi_prior_model.stan&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  stan_program <span class="op">=</span> <span class="bu">file</span>.read()</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> stan.build(stan_program, random_seed<span class="op">=</span><span class="dv">5838299</span>, data<span class="op">=</span>data)</span>
@@ -3775,7 +3775,7 @@ p(y_{n} \mid \mathbf{x}_{n}, \alpha, \beta, \sigma)
 </div>
 </div>
 <p>Higher-dimensional probability distributions are no trouble for Hamiltonian Monte Carlo.</p>
-<div id="1e23a00c" class="cell" data-execution_count="23">
+<div id="7a1fe911" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>diagnostics <span class="op">=</span> util.extract_hmc_diagnostics(fit)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>util.check_all_hmc_diagnostics(diagnostics)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3797,7 +3797,7 @@ Markov chain Monte Carlo estimation.
 </div>
 <p>With a multi-dimensional input space we can no longer visualize the baseline functional behavior nor the conditional prior predictive behavior directly. We can, however, visualize many of its features.</p>
 <p>For example we might consider the marginal behavior of the predicted outputs, regardless of the corresponding observed inputs. Here we’ll summarize this marginal behavior with a histogram, and use the <code>plot_hist_quantiles</code> function to visualize the prior predictive distribution of the histogram counts.</p>
-<div id="d9b4a9ed" class="cell" data-execution_count="24">
+<div id="c796a3b3" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>putil.plot_hist_quantiles(plot.gca(), samples, <span class="st">&#39;y_pred&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -3809,7 +3809,7 @@ Markov chain Monte Carlo estimation.
 </div>
 <p>To capture the interactions between the predictive outputs and the observed input components we’ll need a more sophisticated summary statistic. Here we’ll use the empirical mean and medians of the predictive outputs within bins of each input component. For a detailed discussion of how this summary statistic is constructed see Section 2.5 of my <a href="https://betanalpha.github.io/assets/case_studies/taylor_models.html#25_Posterior_Retrodictive_Checks">Taylor regression modeling chapter</a>.</p>
 <p>Conveniently the <code>plot_conditional_mean_quantiles</code> and <code>plot_conditional_median_quantiles</code> functions visualize the prior predictive behavior of these summary statistics.</p>
-<div id="2a0e5baa" class="cell" data-execution_count="25">
+<div id="78758dca" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">3</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>f.suptitle(<span class="st">&quot;Marginal Quantiles of Conditional Means&quot;</span>)</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3832,7 +3832,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 </div>
-<div id="bd130bee" class="cell" data-execution_count="26">
+<div id="7b53c2f6" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">3</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>f.suptitle(<span class="st">&quot;Marginal Quantiles of Conditional Medians&quot;</span>)</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3939,7 +3939,7 @@ Markov chain Monte Carlo estimation.
 <span id="cb36-77"><a href="#cb36-77" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb36-78"><a href="#cb36-78" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="57c6e09e" class="cell" data-message="false" data-execution_count="27">
+<div id="ac45931a" class="cell" data-message="false" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;stan_programs/multi_full_model.stan&#39;</span>, <span class="st">&#39;r&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  stan_program <span class="op">=</span> <span class="bu">file</span>.read()</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> stan.build(stan_program, random_seed<span class="op">=</span><span class="dv">5838299</span>, data<span class="op">=</span>data)</span>
@@ -3949,7 +3949,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 <p>Fortunately our computational fortune has persisted.</p>
-<div id="83ae6a65" class="cell" data-execution_count="28">
+<div id="3859ee53" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>diagnostics <span class="op">=</span> util.extract_hmc_diagnostics(fit)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>util.check_all_hmc_diagnostics(diagnostics)</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3970,7 +3970,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 <p>The summary statistics that we used above to implement our prior predictive checks are equally useful for implementing informative posterior retrodictive checks. Conveniently the visualization functions all feature <code>baseline_values</code> functions that we can use to visualize the observed behavior along with the posterior predictive behavior.</p>
-<div id="80b5e194" class="cell" data-execution_count="29">
+<div id="7e9108f1" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>putil.plot_hist_quantiles(plot.gca(), samples, <span class="st">&#39;y_pred&#39;</span>,</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>                          baseline_values<span class="op">=</span>data[<span class="st">&#39;y&#39;</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -3982,7 +3982,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 <p>Additionally the <code>plot_conditional_mean_quantiles</code> and <code>plot_conditional_median_quantiles</code> functions feature a <code>residual</code> option that plots the posterior predictive behaviors relative to the baseline values. Any deviations from zero in these plots suggests retrodictive tension; here, however, there don’t seem to be any problems.</p>
-<div id="3be35db4" class="cell" data-execution_count="30">
+<div id="726c9eda" class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">3</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>f.suptitle(<span class="st">&quot;Marginal Quantiles of Conditional Means&quot;</span>)</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -4029,7 +4029,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 </div>
-<div id="f4fc291a" class="cell" data-execution_count="31">
+<div id="26936942" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">3</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>f.suptitle(<span class="st">&quot;Marginal Quantiles of Conditional Medians&quot;</span>)</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -4077,7 +4077,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 <p>With no indications of model inadequacy we can move onto our posterior inferences. As before we can visualize the pushforward posterior distributions for each individual, one-dimensional parameter.</p>
-<div id="5610ffb1" class="cell" data-execution_count="32">
+<div id="1e3a16be" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">4</span>, <span class="dv">3</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>util.plot_expectand_pushforward(axarr[<span class="dv">0</span>, <span class="dv">0</span>], samples[<span class="st">&#39;beta0&#39;</span>],</span>
@@ -4113,7 +4113,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 <p>The <code>plot_disc_pushforward_quantiles</code> function plots disconnected, marginal nested quantile intervals for a collection of one-dimensional variables. This allows for a more compact visualization of the marginal posterior distributions.</p>
-<div id="e5619640" class="cell" data-execution_count="33">
+<div id="0f908f4f" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>f, axarr <span class="op">=</span> plot.subplots(<span class="dv">1</span>, <span class="dv">3</span>, layout<span class="op">=</span><span class="st">&quot;constrained&quot;</span>)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [ <span class="ss">f&#39;beta1[</span><span class="sc">{</span>m <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">]&#39;</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">range</span>(data[<span class="st">&#39;M&#39;</span>]) ]</span>
@@ -4140,7 +4140,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 </div>
-<div id="aa9059c0" class="cell" data-execution_count="34">
+<div id="9c5dd11a" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [ <span class="ss">f&#39;beta1[</span><span class="sc">{</span>m <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">]&#39;</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">range</span>(data[<span class="st">&#39;M&#39;</span>]) ] <span class="op">+</span> <span class="op">\</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>        [ <span class="ss">f&#39;beta2_d[</span><span class="sc">{</span>m <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">]&#39;</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">range</span>(data[<span class="st">&#39;M&#39;</span>]) ] <span class="op">+</span> <span class="op">\</span></span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>        [ <span class="ss">f&#39;beta2_o[</span><span class="sc">{</span>m <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss">]&#39;</span> <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">range</span>(data[<span class="st">&#39;M&#39;</span>]) ]</span>
@@ -4157,7 +4157,7 @@ Markov chain Monte Carlo estimation.
 </div>
 </div>
 <p>This function also includes an optional <code>baseline_values</code> argument and <code>residual</code> configuration which we can use to compare the probabilistic to the point values, for example our marginal posterior inferences to the true values when analyzing simulated data.</p>
-<div id="b481e1e0" class="cell" data-execution_count="35">
+<div id="918fd42b" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>true_slopes <span class="op">=</span> [<span class="op">-</span><span class="fl">6.00</span>, <span class="op">-</span><span class="fl">1.50</span>, <span class="fl">13.00</span>,  <span class="fl">0.50</span>, <span class="fl">0.25</span>,</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>               <span class="fl">1.00</span>, <span class="op">-</span><span class="fl">0.50</span>, <span class="op">-</span><span class="fl">2.00</span>, <span class="op">-</span><span class="fl">1.00</span>]</span>
 <span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -4193,11 +4193,11 @@ Markov chain Monte Carlo estimation.
 </section>
 <section id="original-computing-environment" class="level1 unnumbered">
 <h1 class="unnumbered">Original Computing Environment</h1>
-<div id="b3a8f49d" class="cell" data-execution_count="36">
+<div id="870eb8c3" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> watermark <span class="im">import</span> watermark</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(watermark())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Last updated: 2024-06-11T15:57:49.564013-04:00
+<pre><code>Last updated: 2024-07-16T18:10:13.088043-04:00
 
 Python implementation: CPython
 Python version       : 3.9.6
@@ -4213,7 +4213,7 @@ Architecture: 64bit
 </code></pre>
 </div>
 </div>
-<div id="b254947a" class="cell" data-execution_count="37">
+<div id="e0b852da" class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(watermark(packages<span class="op">=</span><span class="st">&quot;matplotlib, numpy, json, stan&quot;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>matplotlib: 3.8.0
