@@ -132,8 +132,8 @@ configure_bins <- function(bin_min, bin_max, bin_delta,
   N <- (bin_max - bin_min) / bin_delta
   excess <- N - floor(N)
   if (excess > 1e-15) {
-    bin_min <- bin_min - 0.5 * excess
-    bin_max <- bin_max + 0.5 * excess
+    bin_min <- bin_min - 0.5 * bin_delta * excess
+    bin_max <- bin_max + 0.5 * bin_delta * excess
   }
 
   c(bin_min, bin_max, bin_delta)
