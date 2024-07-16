@@ -188,7 +188,7 @@ def plot_line_hist(ax, values,
   ylabel = "Counts"
   if prob:
     ylabel = "Empirical Bin Probability / Bin Width"
-    norm = delta * sum(counts)
+    norm = bin_delta * sum(counts)
     counts = [ c / norm for c in counts ]
 
   # Plot

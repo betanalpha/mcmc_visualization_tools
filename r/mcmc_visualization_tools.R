@@ -197,7 +197,7 @@ plot_line_hist <- function(values,
   ylab <- "Counts"
   if (prob) {
     ylab <- "Empirical Bin Probability / Bin Width"
-    counts <- counts / (delta * sum(counts))
+    counts <- counts / (bin_delta * sum(counts))
   }
 
   if (add) {
