@@ -475,8 +475,8 @@ plot_disc_pushforward_quantiles <- function(samples, names,
     }
     else {
       if (residual) {
-        display_ylim <- c(min(quantiles[1,]),
-                          max(quantiles[9,]))
+        display_ylim <- c(min(c(0, quantiles[1,])),
+                          max(c(0, quantiles[9,])))
       } else {
         display_ylim <- c(min(min(quantiles[1,]),
                               min(baseline_values)),
@@ -624,8 +624,8 @@ plot_conn_pushforward_quantiles <- function(samples, names, plot_xs,
     }
     else {
       if (residual) {
-        display_ylim <- c(min(plot_quantiles[1,]),
-                          max(plot_quantiles[9,]))
+        display_ylim <- c(min(c(0, plot_quantiles[1,])),
+                          max(c(0, plot_quantiles[9,])))
       } else {
         display_ylim <- c(min(min(plot_quantiles[1,]),
                               min(baseline_values)),
@@ -743,7 +743,7 @@ plot_realizations <- function(samples, names, plot_xs, N_plots=50,
     }
     else {
       if (residual) {
-        display_ylim <- range(fs)
+        display_ylim <- range(c(0, fs))
       } else {
         display_ylim <- c(min(min(fs), min(baseline_values)),
                           max(max(fs), max(baseline_values)))
@@ -882,8 +882,8 @@ plot_conditional_mean_quantiles <- function(samples, names, obs_xs,
     }
     else {
       if (residual) {
-        display_ylim <- c(min(mean_quantiles[1,], na.rm=TRUE),
-                          max(mean_quantiles[9,], na.rm=TRUE))
+        display_ylim <- c(min(c(0, mean_quantiles[1,]), na.rm=TRUE),
+                          max(c(0, mean_quantiles[9,]), na.rm=TRUE))
       } else {
         display_ylim <- c(min(min(mean_quantiles[1,], na.rm=TRUE),
                               min(obs_means, na.rm=TRUE)),
@@ -1054,8 +1054,8 @@ plot_conditional_median_quantiles <- function(samples, names, obs_xs,
     }
     else {
       if (residual) {
-        display_ylim <- c(min(median_quantiles[1,], na.rm=TRUE),
-                          max(median_quantiles[9,], na.rm=TRUE))
+        display_ylim <- c(min(c(0, median_quantiles[1,]), na.rm=TRUE),
+                          max(c(0, median_quantiles[9,]), na.rm=TRUE))
       } else {
         display_ylim <- c(min(min(median_quantiles[1,], na.rm=TRUE),
                               min(obs_medians, na.rm=TRUE)),

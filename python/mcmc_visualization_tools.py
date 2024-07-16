@@ -443,15 +443,14 @@ def plot_disc_pushforward_quantiles(ax, samples, names,
   plot_quantiles = [ quantiles[idx] for idx in plot_idxs ]
 
   # Plot
-  # Plot
   if display_ylim is None:
     if baseline_values is None:
       display_ylim = [ min([ q[0] for q in quantiles ]),
                        max([ q[8] for q in quantiles ]) ]
     else:
       if residual:
-        display_ylim = [ min([ q[0] for q in quantiles ]),
-                         max([ q[8] for q in quantiles ]) ]
+        display_ylim = [ min([0] + [ q[0] for q in quantiles ]),
+                         max([0] + [ q[8] for q in quantiles ]) ]
       else:
         display_ylim = [ min(min([ q[0] for q in quantiles ]),
                              min(baseline_values)),
@@ -592,8 +591,8 @@ def plot_conn_pushforward_quantiles(ax, samples, names, plot_xs,
                        max([ q[8] for q in plot_quantiles ]) ]
     else:
       if residual:
-        display_ylim = [ min([ q[0] for q in plot_quantiles ]),
-                         max([ q[8] for q in plot_quantiles ]) ]
+        display_ylim = [ min([0] + [ q[0] for q in plot_quantiles ]),
+                         max([0] + [ q[8] for q in plot_quantiles ]) ]
       else:
         display_ylim = [ min(min([ q[0] for q in plot_quantiles ]),
                              min(baseline_values)),
@@ -709,8 +708,8 @@ def plot_realizations(ax, samples, names, plot_xs, N_plots=50,
                        max([ max(f) for f in fs ]) ]
     else:
       if residual:
-        display_ylim = [ min([ min(f) for f in fs ]),
-                         max([ max(f) for f in fs ]) ]
+        display_ylim = [ min([0] + [ min(f) for f in fs ]),
+                         max([0] + [ max(f) for f in fs ]) ]
       else:
         display_ylim = [ min(min([ min(f) for f in fs ]),
                              min(baseline_values)),
@@ -842,8 +841,8 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
                        numpy.nanmax([ q[8] for q in mean_quantiles ]) ]
     else:
       if residual:
-        display_ylim = [ numpy.nanmin([ q[0] for q in mean_quantiles ]),
-                         numpy.nanmax([ q[8] for q in mean_quantiles ]) ]
+        display_ylim = [ numpy.nanmin([0] + [ q[0] for q in mean_quantiles ]),
+                         numpy.nanmax([0] + [ q[8] for q in mean_quantiles ]) ]
       else:
         display_ylim = [ min(numpy.nanmin([ q[0] for q in mean_quantiles ]),
                              numpy.nanmin(obs_means)),
@@ -1019,8 +1018,8 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
                        numpy.nanmax([ q[8] for q in median_quantiles ]) ]
     else:
       if residual:
-        display_ylim = [ numpy.nanmin([ q[0] for q in median_quantiles ]),
-                         numpy.nanmax([ q[8] for q in median_quantiles ]) ]
+        display_ylim = [ numpy.nanmin([0] + [ q[0] for q in median_quantiles ]),
+                         numpy.nanmax([0] + [ q[8] for q in median_quantiles ]) ]
       else:
         display_ylim = [ min(numpy.nanmin([ q[0] for q in median_quantiles ]),
                              numpy.nanmin(obs_medians)),
