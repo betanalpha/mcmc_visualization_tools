@@ -2027,7 +2027,9 @@ eval_uni_expectand_pushforward <- function(input_vals, expectand) {
 }
 
 # Evaluate an expectand on the values of an arbitrary number of input
-# variables.
+# variables.  An ellipses argument in the expectand function is
+# supported by passing a alt_arg_names instance with a '...' element
+# containing a list of variable names.
 # @param expectand_vals_list A named list of two-dimensional arrays for
 #                            each expectand.  The first dimension of
 #                            each element indexes the Markov chains and
@@ -2052,6 +2054,11 @@ eval_expectand_pushforward <- function(expectand_vals_list,
   nominal_arg_names <- formalArgs(expectand)
 
   if (is.null(alt_arg_names)) {
+    if ('...' %in% nominal_arg_names) {
+      stop(paste0('An expectand `...` argument requires an ',
+                  'explicit alt_arg_names argument with a ',
+                  '`...` replacement.'))
+    }
     arg_names <- nominal_arg_names
   } else {
     # Validate alternate argument names
@@ -2074,20 +2081,36 @@ eval_expectand_pushforward <- function(expectand_vals_list,
                   '`alt_arg_names`.'))
     }
 
-    arg_names <- sapply(nominal_arg_names,
-                        function(name) alt_arg_names[[name]],
-                        USE.NAMES=FALSE)
+    if ('...' %in% nominal_arg_names) {
+      # Validate ellipses replacement
+      if ( !is.vector(alt_arg_names[['...']])   |
+           !is.character(alt_arg_names[['...']])  ) {
+        stop(paste0('`...` replacement must be a character array.'))
+      }
+
+      # Replace non-ellipses arguments
+      names <- nominal_arg_names[nominal_arg_names != '...']
+      arg_names <- sapply(names, function(name) alt_arg_names[[name]],
+                          USE.NAMES=FALSE)
+
+      # Replace ellipses argument
+      arg_names <- c(arg_names, alt_arg_names[['...']])
+    } else {
+      arg_names <- sapply(nominal_arg_names,
+                          function(name) alt_arg_names[[name]],
+                          USE.NAMES=FALSE)
+    }
   }
 
   missing_args <- setdiff(arg_names, names(expectand_vals_list))
   if (length(missing_args) == 1) {
     stop(paste0('The expectand argument ',
                 paste(missing_args, collapse=", "),
-                ' is not in `expectand_samples`.'))
+                ' is not in `expectand_vals_list`.'))
   } else if (length(missing_args)) {
     stop(paste0('The expectand arguments ',
                 paste(missing_args, collapse=", "),
-                ' are not in `expectand_samples`.'))
+                ' are not in `expectand_vals_list`.'))
   }
 
   # Apply expectand to all inputs
