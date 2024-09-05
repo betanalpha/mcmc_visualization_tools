@@ -412,7 +412,7 @@ Markov chain Monte Carlo.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{extract\_expectands}\NormalTok{(fit)}
+\NormalTok{samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{extract\_expectand\_vals}\NormalTok{(fit)}
 \NormalTok{base\_samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{filter\_expectands}\NormalTok{(samples,}
                                        \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}alpha\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{))}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{check\_all\_expectand\_diagnostics}\NormalTok{(base\_samples)}
@@ -539,7 +539,7 @@ Markov chain Monte Carlo.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{extract\_expectands}\NormalTok{(fit)}
+\NormalTok{samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{extract\_expectand\_vals}\NormalTok{(fit)}
 \NormalTok{base\_samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{filter\_expectands}\NormalTok{(samples,}
                                        \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}alpha\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{))}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{check\_all\_expectand\_diagnostics}\NormalTok{(base\_samples)}
@@ -864,7 +864,7 @@ Markov chain Monte Carlo.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{extract\_expectands}\NormalTok{(fit)}
+\NormalTok{samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{extract\_expectand\_vals}\NormalTok{(fit)}
 \NormalTok{base\_samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{filter\_expectands}\NormalTok{(samples,}
                                        \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}beta0\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta1\textquotesingle{}}\NormalTok{,}
                                          \StringTok{\textquotesingle{}beta2\_d\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta2\_o\textquotesingle{}}\NormalTok{,}
@@ -1061,7 +1061,7 @@ Markov chain Monte Carlo.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{extract\_expectands}\NormalTok{(fit)}
+\NormalTok{samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{extract\_expectand\_vals}\NormalTok{(fit)}
 \NormalTok{base\_samples }\OtherTok{\textless{}{-}}\NormalTok{ util}\SpecialCharTok{$}\FunctionTok{filter\_expectands}\NormalTok{(samples,}
                                        \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}beta0\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta1\textquotesingle{}}\NormalTok{,}
                                          \StringTok{\textquotesingle{}beta2\_d\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta2\_o\textquotesingle{}}\NormalTok{,}

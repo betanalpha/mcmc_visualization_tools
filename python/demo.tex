@@ -417,7 +417,7 @@ prior distribution of our model.
 \NormalTok{diagnostics }\OperatorTok{=}\NormalTok{ util.extract\_hmc\_diagnostics(fit)}
 \NormalTok{util.check\_all\_hmc\_diagnostics(diagnostics)}
 
-\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectands(fit)}
+\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectand\_vals(fit)}
 \NormalTok{base\_samples }\OperatorTok{=}\NormalTok{ util.filter\_expectands(samples,}
 \NormalTok{                                      [}\StringTok{\textquotesingle{}alpha\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{])}
 \NormalTok{util.check\_all\_expectand\_diagnostics(base\_samples)}
@@ -546,7 +546,7 @@ There are no signs of trouble from the computational diagnostics.
 \NormalTok{diagnostics }\OperatorTok{=}\NormalTok{ util.extract\_hmc\_diagnostics(fit)}
 \NormalTok{util.check\_all\_hmc\_diagnostics(diagnostics)}
 
-\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectands(fit)}
+\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectand\_vals(fit)}
 \NormalTok{base\_samples }\OperatorTok{=}\NormalTok{ util.filter\_expectands(samples,}
 \NormalTok{                                      [}\StringTok{\textquotesingle{}alpha\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}sigma\textquotesingle{}}\NormalTok{])}
 \NormalTok{util.check\_all\_expectand\_diagnostics(base\_samples)}
@@ -912,7 +912,7 @@ Hamiltonian Monte Carlo.
 \NormalTok{diagnostics }\OperatorTok{=}\NormalTok{ util.extract\_hmc\_diagnostics(fit)}
 \NormalTok{util.check\_all\_hmc\_diagnostics(diagnostics)}
 
-\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectands(fit)}
+\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectand\_vals(fit)}
 \NormalTok{base\_samples }\OperatorTok{=}\NormalTok{ util.filter\_expectands(samples,}
 \NormalTok{                                      [}\StringTok{\textquotesingle{}beta0\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta1\textquotesingle{}}\NormalTok{,}
                                        \StringTok{\textquotesingle{}beta2\_d\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta2\_o\textquotesingle{}}\NormalTok{,}
@@ -1115,7 +1115,7 @@ Fortunately our computational fortune has persisted.
 \NormalTok{diagnostics }\OperatorTok{=}\NormalTok{ util.extract\_hmc\_diagnostics(fit)}
 \NormalTok{util.check\_all\_hmc\_diagnostics(diagnostics)}
 
-\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectands(fit)}
+\NormalTok{samples }\OperatorTok{=}\NormalTok{ util.extract\_expectand\_vals(fit)}
 \NormalTok{base\_samples }\OperatorTok{=}\NormalTok{ util.filter\_expectands(samples,}
 \NormalTok{                                      [}\StringTok{\textquotesingle{}beta0\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta1\textquotesingle{}}\NormalTok{,}
                                        \StringTok{\textquotesingle{}beta2\_d\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}beta2\_o\textquotesingle{}}\NormalTok{,}
@@ -1371,7 +1371,7 @@ Environment}\label{original-computing-environment}
 \end{Shaded}
 
 \begin{verbatim}
-Last updated: 2024-07-16T18:10:54.253437-04:00
+Last updated: 2024-09-04T22:17:36.222177-04:00
 
 Python implementation: CPython
 Python version       : 3.9.6

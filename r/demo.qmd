@@ -202,7 +202,7 @@ the exact target distribution, in this case the prior distribution of our model.
 diagnostics <- util$extract_hmc_diagnostics(fit)
 util$check_all_hmc_diagnostics(diagnostics)
 
-samples <- util$extract_expectands(fit)
+samples <- util$extract_expectand_vals(fit)
 base_samples <- util$filter_expectands(samples,
                                        c('alpha', 'beta', 'sigma'))
 util$check_all_expectand_diagnostics(base_samples)
@@ -269,7 +269,7 @@ There are no signs of trouble from the computational diagnostics.
 diagnostics <- util$extract_hmc_diagnostics(fit)
 util$check_all_hmc_diagnostics(diagnostics)
 
-samples <- util$extract_expectands(fit)
+samples <- util$extract_expectand_vals(fit)
 base_samples <- util$filter_expectands(samples,
                                        c('alpha', 'beta', 'sigma'))
 util$check_all_expectand_diagnostics(base_samples)
@@ -467,7 +467,7 @@ Monte Carlo.
 diagnostics <- util$extract_hmc_diagnostics(fit)
 util$check_all_hmc_diagnostics(diagnostics)
 
-samples <- util$extract_expectands(fit)
+samples <- util$extract_expectand_vals(fit)
 base_samples <- util$filter_expectands(samples,
                                        c('beta0', 'beta1',
                                          'beta2_d', 'beta2_o',
@@ -547,7 +547,7 @@ Fortunately our computational fortune has persisted.
 diagnostics <- util$extract_hmc_diagnostics(fit)
 util$check_all_hmc_diagnostics(diagnostics)
 
-samples <- util$extract_expectands(fit)
+samples <- util$extract_expectand_vals(fit)
 base_samples <- util$filter_expectands(samples,
                                        c('beta0', 'beta1',
                                          'beta2_d', 'beta2_o',

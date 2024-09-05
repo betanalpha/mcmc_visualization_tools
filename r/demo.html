@@ -3338,7 +3338,7 @@ p(y_{n} \mid x_{n}, \alpha, \beta, \sigma)
 <pre><code>  All Hamiltonian Monte Carlo diagnostics are consistent with reliable
 Markov chain Monte Carlo.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">extract_expectands</span>(fit)</span>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">extract_expectand_vals</span>(fit)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>base_samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">filter_expectands</span>(samples,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">c</span>(<span class="st">&#39;alpha&#39;</span>, <span class="st">&#39;beta&#39;</span>, <span class="st">&#39;sigma&#39;</span>))</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>util<span class="sc">$</span><span class="fu">check_all_expectand_diagnostics</span>(base_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3431,7 +3431,7 @@ Markov chain Monte Carlo estimation.</code></pre>
 <pre><code>  All Hamiltonian Monte Carlo diagnostics are consistent with reliable
 Markov chain Monte Carlo.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">extract_expectands</span>(fit)</span>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">extract_expectand_vals</span>(fit)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>base_samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">filter_expectands</span>(samples,</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">c</span>(<span class="st">&#39;alpha&#39;</span>, <span class="st">&#39;beta&#39;</span>, <span class="st">&#39;sigma&#39;</span>))</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>util<span class="sc">$</span><span class="fu">check_all_expectand_diagnostics</span>(base_samples)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3715,7 +3715,7 @@ p(y_{n} \mid \mathbf{x}_{n}, \alpha, \beta, \sigma)
 <pre><code>  All Hamiltonian Monte Carlo diagnostics are consistent with reliable
 Markov chain Monte Carlo.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">extract_expectands</span>(fit)</span>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">extract_expectand_vals</span>(fit)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>base_samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">filter_expectands</span>(samples,</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">c</span>(<span class="st">&#39;beta0&#39;</span>, <span class="st">&#39;beta1&#39;</span>,</span>
 <span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">&#39;beta2_d&#39;</span>, <span class="st">&#39;beta2_o&#39;</span>,</span>
@@ -3879,7 +3879,7 @@ Markov chain Monte Carlo estimation.</code></pre>
 <pre><code>  All Hamiltonian Monte Carlo diagnostics are consistent with reliable
 Markov chain Monte Carlo.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">extract_expectands</span>(fit)</span>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">extract_expectand_vals</span>(fit)</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>base_samples <span class="ot">&lt;-</span> util<span class="sc">$</span><span class="fu">filter_expectands</span>(samples,</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="fu">c</span>(<span class="st">&#39;beta0&#39;</span>, <span class="st">&#39;beta1&#39;</span>,</span>
 <span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">&#39;beta2_d&#39;</span>, <span class="st">&#39;beta2_o&#39;</span>,</span>
