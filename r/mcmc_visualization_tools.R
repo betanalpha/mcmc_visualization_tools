@@ -11,14 +11,6 @@
 #
 ################################################################################
 
-if( !exists("eval_expectand_pushforward", mode="function") |
-    !exists("ensemble_mcmc_quantile_est", mode="function")   ) {
-  stop(print0('mcmc_visualization_tools.R requires that ',
-              'mcmc_analysis_tools_rstan.R from ',
-              'https://github.com/betanalpha/mcmc_diagnostics ',
-              'has been sourced in the local environment.'))
-}
-
 # Load required libraries
 library(colormap)
 
@@ -34,7 +26,17 @@ c_light_teal <- c("#6B8E8E")
 c_mid_teal <- c("#487575")
 c_dark_teal <- c("#1D4F4F")
 
-
+util <- new.env()
+if (file.exists('mcmc_analysis_tools_rstan.R')) {
+  source('mcmc_analysis_tools_rstan.R', local=util)
+} else if (file.exists('mcmc_analysis_tools_other.R')) {
+  source('mcmc_analysis_tools_other.R', local=util)
+} else {
+  stop(print0('mcmc_visualization_tools.R requires that ',
+              'mcmc_analysis_tools_[rstan/other].R from ',
+              'https://github.com/betanalpha/mcmc_diagnostics ',
+              'is available.'))
+}
 
 ################################################################################
 # Utility Functions
@@ -357,10 +359,10 @@ plot_hist_quantiles <- function(samples, val_name_prefix,
     if (!is.null(baseline_values))
       counts[b] <- bin_count(baseline_values)
 
-    bcs <- eval_expectand_pushforward(samples,
-                                      bin_count,
-                                      list('x'=array(names)))
-    quantiles[, b] <- ensemble_mcmc_quantile_est(bcs, probs)
+    bcs <- util$eval_expectand_pushforward(samples,
+                                           bin_count,
+                                           list('x'=array(names)))
+    quantiles[, b] <- util$ensemble_mcmc_quantile_est(bcs, probs)
   }
 
   plot_quantiles <- do.call(cbind, lapply(plot_idxs,
@@ -462,14 +464,14 @@ plot_disc_pushforward_quantiles <- function(samples, names,
 
   if(!is.null(baseline_values) & residual) {
     calc <- function(n) {
-      ensemble_mcmc_quantile_est(samples[[names[n]]] -
+      util$ensemble_mcmc_quantile_est(samples[[names[n]]] -
                                       baseline_values[n],
                                       probs)
     }
     quantiles <- sapply(1:N, calc)
   } else {
     calc <- function(n) {
-      ensemble_mcmc_quantile_est(samples[[names[n]]], probs)
+      util$ensemble_mcmc_quantile_est(samples[[names[n]]], probs)
     }
     quantiles <- sapply(1:N, calc)
   }
@@ -609,14 +611,14 @@ plot_conn_pushforward_quantiles <- function(samples, names, plot_xs,
 
   if(!is.null(baseline_values) & residual) {
     calc <- function(n) {
-      ensemble_mcmc_quantile_est(samples[[names[n]]] -
+      util$ensemble_mcmc_quantile_est(samples[[names[n]]] -
                                       baseline_values[n],
                                       probs)
     }
     plot_quantiles <- sapply(1:N, calc)
   } else {
     calc <- function(n) {
-      ensemble_mcmc_quantile_est(samples[[names[n]]], probs)
+      util$ensemble_mcmc_quantile_est(samples[[names[n]]], probs)
     }
     plot_quantiles <- sapply(1:N, calc)
   }
@@ -874,16 +876,16 @@ plot_conditional_mean_quantiles <- function(samples, names, obs_xs,
         cond_mean_residual <- function(x) {
           mean(x[bin_idx]) - bin_baseline
         }
-        cms <- eval_expectand_pushforward(samples,
-                                          cond_mean_residual,
-                                          list('x'=array(names)))
+        cms <- util$eval_expectand_pushforward(samples,
+                                               cond_mean_residual,
+                                               list('x'=array(names)))
       } else {
-        cms <- eval_expectand_pushforward(samples,
-                                          cond_mean,
-                                          list('x'=array(names)))
+        cms <- util$eval_expectand_pushforward(samples,
+                                               cond_mean,
+                                               list('x'=array(names)))
       }
 
-      mean_quantiles[, b] <- ensemble_mcmc_quantile_est(cms, probs)
+      mean_quantiles[, b] <- util$ensemble_mcmc_quantile_est(cms, probs)
     }
   }
 
@@ -1054,16 +1056,16 @@ plot_conditional_median_quantiles <- function(samples, names, obs_xs,
         cond_median_residual <- function(x) {
           median(x[bin_idx]) - bin_baseline
         }
-        cms <- eval_expectand_pushforward(samples,
-                                          cond_median_residual,
-                                          list('x'=array(names)))
+        cms <- util$eval_expectand_pushforward(samples,
+                                               cond_median_residual,
+                                               list('x'=array(names)))
       } else {
-        cms <- eval_expectand_pushforward(samples,
-                                          cond_median,
-                                          list('x'=array(names)))
+        cms <- util$eval_expectand_pushforward(samples,
+                                               cond_median,
+                                               list('x'=array(names)))
       }
 
-      median_quantiles[, b] <- ensemble_mcmc_quantile_est(cms, probs)
+      median_quantiles[, b] <- util$ensemble_mcmc_quantile_est(cms, probs)
     }
   }
 

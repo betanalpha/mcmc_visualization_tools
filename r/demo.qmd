@@ -88,7 +88,6 @@ util <- new.env()
 source('mcmc_analysis_tools_rstan.R', local=util)
 ```
 
-
 ```{r}
 source('mcmc_visualization_tools.R', local=util)
 ```
@@ -225,7 +224,8 @@ polygons.
 ```{r}
 par(mfrow=c(2, 1))
 
-f_names <- util$name_array('f_grid', c(data$N_grid))
+f_names <- sapply(1:data$N_grid,
+                  function(n) paste0('f_grid[', n, ']'))
 util$plot_realizations(samples, f_names, data$x_grid,
                        xlab="x", ylab="f")
 util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
@@ -239,7 +239,8 @@ of `data$x_grid`.
 ```{r}
 par(mfrow=c(1, 1))
 
-pred_names <- util$name_array('y_pred_grid', c(data$N_grid))
+pred_names <- sapply(1:data$N_grid,
+                     function(n) paste0('y_pred_grid[', n, ']'))
 util$plot_conn_pushforward_quantiles(samples, pred_names, data$x_grid,
                                      xlab="x", ylab="y")
 ```
@@ -287,7 +288,8 @@ to the observed input-output pairs, $(x_{n}, y_{n})$.
 ```{r}
 par(mfrow=c(1, 1))
 
-pred_names <- util$name_array('y_pred_grid', c(data$N_grid))
+pred_names <- sapply(1:data$N_grid,
+                     function(n) paste0('y_pred_grid[', n, ']'))
 util$plot_conn_pushforward_quantiles(samples, pred_names, data$x_grid,
                                      xlab="x", ylab="y")
 points(data$x, data$y, pch=16, cex=1.0, col="white")
@@ -323,7 +325,8 @@ facilitated with the new visualization functions.
 ```{r}
 par(mfrow=c(2, 1))
 
-f_names <- util$name_array('f_grid', c(data$N_grid))
+f_names <- sapply(1:data$N_grid,
+                  function(n) paste0('f_grid[', n, ']'))
 util$plot_realizations(samples, f_names, data$x_grid,
                        xlab="x", ylab="f")
 util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
@@ -501,7 +504,7 @@ behavior of these summary statistics.
 ```{r}
 par(mfrow=c(1, 3))
 
-pred_names <- util$name_array('y_pred', c(data$N))
+pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
                                      -9, 9, 1, xlab="x1")
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
@@ -513,6 +516,7 @@ util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
 ```{r}
 par(mfrow=c(1, 3))
 
+pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
                                        -9, 9, 1, xlab="x1")
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
@@ -572,14 +576,13 @@ however, there don't seem to be any problems.
 ```{r}
 par(mfrow=c(2, 3))
 
-pred_names <- util$name_array('y_pred', c(data$N))
+pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
                                      -9, 9, 1, data$y, xlab="x1")
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
                                      -9, 9, 1, data$y, xlab="x2")
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
                                      -9, 9, 1, data$y, xlab="x3")
-
 util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
                                      -9, 9, 1, data$y, residual=TRUE,
                                      xlab="x1")
@@ -594,14 +597,13 @@ util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
 ```{r}
 par(mfrow=c(2, 3))
 
-pred_names <- util$name_array('y_pred', c(data$N))
+pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
                                        -9, 9, 1, data$y, xlab="x1")
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
                                        -9, 9, 1, data$y, xlab="x2")
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
                                        -9, 9, 1, data$y, xlab="x3")
-
 util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
                                        -9, 9, 1, data$y, residual=TRUE,
                                        xlab="x1")
