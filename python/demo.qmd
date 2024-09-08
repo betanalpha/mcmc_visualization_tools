@@ -231,7 +231,7 @@ quantile intervals of the conditional prior predictive behavior at each element
 of `data$x_grid`.
 
 ```{python}
-pred_names = [ f'y_pred_grid[{n + 1}]' for n in range(data['N_grid']) ]
+pred_names = util.name_nested_list('y_pred_grid', [data['N_grid']])
 putil.plot_conn_pushforward_quantiles(plot.gca(), samples,
                                       pred_names, data['x_grid'],
                                       xlabel="x", ylabel="f")

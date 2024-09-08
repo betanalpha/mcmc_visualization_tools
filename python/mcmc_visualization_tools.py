@@ -29,6 +29,29 @@ light_teal = "#6B8E8E"
 mid_teal = "#487575"
 dark_teal = "#1D4F4F"
 
+from importlib import import_module
+
+lib_names = ['mcmc_analysis_tools_pystan3',
+             'mcmc_analysis_tools_pystan2',
+             'mcmc_analysis_tools_other']
+
+failed_import = True
+for lib_name in lib_names:
+  try:
+    lib = import_module(lib_name)
+  except:
+    "" # Fail silently
+  else:
+    globals()['util'] = lib
+    failed_import = False
+    break
+
+if failed_import:
+  raise ImportError('mcmc_visualization_tools.py requires that ',
+                    'mcmc_analysis_tools_[pystan2/pystan3/other].py '
+                    'from https://github.com/betanalpha/mcmc_diagnostics ',
+                    'is available.')
+
 ################################################################################
 # Utility Functions
 ################################################################################
@@ -316,19 +339,23 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
 
   # Construct quantiles for bin contents
   B = len(breaks) - 1
-  N = len(names)
-  C = samples[names[0]].shape[0]
-  S = samples[names[0]].shape[1]
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
 
+  counts = [numpy.nan] * B
   quantiles = numpy.full((B, 9), 0.0)
 
-  for c in range(C):
-    values = [ samples[name][c,:] for name in names ]
-    counts = [ numpy.histogram([ v[s] for v in values ], bins=breaks)[0]
-                               for s in range(S) ]
-    quantiles += [ numpy.percentile([ c[b] for c in counts ], probs) / C
-                   for b in range(B) ]
+  for b in range(B):
+    def bin_count(xs):
+      return sum([ 1 if breaks[b] <= x and x < breaks[b + 1] else 0
+                   for x in xs ])
+
+    if baseline_values is not None:
+      counts[b] = bin_count(baseline_values)
+
+    bcs = util.eval_expectand_pushforward(samples,
+                                          bin_count,
+                                          {'xs': numpy.array(names)})
+    quantiles[b] = util.ensemble_mcmc_quantile_est(bcs, probs)
 
   plot_quantiles = [ quantiles[idx] for idx in plot_idxs ]
 
@@ -426,19 +453,19 @@ def plot_disc_pushforward_quantiles(ax, samples, names,
   plot_idxs, plot_xs = configure_bin_plotting(breaks)
 
   # Construct marginal quantiles
-  C = samples[names[0]].shape[0]
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
 
-  quantiles = numpy.full((N, 9), 0.0)
-  for c in range(C):
-    values = [ samples[name][c,:] for name in names ]
-    if baseline_values is not None and residual:
-      quantiles += [ numpy.percentile(values[n] - baseline_values[n],
-                                      probs) / C
-                     for n in range(N) ]
-    else:
-      quantiles += [ numpy.percentile(values[n], probs) / C
-                     for n in range(N) ]
+  if baseline_values is not None and residual:
+    def calc(n):
+      return util.ensemble_mcmc_quantile_est(samples[names[n]] - \
+                                             baseline_values[n],
+                                             probs)
+    quantiles = [ calc(n) for n in range(N) ]
+  else:
+    def calc(n):
+      return util.ensemble_mcmc_quantile_est(samples[names[n]],
+                                             probs)
+    quantiles = [ calc(n) for n in range(N) ]
 
   plot_quantiles = [ quantiles[idx] for idx in plot_idxs ]
 
@@ -567,19 +594,19 @@ def plot_conn_pushforward_quantiles(ax, samples, names, plot_xs,
 
   # Construct quantiles for bin contents
   N = len(names)
-  C = samples[names[0]].shape[0]
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
 
-  plot_quantiles = numpy.full((N, 9), 0.0)
-  for c in range(C):
-    values = [ samples[name][c,:] for name in names ]
-    if baseline_values is not None and residual:
-      plot_quantiles += [ numpy.percentile(values[n] - baseline_values[n],
-                                           probs) / C
-                          for n in range(N) ]
-    else:
-      plot_quantiles += [ numpy.percentile(values[n], probs) / C
-                          for n in range(N) ]
+  if baseline_values is not None and residual:
+    def calc(n):
+      return util.ensemble_mcmc_quantile_est(samples[names[n]] - \
+                                             baseline_values[n],
+                                             probs)
+    plot_quantiles = [ calc(n) for n in range(N) ]
+  else:
+    def calc(n):
+      return util.ensemble_mcmc_quantile_est(samples[names[n]],
+                                             probs)
+    plot_quantiles = [ calc(n) for n in range(N) ]
 
   # Plot
   if display_xlim is None:
@@ -801,9 +828,6 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
 
   # Construct quantiles for predictive bin contents
   B = len(breaks) - 1
-  N = len(names)
-  C = samples[names[0]].shape[0]
-  S = samples[names[0]].shape[1]
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
 
   obs_means = [numpy.nan] * B
@@ -812,25 +836,28 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
   for b in range(B):
     bin_idx = [ n for n, obs in enumerate(obs_xs)
                 if breaks[b] <= obs and obs < breaks[b + 1] ]
+
     if len(bin_idx) > 0:
+      def cond_mean(x):
+        return numpy.mean( [ x[idx] for idx in bin_idx ] )
+
       if baseline_values is not None:
-        obs_means [b] = numpy.mean([ baseline_values[idx]
-                                     for idx in bin_idx ] )
+        bin_baseline = cond_mean(baseline_values)
+        obs_means[b] = bin_baseline
 
-      for c in range(C):
-        values = [ samples[name][c,:] for name in names ]
+      if baseline_values is not None and residual:
+        def cond_mean_residual(x):
+          return numpy.mean( [ x[idx] - bin_baseline
+                               for idx in bin_idx ] )
+        cms = util.eval_expectand_pushforward(samples,
+                                              cond_mean_residual,
+                                              {'x': numpy.array(names)})
+      else:
+        cms = util.eval_expectand_pushforward(samples,
+                                              cond_mean,
+                                              {'x': numpy.array(names)})
 
-        if baseline_values is not None and residual:
-          means = [ numpy.mean([ values[idx][s] for idx in bin_idx ])
-                    - obs_means[b]
-                    for s in range(S) ]
-        else:
-          means = [ numpy.mean([ values[idx][s] for idx in bin_idx ])
-                    for s in range(S) ]
-
-        mean_quantiles[b,:] += numpy.percentile(means, probs) / C
-    else:
-      mean_quantiles[b,:] = numpy.full((9), numpy.nan)
+      mean_quantiles[b] = util.ensemble_mcmc_quantile_est(cms, probs)
 
   plot_quantiles = [ mean_quantiles[idx] for idx in plot_idxs ]
 
@@ -978,9 +1005,6 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
 
   # Construct quantiles for predictive bin contents
   B = len(breaks) - 1
-  N = len(names)
-  C = samples[names[0]].shape[0]
-  S = samples[names[0]].shape[1]
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
 
   obs_medians = [numpy.nan] * B
@@ -989,25 +1013,28 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
   for b in range(B):
     bin_idx = [ n for n, obs in enumerate(obs_xs)
                 if breaks[b] <= obs and obs < breaks[b + 1] ]
+
     if len(bin_idx) > 0:
+      def cond_median(x):
+        return numpy.median( [ x[idx] for idx in bin_idx ] )
+
       if baseline_values is not None:
-        obs_medians[b] = numpy.median([ baseline_values[idx]
-                                        for idx in bin_idx ] )
+        bin_baseline = cond_median(baseline_values)
+        obs_medians[b] = bin_baseline
 
-      for c in range(C):
-        values = [ samples[name][c,:] for name in names ]
+      if baseline_values is not None and residual:
+        def cond_median_residual(x):
+          return numpy.median( [ x[idx] - bin_baseline
+                                 for idx in bin_idx ] )
+        cms = util.eval_expectand_pushforward(samples,
+                                              cond_median_residual,
+                                              {'x': numpy.array(names)})
+      else:
+        cms = util.eval_expectand_pushforward(samples,
+                                              cond_median,
+                                              {'x': numpy.array(names)})
 
-        if baseline_values is not None and residual:
-          medians = [ numpy.median([ values[idx][s] for idx in bin_idx ])
-                      - obs_medians[b]
-                      for s in range(S) ]
-        else:
-          medians = [ numpy.median([ values[idx][s] for idx in bin_idx ])
-                      for s in range(S) ]
-
-        median_quantiles[b,:] += numpy.percentile(medians, probs) / C
-    else:
-      median_quantiles[b,:] = numpy.full((9), numpy.nan)
+      median_quantiles[b] = util.ensemble_mcmc_quantile_est(cms, probs)
 
   plot_quantiles = [ median_quantiles[idx] for idx in plot_idxs ]
 

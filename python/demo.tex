@@ -472,7 +472,7 @@ predictive behavior at each element of \texttt{data\$x\_grid}.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred\_grid[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ util.name\_nested\_list(}\StringTok{\textquotesingle{}y\_pred\_grid\textquotesingle{}}\NormalTok{, [data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]])}
 \NormalTok{putil.plot\_conn\_pushforward\_quantiles(plot.gca(), samples,}
 \NormalTok{                                      pred\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
 \NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
@@ -1371,7 +1371,7 @@ Environment}\label{original-computing-environment}
 \end{Shaded}
 
 \begin{verbatim}
-Last updated: 2024-09-04T22:17:36.222177-04:00
+Last updated: 2024-09-08T12:05:10.382594-04:00
 
 Python implementation: CPython
 Python version       : 3.9.6
