@@ -282,3 +282,4 @@ TSWLatexianTemp*
 *__pycache__/
 *.obj
 build
+*.Rhistory
