@@ -566,6 +566,8 @@ putil.plot_conditional_median_quantiles(axarr[2], samples, pred_names,
 plot.show()
 ```
 
+## Posterior Inference
+
 Now we're ready to incorporate the observed data.
 
 ```{.stan include="stan_programs/multi_full_model.stan" filename="multi\\_full\\_model.stan" eval=FALSE}

@@ -14,6 +14,8 @@ import matplotlib
 import matplotlib.pyplot as plot
 from matplotlib.colors import LinearSegmentedColormap
 
+import re
+from functools import partial
 import math
 import numpy
 
@@ -313,7 +315,8 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
                         xlabel="", display_ylim=None, title=""):
   # Construct relevant variable names and format corresponding values.
   # Order of the variables does not affect the shape of the histogram.
-  names = [ key for key in samples.keys() if val_name_prefix + '[' in key ]
+  names = [ key for key in samples.keys()
+            if re.match('^' + val_name_prefix + '\[', key) ]
   collapsed_values = numpy.hstack([ samples[name].flatten()
                                     for name in names ])
 
@@ -339,23 +342,28 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
 
   # Construct quantiles for bin contents
   B = len(breaks) - 1
-  probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-
   counts = [numpy.nan] * B
-  quantiles = numpy.full((B, 9), 0.0)
 
+  def bin_count(xs, b_low, b_high):
+    return sum([ 1 for x in xs if b_low <= x and x < b_high ] )
+
+  bin_counters = {}
   for b in range(B):
-    def bin_count(xs):
-      return sum([ 1 if breaks[b] <= x and x < breaks[b + 1] else 0
-                   for x in xs ])
-
+    bin_counters[b] = partial(bin_count,
+                              b_low=breaks[b],
+                              b_high=breaks[b + 1])
     if baseline_values is not None:
-      counts[b] = bin_count(baseline_values)
+      counts[b] = bin_counters[b](baseline_values)
 
-    bcs = util.eval_expectand_pushforward(samples,
-                                          bin_count,
-                                          {'xs': numpy.array(names)})
-    quantiles[b] = util.ensemble_mcmc_quantile_est(bcs, probs)
+  bin_count_samples = \
+    util.eval_expectand_pushforwards(samples,
+                                     bin_counters,
+                                     {'xs': numpy.array(names)})
+
+  probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+  quantiles = [ util.ensemble_mcmc_quantile_est(bin_count_samples[b],
+                                                probs)
+                for b in range(B) ]
 
   plot_quantiles = [ quantiles[idx] for idx in plot_idxs ]
 
@@ -375,28 +383,27 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
 
     h = plot_quantiles[idx1][8] - plot_quantiles[idx1][0]
     rect1 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][0]),
-                           w, h, color=light)
+                           w, h, facecolor=light)
     ax.add_patch(rect1)
 
     h = plot_quantiles[idx1][7] - plot_quantiles[idx1][1]
     rect2 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][1]),
-                           w, h, color=light_highlight)
+                           w, h, facecolor=light_highlight)
     ax.add_patch(rect2)
 
     h = plot_quantiles[idx1][6] - plot_quantiles[idx1][2]
     rect3 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][2]),
-                           w, h, color=mid)
+                           w, h, facecolor=mid)
     ax.add_patch(rect3)
 
     h = plot_quantiles[idx1][5] - plot_quantiles[idx1][3]
     rect4 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][3]),
-                           w, h, color=mid_highlight)
+                           w, h, facecolor=mid_highlight)
     ax.add_patch(rect4)
 
-    h = plot_quantiles[idx1][4] - plot_quantiles[idx1][4]
-    rect5 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][4]),
-                           w, h, color=dark)
-    ax.add_patch(rect5)
+    ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
+            [ plot_quantiles[idx1][4], plot_quantiles[idx1][4] ],
+            linewidth=1, color=dark)
 
   if baseline_values is not None:
     baseline_counts = numpy.histogram(baseline_values, bins=breaks)[0]
@@ -507,28 +514,27 @@ def plot_disc_pushforward_quantiles(ax, samples, names,
 
     h = plot_quantiles[idx1][8] - plot_quantiles[idx1][0]
     rect1 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][0]),
-                           w, h, color=light)
+                           w, h, facecolor=light)
     ax.add_patch(rect1)
 
     h = plot_quantiles[idx1][7] - plot_quantiles[idx1][1]
     rect2 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][1]),
-                           w, h, color=light_highlight)
+                           w, h, facecolor=light_highlight)
     ax.add_patch(rect2)
 
     h = plot_quantiles[idx1][6] - plot_quantiles[idx1][2]
     rect3 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][2]),
-                           w, h, color=mid)
+                           w, h, facecolor=mid)
     ax.add_patch(rect3)
 
     h = plot_quantiles[idx1][5] - plot_quantiles[idx1][3]
     rect4 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][3]),
-                           w, h, color=mid_highlight)
+                           w, h, facecolor=mid_highlight)
     ax.add_patch(rect4)
 
-    h = plot_quantiles[idx1][4] - plot_quantiles[idx1][4]
-    rect5 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][4]),
-                           w, h, color=dark)
-    ax.add_patch(rect5)
+    ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
+            [ plot_quantiles[idx1][4], plot_quantiles[idx1][4] ],
+            linewidth=1, color=dark)
 
   if baseline_values is not None:
     if residual:
@@ -828,53 +834,80 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
 
   # Construct quantiles for predictive bin contents
   B = len(breaks) - 1
+
+  nonempty_bins = [ b for b in range(B)
+                    if sum([ 1 for x in obs_xs
+                             if breaks[b] <= x and x < breaks[b + 1] ]) > 0]
+
+  baseline_cond_means = [numpy.nan] * B
+
+  def cond_mean(ys, xs, b_low, b_high):
+    bin_idxs = [ n for n, x in enumerate(xs)
+                 if b_low <= x and x < b_high ]
+    if len(bin_idxs):
+      return numpy.mean([ ys[n] for n in bin_idxs ])
+    else:
+      return 0
+
+  def cond_mean_residual(ys, xs, b_low, b_high, baseline):
+    return cond_mean(ys, xs, b_low, b_high) - baseline
+
+  if baseline_values is not None:
+    for b in range(B):
+      baseline_cond_means[b] = cond_mean(baseline_values, obs_xs,
+                                         breaks[b], breaks[b + 1])
+
+  if baseline_values is None or not residual:
+    expectands = {}
+    for b in range(B):
+      expectands[b] = partial(cond_mean,
+                              xs=obs_xs,
+                              b_low=breaks[b],
+                              b_high=breaks[b + 1])
+  else:
+    expectands = {}
+    for b in range(B):
+      baseline = baseline_cond_means[b]
+      expectands[b] = partial(cond_mean_residual,
+                              xs=obs_xs,
+                              b_low=breaks[b],
+                              b_high=breaks[b + 1],
+                              baseline=baseline)
+
+  cond_mean_samples = \
+    util.eval_expectand_pushforwards(samples,
+                                     expectands,
+                                     {'ys': numpy.array(names)})
+
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-
-  obs_means = [numpy.nan] * B
-  mean_quantiles = numpy.full((B, 9), 0.0)
-
-  for b in range(B):
-    bin_idx = [ n for n, obs in enumerate(obs_xs)
-                if breaks[b] <= obs and obs < breaks[b + 1] ]
-
-    if len(bin_idx) > 0:
-      def cond_mean(x):
-        return numpy.mean( [ x[idx] for idx in bin_idx ] )
-
-      if baseline_values is not None:
-        bin_baseline = cond_mean(baseline_values)
-        obs_means[b] = bin_baseline
-
-      if baseline_values is not None and residual:
-        def cond_mean_residual(x):
-          return numpy.mean( [ x[idx] - bin_baseline
-                               for idx in bin_idx ] )
-        cms = util.eval_expectand_pushforward(samples,
-                                              cond_mean_residual,
-                                              {'x': numpy.array(names)})
-      else:
-        cms = util.eval_expectand_pushforward(samples,
-                                              cond_mean,
-                                              {'x': numpy.array(names)})
-
-      mean_quantiles[b] = util.ensemble_mcmc_quantile_est(cms, probs)
+  mean_quantiles = [ util.ensemble_mcmc_quantile_est(cond_mean_samples[b],
+                                                     probs)
+                     for b in range(B)                                    ]
 
   plot_quantiles = [ mean_quantiles[idx] for idx in plot_idxs ]
 
   # Plot
   if display_ylim is None:
     if baseline_values is None:
-      display_ylim = [ numpy.nanmin([ q[0] for q in mean_quantiles ]),
-                       numpy.nanmax([ q[8] for q in mean_quantiles ]) ]
+      display_ylim = [ min([ mean_quantiles[b][0]
+                             for b in nonempty_bins ]),
+                       max([ mean_quantiles[b][8]
+                             for b in nonempty_bins ]) ]
     else:
       if residual:
-        display_ylim = [ numpy.nanmin([0] + [ q[0] for q in mean_quantiles ]),
-                         numpy.nanmax([0] + [ q[8] for q in mean_quantiles ]) ]
+        display_ylim = [ min([0] + [ mean_quantiles[b][0]
+                                     for b in nonempty_bins ]),
+                         max([0] + [ mean_quantiles[b][8]
+                                     for b in nonempty_bins ]) ]
       else:
-        display_ylim = [ min(numpy.nanmin([ q[0] for q in mean_quantiles ]),
-                             numpy.nanmin(obs_means)),
-                         max(numpy.nanmax([ q[8] for q in mean_quantiles ]),
-                             numpy.nanmax(obs_means)) ]
+        display_ylim = [ min(min([ mean_quantiles[b][0]
+                                   for b in nonempty_bins ]),
+                             min([ baseline_cond_means[b]
+                                   for b in nonempty_bins ])),
+                         max(max([ mean_quantiles[b][8]
+                                   for b in nonempty_bins ]),
+                             max([ baseline_cond_means[b]
+                                   for b in nonempty_bins ])) ]
     delta = 0.05 * (display_ylim[1] - display_ylim[0])
     display_ylim[0] -= delta
     display_ylim[1] += delta
@@ -890,37 +923,34 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
     idx2 = 2 * b + 1
     w = plot_xs[idx2] - plot_xs[idx1]
 
-    bin_idx = [ n for n, obs in enumerate(obs_xs)
-                if breaks[b] <= obs and obs < breaks[b + 1] ]
-    if len(bin_idx) > 0:
+    if b in nonempty_bins:
       h = plot_quantiles[idx1][8] - plot_quantiles[idx1][0]
       rect1 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][0]),
-                             w, h, color=light)
+                             w, h, facecolor=light)
       ax.add_patch(rect1)
 
       h = plot_quantiles[idx1][7] - plot_quantiles[idx1][1]
       rect2 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][1]),
-                             w, h, color=light_highlight)
+                             w, h, facecolor=light_highlight)
       ax.add_patch(rect2)
 
       h = plot_quantiles[idx1][6] - plot_quantiles[idx1][2]
       rect3 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][2]),
-                             w, h, color=mid)
+                             w, h, facecolor=mid)
       ax.add_patch(rect3)
 
       h = plot_quantiles[idx1][5] - plot_quantiles[idx1][3]
       rect4 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][3]),
-                             w, h, color=mid_highlight)
+                             w, h, facecolor=mid_highlight)
       ax.add_patch(rect4)
 
-      h = plot_quantiles[idx1][4] - plot_quantiles[idx1][4]
-      rect5 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][4]),
-                             w, h, color=dark)
-      ax.add_patch(rect5)
+      ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
+            [ plot_quantiles[idx1][4], plot_quantiles[idx1][4] ],
+            linewidth=1, color=dark)
     else:
       h = display_ylim[1] - display_ylim[0]
       rect = plot.Rectangle((plot_xs[idx1], display_ylim[0]),
-                             w, h, color="#EEEEEE")
+                             w, h, facecolor="#EEEEEE")
       ax.add_patch(rect)
 
   if baseline_values is not None:
@@ -928,16 +958,14 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
       ax.axhline(y=0, linewidth=2, linestyle="dashed", color='#DDDDDD')
     else:
       for b in range(B):
-        bin_idx = [ n for n, obs in enumerate(obs_xs)
-                    if breaks[b] <= obs and obs < breaks[b + 1] ]
-        if len(bin_idx) > 0:
+        if b in nonempty_bins:
           idx1 = 2 * b
           idx2 = 2 * b + 1
-          ax.plot([plot_xs[idx1], plot_xs[idx2]],
-                  [obs_means[b], obs_means[b]],
+          ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
+                  [ baseline_cond_means[b], baseline_cond_means[b] ],
                   color="white", linewidth=4)
-          ax.plot([plot_xs[idx1], plot_xs[idx2]],
-                  [obs_means[b], obs_means[b]],
+          ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
+                  [ baseline_cond_means[b], baseline_cond_means[b] ],
                   color=baseline_color, linewidth=2)
 
   ax.set_title(title)
@@ -1005,53 +1033,80 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
 
   # Construct quantiles for predictive bin contents
   B = len(breaks) - 1
+
+  nonempty_bins = [ b for b in range(B)
+                    if sum([ 1 for x in obs_xs
+                             if breaks[b] <= x and x < breaks[b + 1] ]) > 0]
+
+  baseline_cond_medians = [numpy.nan] * B
+
+  def cond_median(ys, xs, b_low, b_high):
+    bin_idxs = [ n for n, x in enumerate(xs)
+                 if b_low <= x and x < b_high ]
+    if len(bin_idxs):
+      return numpy.median([ ys[n] for n in bin_idxs ])
+    else:
+      return 0
+
+  def cond_median_residual(ys, xs, b_low, b_high, baseline):
+    return cond_median(ys, xs, b_low, b_high) - baseline
+
+  if baseline_values is not None:
+    for b in range(B):
+      baseline_cond_medians[b] = cond_median(baseline_values, obs_xs,
+                                             breaks[b], breaks[b + 1])
+
+  if baseline_values is None or not residual:
+    expectands = {}
+    for b in range(B):
+      expectands[b] = partial(cond_median,
+                              xs=obs_xs,
+                              b_low=breaks[b],
+                              b_high=breaks[b + 1])
+  else:
+    expectands = {}
+    for b in range(B):
+      baseline = baseline_cond_medians[b]
+      expectands[b] = partial(cond_median_residual,
+                              xs=obs_xs,
+                              b_low=breaks[b],
+                              b_high=breaks[b + 1],
+                              baseline=baseline)
+
+  cond_median_samples = \
+    util.eval_expectand_pushforwards(samples,
+                                     expectands,
+                                     {'ys': numpy.array(names)})
+
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-
-  obs_medians = [numpy.nan] * B
-  median_quantiles = numpy.full((B, 9), 0.0)
-
-  for b in range(B):
-    bin_idx = [ n for n, obs in enumerate(obs_xs)
-                if breaks[b] <= obs and obs < breaks[b + 1] ]
-
-    if len(bin_idx) > 0:
-      def cond_median(x):
-        return numpy.median( [ x[idx] for idx in bin_idx ] )
-
-      if baseline_values is not None:
-        bin_baseline = cond_median(baseline_values)
-        obs_medians[b] = bin_baseline
-
-      if baseline_values is not None and residual:
-        def cond_median_residual(x):
-          return numpy.median( [ x[idx] - bin_baseline
-                                 for idx in bin_idx ] )
-        cms = util.eval_expectand_pushforward(samples,
-                                              cond_median_residual,
-                                              {'x': numpy.array(names)})
-      else:
-        cms = util.eval_expectand_pushforward(samples,
-                                              cond_median,
-                                              {'x': numpy.array(names)})
-
-      median_quantiles[b] = util.ensemble_mcmc_quantile_est(cms, probs)
+  median_quantiles = [ util.ensemble_mcmc_quantile_est(cond_median_samples[b],
+                                                       probs)
+                       for b in range(B)                                      ]
 
   plot_quantiles = [ median_quantiles[idx] for idx in plot_idxs ]
 
   # Plot
   if display_ylim is None:
     if baseline_values is None:
-      display_ylim = [ numpy.nanmin([ q[0] for q in median_quantiles ]),
-                       numpy.nanmax([ q[8] for q in median_quantiles ]) ]
+      display_ylim = [ min([ median_quantiles[b][0]
+                             for b in nonempty_bins ]),
+                       max([ median_quantiles[b][8]
+                             for b in nonempty_bins ]) ]
     else:
       if residual:
-        display_ylim = [ numpy.nanmin([0] + [ q[0] for q in median_quantiles ]),
-                         numpy.nanmax([0] + [ q[8] for q in median_quantiles ]) ]
+        display_ylim = [ min([0] + [ median_quantiles[b][0]
+                                     for b in nonempty_bins ]),
+                         max([0] + [ median_quantiles[b][8]
+                                     for b in nonempty_bins ]) ]
       else:
-        display_ylim = [ min(numpy.nanmin([ q[0] for q in median_quantiles ]),
-                             numpy.nanmin(obs_medians)),
-                         max(numpy.nanmax([ q[8] for q in median_quantiles ]),
-                             numpy.nanmax(obs_medians)) ]
+        display_ylim = [ min(min([ median_quantiles[b][0]
+                                   for b in nonempty_bins ]),
+                             min([ baseline_cond_medians[b]
+                                   for b in nonempty_bins ])),
+                         max(max([ median_quantiles[b][8]
+                                   for b in nonempty_bins ]),
+                             max([ baseline_cond_medians[b]
+                                   for b in nonempty_bins ])) ]
     delta = 0.05 * (display_ylim[1] - display_ylim[0])
     display_ylim[0] -= delta
     display_ylim[1] += delta
@@ -1067,37 +1122,34 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
     idx2 = 2 * b + 1
     w = plot_xs[idx2] - plot_xs[idx1]
 
-    bin_idx = [ n for n, obs in enumerate(obs_xs)
-                if breaks[b] <= obs and obs < breaks[b + 1] ]
-    if len(bin_idx) > 0:
+    if b in nonempty_bins:
       h = plot_quantiles[idx1][8] - plot_quantiles[idx1][0]
       rect1 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][0]),
-                             w, h, color=light)
+                             w, h, facecolor=light)
       ax.add_patch(rect1)
 
       h = plot_quantiles[idx1][7] - plot_quantiles[idx1][1]
       rect2 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][1]),
-                             w, h, color=light_highlight)
+                             w, h, facecolor=light_highlight)
       ax.add_patch(rect2)
 
       h = plot_quantiles[idx1][6] - plot_quantiles[idx1][2]
       rect3 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][2]),
-                             w, h, color=mid)
+                             w, h, facecolor=mid)
       ax.add_patch(rect3)
 
       h = plot_quantiles[idx1][5] - plot_quantiles[idx1][3]
       rect4 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][3]),
-                             w, h, color=mid_highlight)
+                             w, h, facecolor=mid_highlight)
       ax.add_patch(rect4)
 
-      h = plot_quantiles[idx1][4] - plot_quantiles[idx1][4]
-      rect5 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][4]),
-                             w, h, color=dark)
-      ax.add_patch(rect5)
+      ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
+            [ plot_quantiles[idx1][4], plot_quantiles[idx1][4] ],
+            linewidth=1, color=dark)
     else:
       h = display_ylim[1] - display_ylim[0]
       rect = plot.Rectangle((plot_xs[idx1], display_ylim[0]),
-                             w, h, color="#EEEEEE")
+                             w, h, facecolor="#EEEEEE")
       ax.add_patch(rect)
 
   if baseline_values is not None:
@@ -1105,16 +1157,14 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
       ax.axhline(y=0, linewidth=2, linestyle="dashed", color='#DDDDDD')
     else:
       for b in range(B):
-        bin_idx = [ n for n, obs in enumerate(obs_xs)
-                    if breaks[b] <= obs and obs < breaks[b + 1] ]
-        if len(bin_idx) > 0:
+        if b in nonempty_bins:
           idx1 = 2 * b
           idx2 = 2 * b + 1
-          ax.plot([plot_xs[idx1], plot_xs[idx2]],
-                  [obs_medians[b], obs_medians[b]],
+          ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
+                  [ baseline_cond_medians[b], baseline_cond_medians[b] ],
                   color="white", linewidth=4)
-          ax.plot([plot_xs[idx1], plot_xs[idx2]],
-                  [obs_medians[b], obs_medians[b]],
+          ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
+                  [ baseline_cond_medians[b], baseline_cond_medians[b] ],
                   color=baseline_color, linewidth=2)
 
   ax.set_title(title)
