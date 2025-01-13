@@ -164,8 +164,9 @@ def check_all_hmc_diagnostics(diagnostics,
       no_warning = False
       no_treedepth_warning = False
       local_messages.append(f'  Chain {c + 1}: {n_tds:.0f} of {S} '
-                            f'transitions ({n_tds / S:.2%}) saturated '
-                            f'the maximum treedepth of {max_treedepth}.')
+                            f'transitions ({n_tds / S:.3%})')
+      local_messages.append(f'           saturated the maximum '
+                            f'treedepth of {max_treedepth}.')
     
     # Check the energy fraction of missing information (E-FMI)
     energies = diagnostics['energy__'][c]
@@ -183,11 +184,10 @@ def check_all_hmc_diagnostics(diagnostics,
     if ave_accept_proxy < 0.9 * adapt_target:
       no_warning = False
       no_accept_warning = False
-      local_message = (f'  Chain {c + 1}: Average proxy acceptance '
-                       f'statistic ({ave_accept_proxy:.3f}) is smaller '
-                       f'than 90% of the target ({adapt_target:.3f}).')
-      local_message = textwrap.wrap(local_message, max_width)
-      local_messages += local_message
+      local_messages.append(f'  Chain {c + 1}: Average proxy acceptance '
+                            f'statistic ({ave_accept_proxy:.3f})')
+      local_messages.append(f'           is smaller than 90% of the '
+                            f'target ({adapt_target:.3f}).')
     
     if len(local_messages) > 0:
       messages.append(local_messages)
@@ -444,7 +444,7 @@ def plot_int_times(ax, diagnostics, B, tlim=None):
   if tlim is None:
     # Automatically adjust histogram binning to range of outputs
     min_t = max([ eps[c] * max(lengths[c]) for c in range(C) ])
-    max_t = max([ eps[c] * max(lenghts[c]) for c in range(C) ])
+    max_t = max([ eps[c] * max(lengths[c]) for c in range(C) ])
 
     tlim = [min_t, max_t]
     delta = (tlim[1] - tlim[0]) / B
@@ -496,7 +496,7 @@ def plot_int_times(ax, diagnostics, B, tlim=None):
   if tlim is None:
     # Automatically adjust histogram binning to range of outputs
     min_t = max([ eps[c] * max(lengths[c]) for c in range(C) ])
-    max_t = max([ eps[c] * max(lenghts[c]) for c in range(C) ])
+    max_t = max([ eps[c] * max(lengths[c]) for c in range(C) ])
     
     tlim = [min_t, max_t]
     delta = (tlim[1] - tlim[0]) / B
@@ -1176,8 +1176,8 @@ def check_inc_tau_hat(expectand_vals, max_width=72):
 
   for c in range(C):
     tau_hat = compute_tau_hat(expectand_vals[c,:])
-    inc_tau_hat_per = tau_hat / S
-    if tau_hat_per > 5:
+    inc_tau_hat = tau_hat / S
+    if inc_tau_hat > 5:
       print(f'Chain {c + 1}: The incremental empirical integrated '
             f'autocorrelation time {inc_tau_hat :.3f} is too large.')
       no_warning = False
