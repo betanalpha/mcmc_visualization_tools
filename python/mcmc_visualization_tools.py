@@ -214,7 +214,7 @@ def plot_line_hist(ax, values,
   if prob:
     ylabel = "Empirical Bin Probability / Bin Width"
     norm = bin_delta * sum(counts)
-    counts = [ c / norm for c in counts ]
+    counts = counts / norm
 
   # Plot
   ax.plot(plot_xs, counts[plot_idxs], color=col)
