@@ -132,8 +132,21 @@ util$plot_line_hist(data$y, -4, 7, 0.5,
 ```
 
 This presentation is a bit cleaner than conventional histogram plots, especially
-when there is no ambiguity about the binning.  That said the implementation here
-is a bit rigid in that it only allows for uniform bin widths.
+when there is no ambiguity about the binning.
+
+We can also plot histograms with arbitrary bin configurations.
+
+```{r}
+par(mfrow=c(1, 2))
+
+util$plot_line_hist(data$x,
+                    breaks=c(-6, -3, -1.5, -0.75, 0, 0.75, 1.5, 3, 6),
+                    xlab="x", main="Observed Inputs")
+
+util$plot_line_hist(data$y,
+                    breaks=c(-4, 0, 7),
+                    xlab="y", main="Observed Outputs")
+```
 
 A key advantage of reducing a histogram to its outline is that it is much easier
 to overlay multiple histograms on top of each other without compromising
@@ -488,6 +501,23 @@ to visualize the prior predictive distribution of the histogram counts.
 par(mfrow=c(1, 1))
 
 util$plot_hist_quantiles(samples, 'y_pred')
+```
+
+We can also set the binning by hand, either with bounds a fixed bin width
+or an arbitrary bin configuration.
+
+```{r}
+par(mfrow=c(1, 1))
+
+util$plot_hist_quantiles(samples, 'y_pred', -400, 400, 50)
+```
+
+```{r}
+par(mfrow=c(1, 1))
+
+util$plot_hist_quantiles(samples, 'y_pred',
+                         breaks=c(-400, -200, -100, -50, -25, 0,
+                                  25, 50, 100, 200, 400))
 ```
 
 To capture the interactions between the predictive outputs and the observed

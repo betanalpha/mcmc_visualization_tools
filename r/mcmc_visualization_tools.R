@@ -174,6 +174,8 @@ configure_bin_plotting <- function(breaks) {
 # @param bin_min Lower threshold
 # @param bin_max Upper threshold
 # @param bin_delta Bin width
+# @param breaks Full binning; supercedes bin_min, bin_max, and bin_delta
+#               when not NULL
 # @param prob Boolean determining whether bin contents should be normalized so
 #             that the histogram approximates a probability density function;
 #             defaults to FALSE
@@ -184,19 +186,44 @@ configure_bin_plotting <- function(breaks) {
 # @param main Plot title; defaults to empty string.
 plot_line_hist <- function(values,
                            bin_min=NULL, bin_max=NULL, bin_delta=NULL,
-                           prob=FALSE, col="black", add=FALSE,
+                           breaks=NULL, prob=FALSE,
+                           col="black", add=FALSE,
                            xlab="", main="") {
   # Remove any NA values
   values <- values[!is.na(values)]
 
-  # Construct binning configuration
-  bin_config <- configure_bins(bin_min, bin_max, bin_delta, values)
-  bin_min <- bin_config[1]
-  bin_max <- bin_config[2]
-  bin_delta <- bin_config[3]
+  if(is.null(breaks)) {
+    # Construct binning configuration
+    bin_config <- configure_bins(bin_min, bin_max, bin_delta, values)
+    bin_min <- bin_config[1]
+    bin_max <- bin_config[2]
+    bin_delta <- bin_config[3]
 
-  # Construct bins
-  breaks <- seq(bin_min, bin_max, bin_delta)
+    # Construct bins
+    breaks <- seq(bin_min, bin_max, bin_delta)
+  } else {
+    if (!is.null(bin_min)) {
+      warning(paste('Argument `bin_min` is being superceded',
+                    'by argument `breaks`'))
+    }
+    if (!is.null(bin_max)) {
+      warning(paste('Argument `bin_max` is being superceded',
+                    'by argument `breaks`'))
+    }
+    if (!is.null(bin_delta)) {
+      warning(paste('Argument `bin_delta` is being superceded',
+                    'by argument `breaks`'))
+    }
+
+    if (!(all(diff(breaks) > 0))) {
+      stop('The argument `breaks` does not define a valid binning.')
+    }
+
+    bin_min <- min(breaks)
+    bin_max <- max(breaks)
+    bin_delta <- diff(breaks)
+  }
+
   plot_config <- configure_bin_plotting(breaks)
   plot_idxs <- plot_config[[1]]
   plot_xs <- plot_config[[2]]
@@ -231,6 +258,8 @@ plot_line_hist <- function(values,
 # @param bin_min Lower threshold
 # @param bin_max Upper threshold
 # @param bin_delta Bin width
+# @param breaks Full binning; supercedes bin_min, bin_max, and bin_delta
+#               when not NULL
 # @param prob Boolean determining whether bin contents should be normalized so
 #             that the histogram approximates a probability density function;
 #             defaults to FALSE
@@ -240,21 +269,46 @@ plot_line_hist <- function(values,
 # @param col2 Color of second histogram; defaults to c_mid_teal
 plot_line_hists <- function(values1, values2,
                             bin_min=NULL, bin_max=NULL, bin_delta=NULL,
-                            prob=FALSE, xlab="y", main="",
+                            breaks=NULL, prob=FALSE,
+                            xlab="y", main="",
                             col1="black", col2=c_mid_teal) {
   # Remove any NA values
   values1 <- values1[!is.na(values1)]
   values2 <- values2[!is.na(values2)]
 
-  # Construct binning configuration
-  bin_config <- configure_bins(bin_min, bin_max, bin_delta,
-                               values1, values2)
-  bin_min <- bin_config[1]
-  bin_max <- bin_config[2]
-  bin_delta <- bin_config[3]
+  if(is.null(breaks)) {
+    # Construct binning configuration
+    bin_config <- configure_bins(bin_min, bin_max, bin_delta,
+                                 values1, values2)
+    bin_min <- bin_config[1]
+    bin_max <- bin_config[2]
+    bin_delta <- bin_config[3]
 
-  # Construct bins
-  breaks <- seq(bin_min, bin_max, bin_delta)
+    # Construct bins
+    breaks <- seq(bin_min, bin_max, bin_delta)
+  } else {
+    if (!is.null(bin_min)) {
+      warning(paste('Argument `bin_min` is being superceded',
+                    'by argument `breaks`'))
+    }
+    if (!is.null(bin_max)) {
+      warning(paste('Argument `bin_max` is being superceded',
+                    'by argument `breaks`'))
+    }
+    if (!is.null(bin_delta)) {
+      warning(paste('Argument `bin_delta` is being superceded',
+                    'by argument `breaks`'))
+    }
+
+    if (!(all(diff(breaks) > 0))) {
+      stop('The argument `breaks` does not define a valid binning.')
+    }
+
+    bin_min <- min(breaks)
+    bin_max <- max(breaks)
+    bin_delta <- diff(breaks)
+  }
+
   plot_config <- configure_bin_plotting(breaks)
   plot_idxs <- plot_config[[1]]
   plot_xs <- plot_config[[2]]
@@ -272,8 +326,8 @@ plot_line_hists <- function(values1, values2,
   ylab <- "Counts"
   if (prob) {
     ylab <- "Empirical Bin Probability / Bin Width"
-    counts1 <- counts1 / (delta * sum(counts1))
-    counts2 <- counts2 / (delta * sum(counts1))
+    counts1 <- counts1 / (bin_delta * sum(counts1))
+    counts2 <- counts2 / (bin_delta * sum(counts2))
   }
 
   # Plot
@@ -303,6 +357,8 @@ plot_line_hists <- function(values1, values2,
 # @param bin_min Lower threshold
 # @param bin_max Upper threshold
 # @param bin_delta Bin width
+# @param breaks Full binning; supercedes bin_min, bin_max, and bin_delta
+#               when not NULL
 # @param baseline_values Baseline values for constructing a baseline histogram;
 #                        defaults to NULL
 # @param baseline_col Color for plotting baseline value; defaults to "black"
@@ -311,7 +367,9 @@ plot_line_hists <- function(values1, values2,
 # @param main Plot title; defaults to empty string
 plot_hist_quantiles <- function(samples, val_name_prefix,
                                 bin_min=NULL, bin_max=NULL, bin_delta=NULL,
-                                baseline_values=NULL, baseline_col="black",
+                                breaks=NULL,
+                                baseline_values=NULL,
+                                baseline_col="black",
                                 xlab="", display_ylim=NULL, main="") {
   # Construct relevant variable names and format corresponding values.
   # Order of the variables does not affect the shape of the histogram.
@@ -320,19 +378,44 @@ plot_hist_quantiles <- function(samples, val_name_prefix,
   collapsed_values <- c(sapply(names, function(name) c(t(samples[[name]]),
                                                        recursive=TRUE)))
 
-  # Construct binning configuration
-  if (is.null(baseline_values))
-    bin_config <- configure_bins(bin_min, bin_max, bin_delta,
-                                 collapsed_values)
-  else
-    bin_config <- configure_bins(bin_min, bin_max, bin_delta,
-                                 collapsed_values, baseline_values)
-  bin_min <- bin_config[1]
-  bin_max <- bin_config[2]
-  bin_delta <- bin_config[3]
 
-  # Construct bins
-  breaks <- seq(bin_min, bin_max, bin_delta)
+  if(is.null(breaks)) {
+    # Construct binning configuration
+    if (is.null(baseline_values))
+      bin_config <- configure_bins(bin_min, bin_max, bin_delta,
+                                   collapsed_values)
+    else
+      bin_config <- configure_bins(bin_min, bin_max, bin_delta,
+                                   collapsed_values, baseline_values)
+    bin_min <- bin_config[1]
+    bin_max <- bin_config[2]
+    bin_delta <- bin_config[3]
+
+    # Construct bins
+    breaks <- seq(bin_min, bin_max, bin_delta)
+  } else {
+    if (!is.null(bin_min)) {
+      warning(paste('Argument `bin_min` is being superceded',
+                    'by argument `breaks`'))
+    }
+    if (!is.null(bin_max)) {
+      warning(paste('Argument `bin_max` is being superceded',
+                    'by argument `breaks`'))
+    }
+    if (!is.null(bin_delta)) {
+      warning(paste('Argument `bin_delta` is being superceded',
+                    'by argument `breaks`'))
+    }
+
+    if (!(all(diff(breaks) > 0))) {
+      stop('The argument `breaks` does not define a valid binning.')
+    }
+
+    bin_min <- min(breaks)
+    bin_max <- max(breaks)
+    bin_delta <- diff(breaks)
+  }
+
   plot_config <- configure_bin_plotting(breaks)
   plot_idxs <- plot_config[[1]]
   plot_xs <- plot_config[[2]]

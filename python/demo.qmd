@@ -79,7 +79,6 @@ and the visualization functions themselves.
 import mcmc_analysis_tools_pystan3 as util
 ```
 
-
 ```{python}
 import mcmc_visualization_tools as putil
 ```
@@ -124,8 +123,20 @@ plot.show()
 ```
 
 This presentation is a bit cleaner than conventional histogram plots, especially
-when there is no ambiguity about the binning.  That said the implementation here
-is a bit rigid in that it only allows for uniform bin widths.
+when there is no ambiguity about the binning.
+
+We can also plot histograms with arbitrary bin configurations.
+
+```{python}
+f, axarr = plot.subplots(1, 2, layout="constrained")
+putil.plot_line_hist(axarr[0], data['x'],
+                     breaks=[-6, -3, -1.5, -0.75, 0, 0.75, 1.5, 3, 6],
+                     xlabel="x", title="Observed Inputs")
+putil.plot_line_hist(axarr[1], data['y'],
+                     breaks=[-4, 0, 7],
+                     xlabel="y", title="Observed Outputs")
+plot.show()
+```
 
 A key advantage of reducing a histogram to its outline is that it is much easier
 to overlay multiple histograms on top of each other without compromising
@@ -519,6 +530,22 @@ to visualize the prior predictive distribution of the histogram counts.
 
 ```{python}
 putil.plot_hist_quantiles(plot.gca(), samples, 'y_pred')
+plot.show()
+```
+
+We can also set the binning by hand, either with bounds a fixed bin width
+or an arbitrary bin configuration.
+
+```{python}
+putil.plot_hist_quantiles(plot.gca(), samples, 'y_pred', -400, 400, 50)
+plot.show()
+```
+
+```{python}
+putil.plot_hist_quantiles(plot.gca(), samples, 'y_pred',
+                          breaks=[-400, -200, -100, -50, -25, 0,
+                                  25, 50, 100, 200, 400])
+plot.show()
 ```
 
 To capture the interactions between the predictive outputs and the observed
@@ -606,6 +633,7 @@ posterior predictive behavior.
 ```{python}
 putil.plot_hist_quantiles(plot.gca(), samples, 'y_pred',
                           baseline_values=data['y'])
+plot.show()
 ```
 
 Additionally the `plot_conditional_mean_quantiles` and

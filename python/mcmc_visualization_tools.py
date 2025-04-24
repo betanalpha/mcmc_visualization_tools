@@ -180,6 +180,8 @@ def configure_bin_plotting(breaks):
 # @param bin_min Lower threshold
 # @param bin_max Upper threshold
 # @param bin_delta Bin width
+# @param breaks Full binning; supercedes bin_min, bin_max, and bin_delta
+#               when not None
 # @param prob Boolean determining whether bin contents should be normalized so
 #             that the histogram approximates a probability density function;
 #             defaults to FALSE
@@ -190,18 +192,39 @@ def configure_bin_plotting(breaks):
 # @param title Plot title; defaults to empty string.
 def plot_line_hist(ax, values,
                    bin_min=None, bin_max=None, bin_delta=None,
-                   prob=False, col="black", add=False,
+                   breaks=None, prob=False,
+                   col="black", add=False,
                    xlabel="", title=""):
   # Remove any nan values
   values = numpy.array(values)
   values = values[~numpy.isnan(values)]
 
-  # Construct binning configuration
-  bin_min, bin_max, bin_delta = configure_bins(bin_min, bin_max,
-                                               bin_delta, values)
+  if breaks is None:
+    # Construct binning configuration
+    bin_min, bin_max, bin_delta = configure_bins(bin_min, bin_max,
+                                                 bin_delta, values)
 
-  # Construct bins
-  breaks = numpy.arange(bin_min, bin_max, bin_delta)
+    # Construct bins
+    breaks = numpy.arange(bin_min, bin_max, bin_delta)
+  else:
+    if bin_min is not None:
+      print('Argument `bin_min` is being superceded '
+            'by argument `breaks`')
+    if bin_max is not None:
+       print('Argument `bin_max` is being superceded '
+            'by argument `breaks`')
+    if bin_delta is not None:
+      print('Argument `bin_delta` is being superceded '
+            'by argument `breaks`')
+
+    if not numpy.all(numpy.diff(breaks) > 0):
+      raise ValueError('The argument `breaks` does '
+                       'not define a valid binning.')
+
+    bin_min = min(breaks)
+    bin_max = max(breaks)
+    bin_delta = numpy.diff(breaks)
+
   plot_idxs, plot_xs = configure_bin_plotting(breaks)
 
   # Check bin containment
@@ -213,8 +236,7 @@ def plot_line_hist(ax, values,
   ylabel = "Counts"
   if prob:
     ylabel = "Empirical Bin Probability / Bin Width"
-    norm = bin_delta * sum(counts)
-    counts = counts / norm
+    counts = counts / (bin_delta * sum(counts))
 
   # Plot
   ax.plot(plot_xs, counts[plot_idxs], color=col)
@@ -233,6 +255,8 @@ def plot_line_hist(ax, values,
 # @param bin_min Lower threshold
 # @param bin_max Upper threshold
 # @param bin_delta Bin width
+# @param breaks Full binning; supercedes bin_min, bin_max, and bin_delta
+#               when not None
 # @param prob Boolean determining whether bin contents should be normalized so
 #             that the histogram approximates a probability density function;
 #             defaults to FALSE
@@ -242,7 +266,8 @@ def plot_line_hist(ax, values,
 # @param col2 Color of second histogram; defaults to c_mid_teal
 def plot_line_hists(ax, values1, values2,
                     bin_min=None, bin_max=None, bin_delta=None,
-                    prob=False, xlabel="", title="",
+                    breaks=None, prob=False,
+                    xlabel="", title="",
                     col1="black", col2=mid_teal):
   # Remove any nan values
   values1 = numpy.array(values1)
@@ -251,12 +276,33 @@ def plot_line_hists(ax, values1, values2,
   values2 = numpy.array(values2)
   values2 = values2[~numpy.isnan(values2)]
 
-  # Construct binning configuration
-  bin_min, bin_max, bin_delta = configure_bins(bin_min, bin_max, bin_delta,
-                                               values1, values2)
+  if breaks is None:
+    # Construct binning configuration
+    bin_min, bin_max, bin_delta = configure_bins(bin_min, bin_max,
+                                                 bin_delta,
+                                                 values1, values2)
 
-  # Construct bins
-  breaks = numpy.arange(bin_min, bin_max, bin_delta)
+    # Construct bins
+    breaks = numpy.arange(bin_min, bin_max, bin_delta)
+  else:
+    if bin_min is not None:
+      print('Argument `bin_min` is being superceded '
+            'by argument `breaks`')
+    if bin_max is not None:
+       print('Argument `bin_max` is being superceded '
+            'by argument `breaks`')
+    if bin_delta is not None:
+      print('Argument `bin_delta` is being superceded '
+            'by argument `breaks`')
+
+    if not numpy.all(numpy.diff(breaks) > 0):
+      raise ValueError('The argument `breaks` does '
+                       'not define a valid binning.')
+
+    bin_min = min(breaks)
+    bin_max = max(breaks)
+    bin_delta = numpy.diff(breaks)
+
   plot_idxs, plot_xs = configure_bin_plotting(breaks)
 
   # Check bin containment
@@ -270,8 +316,8 @@ def plot_line_hists(ax, values1, values2,
   ylabel = "Counts"
   if prob:
     ylabel = "Empirical Bin Probability / Bin Width"
-    counts1 = counts1 / (delta * sum(counts1))
-    counts2 = counts2 / (delta * sum(counts1))
+    counts1 = counts1 / (bin_delta * sum(counts1))
+    counts2 = counts2 / (bin_delta * sum(counts2))
 
   # Plot
   ymax = 1.1 * max(max(counts1), max(counts2))
@@ -303,6 +349,8 @@ def plot_line_hists(ax, values1, values2,
 # @param bin_min Lower threshold
 # @param bin_max Upper threshold
 # @param bin_delta Bin width
+# @param breaks Full binning; supercedes bin_min, bin_max, and bin_delta
+#               when not None
 # @param baseline_values Baseline values for constructing a baseline histogram;
 #                        defaults to None
 # @param baseline_color Color for plotting baseline value; defaults to "black"
@@ -311,6 +359,7 @@ def plot_line_hists(ax, values1, values2,
 # @param title Plot title; defaults to empty string
 def plot_hist_quantiles(ax, samples, val_name_prefix,
                         bin_min=None, bin_max=None, bin_delta=None,
+                        breaks=None,
                         baseline_values=None, baseline_color="black",
                         xlabel="", display_ylim=None, title=""):
   # Construct relevant variable names and format corresponding values.
@@ -320,17 +369,39 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
   collapsed_values = numpy.hstack([ samples[name].flatten()
                                     for name in names ])
 
-  # Construct binning configuration
-  if baseline_values is None:
-    [bin_min, bin_max, bin_delta] = configure_bins(bin_min, bin_max, bin_delta,
-                                                   collapsed_values)
-  else:
-    [bin_min, bin_max, bin_delta] = configure_bins(bin_min, bin_max, bin_delta,
-                                                   collapsed_values,
-                                                   baseline_values)
+  if breaks is None:
+    # Construct binning configuration
+    if baseline_values is None:
+      [bin_min, bin_max, bin_delta] = configure_bins(bin_min, bin_max,
+                                                     bin_delta,
+                                                     collapsed_values)
+    else:
+      [bin_min, bin_max, bin_delta] = configure_bins(bin_min, bin_max,
+                                                     bin_delta,
+                                                     collapsed_values,
+                                                     baseline_values)
 
-  # Construct bins
-  breaks = numpy.arange(bin_min, bin_max, bin_delta)
+    # Construct bins
+    breaks = numpy.arange(bin_min, bin_max, bin_delta)
+  else:
+    if bin_min is not None:
+      print('Argument `bin_min` is being superceded '
+            'by argument `breaks`')
+    if bin_max is not None:
+       print('Argument `bin_max` is being superceded '
+            'by argument `breaks`')
+    if bin_delta is not None:
+      print('Argument `bin_delta` is being superceded '
+            'by argument `breaks`')
+
+    if not numpy.all(numpy.diff(breaks) > 0):
+      raise ValueError('The argument `breaks` does '
+                       'not define a valid binning.')
+
+    bin_min = min(breaks)
+    bin_max = max(breaks)
+    bin_delta = numpy.diff(breaks)
+
   plot_idxs, plot_xs = configure_bin_plotting(breaks)
 
   # Check bin containment

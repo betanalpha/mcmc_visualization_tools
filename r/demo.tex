@@ -288,9 +288,25 @@ bins. Here we can plot histograms summarizing the observed inputs \[
 \includegraphics{demo_files/figure-pdf/unnamed-chunk-7-1.pdf}
 
 This presentation is a bit cleaner than conventional histogram plots,
-especially when there is no ambiguity about the binning. That said the
-implementation here is a bit rigid in that it only allows for uniform
-bin widths.
+especially when there is no ambiguity about the binning.
+
+We can also plot histograms with arbitrary bin configurations.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{))}
+
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_line\_hist}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{x,}
+                    \AttributeTok{breaks=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{6}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{1.5}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{0.75}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FloatTok{0.75}\NormalTok{, }\FloatTok{1.5}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{6}\NormalTok{),}
+                    \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Observed Inputs"}\NormalTok{)}
+
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_line\_hist}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{y,}
+                    \AttributeTok{breaks=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{4}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{7}\NormalTok{),}
+                    \AttributeTok{xlab=}\StringTok{"y"}\NormalTok{, }\AttributeTok{main=}\StringTok{"Observed Outputs"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-8-1.pdf}
 
 A key advantage of reducing a histogram to its outline is that it is
 much easier to overlay multiple histograms on top of each other without
@@ -309,7 +325,7 @@ constructs and then overlays two histograms with the same binning.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-8-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-9-1.pdf}
 
 We can also use the \texttt{add} argument of \texttt{plot\_line\_hist}
 to overlay multiple histogram outlines onto an existing axis.
@@ -330,7 +346,7 @@ to overlay multiple histogram outlines onto an existing axis.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-9-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-10-1.pdf}
 
 \subsection{Prior Checks}\label{prior-checks}
 
@@ -452,7 +468,7 @@ individual marginal quantiles are connected into continuous polygons.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-12-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-13-1.pdf}
 
 Finally let's use the \texttt{plot\_conn\_pushforward\_quantiles}
 function to plot nested quantile intervals of the conditional prior
@@ -469,7 +485,7 @@ predictive behavior at each element of \texttt{data\$x\_grid}.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-13-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-14-1.pdf}
 
 \subsection{Posterior Inference}\label{posterior-inference}
 
@@ -573,7 +589,7 @@ p(y \mid x,
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-16-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-17-1.pdf}
 
 Fortunately there are no signs of tension between the posterior
 predictive distributional behaviors and the observed behaviors.
@@ -601,7 +617,7 @@ functions being introduced here.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-17-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-18-1.pdf}
 
 Communicating the posterior behavior of the baseline function, however,
 is facilitated with the new visualization functions.
@@ -619,7 +635,7 @@ is facilitated with the new visualization functions.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-18-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-19-1.pdf}
 
 Conveniently all of these visualization functions feature optional
 arguments for baseline behavior which allows us to compare our posterior
@@ -651,7 +667,7 @@ simulation studies.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-19-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-20-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -670,7 +686,7 @@ simulation studies.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-20-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-21-1.pdf}
 
 The \texttt{plot\_realizations} and
 \texttt{plot\_conn\_pushforward\_quantiles} functions also include
@@ -692,7 +708,7 @@ probabilistic behavior varies around the baseline values.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-21-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-22-1.pdf}
 
 \section{Multi-Dimensional Baseline
 Function}\label{multi-dimensional-baseline-function}
@@ -744,7 +760,7 @@ component of the observed inputs.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-22-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-23-1.pdf}
 
 \subsection{Prior Checks}\label{prior-checks-1}
 
@@ -897,7 +913,52 @@ predictive distribution of the histogram counts.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-25-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-26-1.pdf}
+
+We can also set the binning by hand, either with bounds a fixed bin
+width or an arbitrary bin configuration.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_hist\_quantiles}\NormalTok{(samples, }\StringTok{\textquotesingle{}y\_pred\textquotesingle{}}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{400}\NormalTok{, }\DecValTok{400}\NormalTok{, }\DecValTok{50}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Warning in check_bin_containment(bin_min, bin_max, collapsed_values,
+"predictive value"): 107 predictive values (0.0%) fell below the binning.
+\end{verbatim}
+
+\begin{verbatim}
+Warning in check_bin_containment(bin_min, bin_max, collapsed_values,
+"predictive value"): 123 predictive values (0.0%) fell above the binning.
+\end{verbatim}
+
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-27-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_hist\_quantiles}\NormalTok{(samples, }\StringTok{\textquotesingle{}y\_pred\textquotesingle{}}\NormalTok{,}
+                         \AttributeTok{breaks=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{400}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{200}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{100}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{50}\NormalTok{, }\SpecialCharTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{0}\NormalTok{,}
+                                  \DecValTok{25}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{100}\NormalTok{, }\DecValTok{200}\NormalTok{, }\DecValTok{400}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Warning in check_bin_containment(bin_min, bin_max, collapsed_values,
+"predictive value"): 107 predictive values (0.0%) fell below the binning.
+\end{verbatim}
+
+\begin{verbatim}
+Warning in check_bin_containment(bin_min, bin_max, collapsed_values,
+"predictive value"): 123 predictive values (0.0%) fell above the binning.
+\end{verbatim}
+
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-28-1.pdf}
 
 To capture the interactions between the predictive outputs and the
 observed input components we'll need a more sophisticated summary
@@ -926,7 +987,7 @@ prior predictive behavior of these summary statistics.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-26-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-29-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -942,7 +1003,7 @@ prior predictive behavior of these summary statistics.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-27-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-30-1.pdf}
 
 \subsection{Posterior Inference}\label{posterior-inference-1}
 
@@ -1091,7 +1152,7 @@ behavior.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-30-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-33-1.pdf}
 
 Additionally the \texttt{plot\_conditional\_mean\_quantiles} and
 \texttt{plot\_conditional\_median\_quantiles} functions feature a
@@ -1123,7 +1184,7 @@ problems.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-31-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-34-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1148,7 +1209,7 @@ problems.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-32-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-35-1.pdf}
 
 With no indications of model inadequacy we can move onto our posterior
 inferences. As before we can visualize the pushforward posterior
@@ -1186,7 +1247,7 @@ distributions for each individual, one-dimensional parameter.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-33-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-36-1.pdf}
 
 The \texttt{plot\_disc\_pushforward\_quantiles} function plots
 disconnected, marginal nested quantile intervals for a collection of
@@ -1214,7 +1275,7 @@ of the marginal posterior distributions.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-34-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-37-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1229,7 +1290,7 @@ of the marginal posterior distributions.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-35-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-38-1.pdf}
 
 This function also includes an optional \texttt{baseline\_values}
 argument and \texttt{residual} configuration which we can use to compare
@@ -1257,7 +1318,7 @@ posterior inferences to the true values when analyzing simulated data.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-36-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-39-1.pdf}
 
 \section*{License}\label{license}
 \addcontentsline{toc}{section}{License}
