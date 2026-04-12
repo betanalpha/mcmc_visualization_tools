@@ -171,8 +171,10 @@ plot(0, type="n",
      xlim=c(-6, 7), xlab="",
      ylim=c(0, 160), ylab="Counts")
 
-util$plot_line_hist(data$x, -6, 6, 0.5, col="black", add=TRUE)
-util$plot_line_hist(data$y, -4, 7, 0.5, col=util$c_mid_teal, add=TRUE)
+util$plot_line_hist(data$x, -6, 6, 0.5,
+                    col="black", add=TRUE)
+util$plot_line_hist(data$y, -4, 7, 0.5,
+                    col=util$c_mid_teal, add=TRUE)
 
 text(-3.5, 90, cex=1.25, label="Observed\nInputs",
      pos=4, col="black")
@@ -241,8 +243,10 @@ f_names <- sapply(1:data$N_grid,
                   function(n) paste0('f_grid[', n, ']'))
 util$plot_realizations(samples, f_names, data$x_grid,
                        xlab="x", ylab="f")
-util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
-                                     xlab="x", ylab="f")
+util$plot_conn_pushforward_quantiles(
+  samples, f_names, data$x_grid,
+  xlab="x", ylab="f"
+)
 ```
 
 Finally let's use the `plot_conn_pushforward_quantiles` function to plot nested
@@ -254,8 +258,10 @@ par(mfrow=c(1, 1))
 
 pred_names <- sapply(1:data$N_grid,
                      function(n) paste0('y_pred_grid[', n, ']'))
-util$plot_conn_pushforward_quantiles(samples, pred_names, data$x_grid,
-                                     xlab="x", ylab="y")
+util$plot_conn_pushforward_quantiles(
+  samples, pred_names, data$x_grid,
+  xlab="x", ylab="y"
+)
 ```
 
 ## Posterior Inference
@@ -342,8 +348,10 @@ f_names <- sapply(1:data$N_grid,
                   function(n) paste0('f_grid[', n, ']'))
 util$plot_realizations(samples, f_names, data$x_grid,
                        xlab="x", ylab="f")
-util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
-                                     xlab="x", ylab="f")
+util$plot_conn_pushforward_quantiles(
+  samples, f_names, data$x_grid,
+  xlab="x", ylab="f"
+)
 ```
 
 Conveniently all of these visualization functions feature optional arguments
@@ -382,10 +390,12 @@ util$plot_realizations(samples, f_names, data$x_grid,
                        baseline_values=true_fs,
                        baseline_col=util$c_mid_teal,
                        xlab="x", ylab="f")
-util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
-                                     baseline_values=true_fs,
-                                     baseline_col=util$c_mid_teal,
-                                     xlab="x", ylab="f")
+util$plot_conn_pushforward_quantiles(
+  samples, f_names, data$x_grid,
+  baseline_values=true_fs,
+  baseline_col=util$c_mid_teal,
+  xlab="x", ylab="f"
+)
 ```
 
 The `plot_realizations` and `plot_conn_pushforward_quantiles` functions also
@@ -399,10 +409,12 @@ util$plot_realizations(samples, f_names, data$x_grid,
                        baseline_values=true_fs,
                        residual=TRUE,
                        xlab="x", ylab="f")
-util$plot_conn_pushforward_quantiles(samples, f_names, data$x_grid,
-                                     baseline_values=true_fs,
-                                     residual=TRUE,
-                                     xlab="x", ylab="f")
+util$plot_conn_pushforward_quantiles(
+  samples, f_names, data$x_grid,
+  baseline_values=true_fs,
+  residual=TRUE,
+  xlab="x", ylab="f"
+)
 ```
 
 # Multi-Dimensional Baseline Function
@@ -434,23 +446,29 @@ util$plot_line_hist(data$X[,1], -9, 9, 1, xlab="x1")
 util$plot_line_hist(data$X[,2], -9, 9, 1, xlab="x1")
 util$plot_line_hist(data$X[,3], -9, 9, 1, xlab="x1")
 
-plot(data$X[,1], data$X[,2], pch=16, cex=1.0, col="black",
-     main="", xlim=c(-9, 9), xlab="x1", ylim=c(-9, 9), ylab="x2")
+plot(data$X[,1], data$X[,2],
+     pch=16, cex=1.0, col="black", main="",
+     xlim=c(-9, 9), xlab="x1", ylim=c(-9, 9), ylab="x2")
 
-plot(data$X[,1], data$X[,3], pch=16, cex=1.0, col="black",
-     main="", xlim=c(-9, 9), xlab="x1", ylim=c(-9, 9), ylab="x3")
+plot(data$X[,1], data$X[,3],
+     pch=16, cex=1.0, col="black", main="",
+     xlim=c(-9, 9), xlab="x1", ylim=c(-9, 9), ylab="x3")
 
-plot(data$X[,2], data$X[,3], pch=16, cex=1.0, col="black",
-     main="", xlim=c(-9, 9), xlab="x2", ylim=c(-9, 9), ylab="x3")
+plot(data$X[,2], data$X[,3],
+     pch=16, cex=1.0, col="black", main="",
+     xlim=c(-9, 9), xlab="x2", ylim=c(-9, 9), ylab="x3")
 
-plot(data$X[,1], data$y, pch=16, cex=1.0, col="black",
-     main="", xlim=c(-9, 9), xlab="x1", ylim=c(-25, 325), ylab="y")
+plot(data$X[,1], data$y,
+     pch=16, cex=1.0, col="black", main="",
+     xlim=c(-9, 9), xlab="x1", ylim=c(-25, 325), ylab="y")
 
-plot(data$X[,2], data$y, pch=16, cex=1.0, col="black",
-     main="", xlim=c(-9, 9), xlab="x2", ylim=c(-25, 325), ylab="y")
+plot(data$X[,2], data$y,
+     pch=16, cex=1.0, col="black", main="",
+     xlim=c(-9, 9), xlab="x2", ylim=c(-25, 325), ylab="y")
 
-plot(data$X[,3], data$y, pch=16, cex=1.0, col="black",
-     main="", xlim=c(-9, 9), xlab="x3", ylim=c(-25, 325), ylab="y")
+plot(data$X[,3], data$y,
+     pch=16, cex=1.0, col="black", main="",
+     xlim=c(-9, 9), xlab="x3", ylim=c(-25, 325), ylab="y")
 ```
 
 ## Prior Checks
@@ -534,25 +552,39 @@ behavior of these summary statistics.
 ```{r}
 par(mfrow=c(1, 3))
 
-pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
-                                     -9, 9, 1, xlab="x1")
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
-                                     -9, 9, 1,xlab="x2")
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
-                                     -9, 9, 1, xlab="x3")
+pred_names <- sapply(1:data$N,
+                     function(n) paste0('y_pred[', n, ']'))
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,1],
+  -9, 9, 1, xlab="x1"
+  )
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,2],
+  -9, 9, 1,xlab="x2"
+  )
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,3],
+  -9, 9, 1, xlab="x3"
+  )
 ```
 
 ```{r}
 par(mfrow=c(1, 3))
 
-pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
-                                       -9, 9, 1, xlab="x1")
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
-                                       -9, 9, 1, xlab="x2")
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
-                                       -9, 9, 1, xlab="x3")
+pred_names <- sapply(1:data$N,
+                     function(n) paste0('y_pred[', n, ']'))
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,1],
+  -9, 9, 1, xlab="x1"
+)
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,2],
+  -9, 9, 1, xlab="x2"
+)
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,3],
+  -9, 9, 1, xlab="x3"
+)
 ```
 
 ## Posterior Inference
@@ -594,7 +626,8 @@ posterior predictive behavior.
 ```{r}
 par(mfrow=c(1, 1))
 
-util$plot_hist_quantiles(samples, 'y_pred', baseline_values=data$y)
+util$plot_hist_quantiles(samples, 'y_pred',
+                         baseline_values=data$y)
 ```
 
 Additionally the `plot_conditional_mean_quantiles` and
@@ -606,43 +639,57 @@ however, there don't seem to be any problems.
 ```{r}
 par(mfrow=c(2, 3))
 
-pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
-                                     -9, 9, 1, data$y, xlab="x1")
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
-                                     -9, 9, 1, data$y, xlab="x2")
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
-                                     -9, 9, 1, data$y, xlab="x3")
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,1],
-                                     -9, 9, 1, data$y, residual=TRUE,
-                                     xlab="x1")
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,2],
-                                     -9, 9, 1, data$y, residual=TRUE,
-                                     xlab="x2")
-util$plot_conditional_mean_quantiles(samples, pred_names, data$X[,3],
-                                     -9, 9, 1, data$y, residual=TRUE,
-                                     xlab="x3")
+pred_names <- sapply(1:data$N,
+                     function(n) paste0('y_pred[', n, ']'))
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,1],
+  -9, 9, 1, data$y, xlab="x1")
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,2],
+  -9, 9, 1, data$y, xlab="x2")
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,3],
+  -9, 9, 1, data$y, xlab="x3")
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,1],
+  -9, 9, 1, data$y, residual=TRUE, xlab="x1")
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,2],
+  -9, 9, 1, data$y, residual=TRUE, xlab="x2")
+util$plot_conditional_mean_quantiles(
+  samples, pred_names, data$X[,3],
+  -9, 9, 1, data$y, residual=TRUE, xlab="x3")
 ```
 
 ```{r}
 par(mfrow=c(2, 3))
 
-pred_names <- sapply(1:data$N, function(n) paste0('y_pred[', n, ']'))
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
-                                       -9, 9, 1, data$y, xlab="x1")
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
-                                       -9, 9, 1, data$y, xlab="x2")
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
-                                       -9, 9, 1, data$y, xlab="x3")
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,1],
-                                       -9, 9, 1, data$y, residual=TRUE,
-                                       xlab="x1")
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,2],
-                                       -9, 9, 1, data$y, residual=TRUE,
-                                       xlab="x2")
-util$plot_conditional_median_quantiles(samples, pred_names, data$X[,3],
-                                       -9, 9, 1, data$y, residual=TRUE,
-                                       xlab="x3")
+pred_names <- sapply(1:data$N,
+                     function(n) paste0('y_pred[', n, ']'))
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,1],
+  -9, 9, 1, data$y, xlab="x1"
+)
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,2],
+  -9, 9, 1, data$y, xlab="x2"
+)
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,3],
+  -9, 9, 1, data$y, xlab="x3"
+)
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,1],
+  -9, 9, 1, data$y, residual=TRUE, xlab="x1"
+)
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,2],
+  -9, 9, 1, data$y, residual=TRUE, xlab="x2"
+)
+util$plot_conditional_median_quantiles(
+  samples, pred_names, data$X[,3],
+  -9, 9, 1, data$y, residual=TRUE, xlab="x3"
+)
 ```
 
 With no indications of model inadequacy we can move onto our posterior
@@ -686,31 +733,79 @@ allows for a more compact visualization of the marginal posterior distributions.
 ```{r}
 par(mfrow=c(1, 3))
 
-names <- sapply(1:data$M, function(m) paste0('beta1[', m, ']'))
-util$plot_disc_pushforward_quantiles(samples, names,
-                                     xlab="beta1",
-                                     ylab="Marginal Posterior Quantiles")
+names <- sapply(1:data$M,
+                function(m) paste0('beta1[', m, ']'))
+util$plot_disc_pushforward_quantiles(
+  samples, names,
+  xlab="beta1",
+  xticklabs=1:data$M,
+  ylab="Marginal Posterior Quantiles"
+)
 
-names <- sapply(1:data$M, function(m) paste0('beta2_d[', m, ']'))
-util$plot_disc_pushforward_quantiles(samples, names,
-                                     xlab="beta2_d",
-                                     ylab="Marginal Posterior Quantiles")
+names <- sapply(1:data$M,
+                function(m) paste0('beta2_d[', m, ']'))
+util$plot_disc_pushforward_quantiles(
+  samples, names,
+  xlab="beta2_d",
+  xticklabs=1:data$M,
+  ylab="Marginal Posterior Quantiles"
+)
 
-names <- sapply(1:data$M, function(m) paste0('beta2_o[', m, ']'))
-util$plot_disc_pushforward_quantiles(samples, names,
-                                     xlab="beta2_o",
-                                     ylab="Marginal Posterior Quantiles")
+names <- sapply(1:data$M,
+                function(m) paste0('beta2_o[', m, ']'))
+util$plot_disc_pushforward_quantiles(
+  samples, names,
+  xlab="beta2_o",
+  xticklabs=1:data$M,
+  ylab="Marginal Posterior Quantiles"
+)
 ```
 
 ```{r}
 par(mfrow=c(1, 1))
 
-names <- c(sapply(1:data$M, function(m) paste0('beta1[', m, ']')),
-           sapply(1:data$M, function(m) paste0('beta2_d[', m, ']')),
-           sapply(1:data$M, function(m) paste0('beta2_o[', m, ']')))
-util$plot_disc_pushforward_quantiles(samples, names,
-                                     xlab="All Slopes",
-                                     ylab="Marginal Posterior Quantiles")
+names <- c(sapply(1:data$M,
+                  function(m) paste0('beta1[', m, ']')),
+           sapply(1:data$M,
+                  function(m) paste0('beta2_d[', m, ']')),
+           sapply(1:data$M,
+                  function(m) paste0('beta2_o[', m, ']')))
+util$plot_disc_pushforward_quantiles(
+  samples, names,
+  xlab="All Slopes",
+  ylab="Marginal Posterior Quantiles"
+)
+```
+
+This plot style can also be rotated, which is helpful when working
+with longer labels.
+
+```{r}
+par(mfrow=c(3, 1))
+
+names <- sapply(1:data$M,
+                function(m) paste0('beta1[', m, ']'))
+util$plot_disc_pushforward_quantiles_vert(
+  samples, names,
+  xlab="Marginal Posterior Quantiles",
+  yticklabs=names
+)
+
+names <- sapply(1:data$M,
+                function(m) paste0('beta2_d[', m, ']'))
+util$plot_disc_pushforward_quantiles_vert(
+  samples, names,
+  xlab="Marginal Posterior Quantiles",
+  yticklabs=names
+)
+
+names <- sapply(1:data$M,
+                function(m) paste0('beta2_o[', m, ']'))
+util$plot_disc_pushforward_quantiles_vert(
+  samples, names,
+  xlab="Marginal Posterior Quantiles",
+  yticklabs=names
+)
 ```
 
 This function also includes an optional `baseline_values` argument and
@@ -719,22 +814,33 @@ point values, for example our marginal posterior inferences to the true values
 when analyzing simulated data.
 
 ```{r}
+names <- c(sapply(1:data$M,
+                  function(m) paste0('beta1[', m, ']')),
+           sapply(1:data$M,
+                  function(m) paste0('beta2_d[', m, ']')),
+           sapply(1:data$M,
+                  function(m) paste0('beta2_o[', m, ']')))
+
 true_slopes <- c(-6.00, -1.50, 13.00,  0.50, 0.25,
                  1.00, -0.50, -2.00, -1.00)
 
 par(mfrow=c(2, 1))
 
-util$plot_disc_pushforward_quantiles(samples, names,
-                                     baseline_values=true_slopes,
-                                     baseline_col=util$c_mid_teal,
-                                     xlab="All Slopes",
-                                     ylab="Marginal Posterior\nQuantiles")
+util$plot_disc_pushforward_quantiles(
+  samples, names,
+  baseline_values=true_slopes,
+  baseline_col=util$c_mid_teal,
+  xlab="All Slopes",
+  ylab="Marginal Posterior\nQuantiles"
+)
 
-util$plot_disc_pushforward_quantiles(samples, names,
-                                     baseline_values=true_slopes,
-                                     residual=TRUE,
-                                     xlab="All Slopes",
-                                     ylab="Marginal Posterior\nQuantile Residuals")
+util$plot_disc_pushforward_quantiles(
+  samples, names,
+  baseline_values=true_slopes,
+  residual=TRUE,
+  xlab="All Slopes",
+  ylab="Marginal Posterior\nQuantile Residuals"
+)
 ```
 
 # License {-}

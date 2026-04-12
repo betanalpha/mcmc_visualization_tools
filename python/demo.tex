@@ -488,9 +488,10 @@ predictive behavior at each element of \texttt{data\$x\_grid}.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ util.name\_nested\_list(}\StringTok{\textquotesingle{}y\_pred\_grid\textquotesingle{}}\NormalTok{, [data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]])}
-\NormalTok{putil.plot\_conn\_pushforward\_quantiles(plot.gca(), samples,}
-\NormalTok{                                      pred\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(}
+\NormalTok{  plot.gca(), samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}
+\NormalTok{)}
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -588,10 +589,12 @@ p(y \mid x,
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred\_grid[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_conn\_pushforward\_quantiles(plot.gca(), samples,}
-\NormalTok{                                      pred\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred\_grid[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+               \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\_grid\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(}
+\NormalTok{  plot.gca(), samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}
+\NormalTok{)}
 \NormalTok{plot.scatter(data[}\StringTok{\textquotesingle{}x\textquotesingle{}}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], s}\OperatorTok{=}\DecValTok{1}\NormalTok{, color}\OperatorTok{=}\StringTok{"white"}\NormalTok{, zorder}\OperatorTok{=}\DecValTok{4}\NormalTok{)}
 \NormalTok{plot.scatter(data[}\StringTok{\textquotesingle{}x\textquotesingle{}}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], s}\OperatorTok{=}\FloatTok{0.8}\NormalTok{, color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, zorder}\OperatorTok{=}\DecValTok{4}\NormalTok{)}
 
@@ -695,11 +698,11 @@ simulation studies.
 \NormalTok{                        baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
 \NormalTok{                        baseline\_color}\OperatorTok{=}\NormalTok{putil.mid\_teal,}
 \NormalTok{                        xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
-\NormalTok{putil.plot\_conn\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples,}
-\NormalTok{                                      f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
-\NormalTok{                                      baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
-\NormalTok{                                      baseline\_color}\OperatorTok{=}\NormalTok{putil.mid\_teal,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{  baseline\_values}\OperatorTok{=}\NormalTok{true\_fs, baseline\_color}\OperatorTok{=}\NormalTok{putil.mid\_teal,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}
+\NormalTok{)}
 
 \NormalTok{plot.show()}
 \end{Highlighting}
@@ -720,11 +723,11 @@ probabilistic behavior varies around the baseline values.
 \NormalTok{                        baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
 \NormalTok{                        residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
 \NormalTok{                        xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
-\NormalTok{putil.plot\_conn\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples,}
-\NormalTok{                                      f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
-\NormalTok{                                      residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
-\NormalTok{                                      baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{putil.plot\_conn\_pushforward\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, f\_names, data[}\StringTok{\textquotesingle{}x\_grid\textquotesingle{}}\NormalTok{],}
+\NormalTok{  residual}\OperatorTok{=}\VariableTok{True}\NormalTok{, baseline\_values}\OperatorTok{=}\NormalTok{true\_fs,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{"f"}
+\NormalTok{)}
 
 \NormalTok{plot.show()}
 \end{Highlighting}
@@ -761,45 +764,54 @@ component of the observed inputs.
 
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
 
-\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
-\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
-\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{2}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{],}
+                     \OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{],}
+                     \OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{putil.plot\_line\_hist(axarr[}\DecValTok{2}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{],}
+                     \OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{)}
 
 \NormalTok{plot.show()}
 
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
 
-\NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{],}
+\NormalTok{                    color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_xlabel(}\StringTok{"x1"}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_ylabel(}\StringTok{"x2"}\NormalTok{)}
 
-\NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{],}
+\NormalTok{                    color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_xlabel(}\StringTok{"x1"}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_ylabel(}\StringTok{"x3"}\NormalTok{)}
 
-\NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{],}
+\NormalTok{                    color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_xlabel(}\StringTok{"x2"}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{0}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_ylabel(}\StringTok{"x3"}\NormalTok{)}
 
-\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{],}
+\NormalTok{                    color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_xlabel(}\StringTok{"x1"}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{].set\_ylabel(}\StringTok{"y"}\NormalTok{)}
 
-\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{],}
+\NormalTok{                    color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_xlabel(}\StringTok{"x2"}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{].set\_ylabel(}\StringTok{"y"}\NormalTok{)}
 
-\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].scatter(data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{],}
+\NormalTok{                    color}\OperatorTok{=}\StringTok{"black"}\NormalTok{, s}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_xlim([}\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{])}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_xlabel(}\StringTok{"x3"}\NormalTok{)}
 \NormalTok{axarr[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{].set\_ylim([}\OperatorTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{])}
@@ -970,7 +982,8 @@ width or an arbitrary bin configuration.
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{putil.plot\_hist\_quantiles(plot.gca(), samples, }\StringTok{\textquotesingle{}y\_pred\textquotesingle{}}\NormalTok{, }\OperatorTok{{-}}\DecValTok{400}\NormalTok{, }\DecValTok{400}\NormalTok{, }\DecValTok{50}\NormalTok{)}
+\NormalTok{putil.plot\_hist\_quantiles(plot.gca(), samples, }\StringTok{\textquotesingle{}y\_pred\textquotesingle{}}\NormalTok{,}
+                          \OperatorTok{{-}}\DecValTok{400}\NormalTok{, }\DecValTok{400}\NormalTok{, }\DecValTok{50}\NormalTok{)}
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -1016,16 +1029,23 @@ prior predictive behavior of these summary statistics.
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
 \NormalTok{f.suptitle(}\StringTok{"Marginal Quantiles of Conditional Means"}\NormalTok{)}
 
-\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+               \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -1037,16 +1057,23 @@ prior predictive behavior of these summary statistics.
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
 \NormalTok{f.suptitle(}\StringTok{"Marginal Quantiles of Conditional Medians"}\NormalTok{)}
 
-\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+               \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -1214,33 +1241,47 @@ problems.
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
 \NormalTok{f.suptitle(}\StringTok{"Marginal Quantiles of Conditional Means"}\NormalTok{)}
 
-\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+               \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
 \NormalTok{plot.show()}
 
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
-\NormalTok{f.suptitle(}\StringTok{"Marginal Quantiles of Conditional Means Minus Baselines"}\NormalTok{)}
+\NormalTok{f.suptitle(}\StringTok{"Marginal Quantiles of Conditional Means"}
+           \StringTok{"Minus Baselines"}\NormalTok{)}
 
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_mean\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                      data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_mean\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -1254,33 +1295,47 @@ problems.
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
 \NormalTok{f.suptitle(}\StringTok{"Marginal Quantiles of Conditional Medians"}\NormalTok{)}
 
-\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
+\NormalTok{pred\_names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}y\_pred[}\SpecialCharTok{\{}\NormalTok{n }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+              \ControlFlowTok{for}\NormalTok{ n }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}N\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
 \NormalTok{plot.show()}
 
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
-\NormalTok{f.suptitle(}\StringTok{"Marginal Quantiles of Conditional Medians Minus Baselines"}\NormalTok{)}
+\NormalTok{f.suptitle(}\StringTok{"Marginal Quantiles of Conditional Medians"}
+           \StringTok{"Minus Baselines"}\NormalTok{)}
 
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
-\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
-\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
-\NormalTok{putil.plot\_conditional\_median\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
-\NormalTok{                                        data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
-\NormalTok{                                        xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{0}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x1"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{1}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x2"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
+\NormalTok{putil.plot\_conditional\_median\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{2}\NormalTok{], samples, pred\_names,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}X\textquotesingle{}}\NormalTok{][:,}\DecValTok{2}\NormalTok{], }\OperatorTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+\NormalTok{  data[}\StringTok{\textquotesingle{}y\textquotesingle{}}\NormalTok{], residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"x3"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
@@ -1335,20 +1390,32 @@ of the marginal posterior distributions.
 \begin{Highlighting}[]
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
 
-\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta1[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, names,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"beta1"}\NormalTok{,}
-\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta1[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+          \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, names,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"beta1"}\NormalTok{,}
+\NormalTok{  xticklabels}\OperatorTok{=}\NormalTok{[ m }\OperatorTok{+} \DecValTok{1} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ],}
+\NormalTok{  ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
 
-\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta2\_o[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, names,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"beta2\_d"}\NormalTok{,}
-\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta2\_o[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+          \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, names,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"beta2\_d"}\NormalTok{,}
+\NormalTok{  xticklabels}\OperatorTok{=}\NormalTok{[ m }\OperatorTok{+} \DecValTok{1} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ],}
+\NormalTok{  ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
 
-\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta2\_d[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{2}\NormalTok{], samples, names,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"beta2\_o"}\NormalTok{,}
-\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta2\_d[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+          \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{2}\NormalTok{], samples, names,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"beta2\_o"}\NormalTok{,}
+\NormalTok{  xticklabels}\OperatorTok{=}\NormalTok{[ m }\OperatorTok{+} \DecValTok{1} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ],}
+\NormalTok{  ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
 
 \NormalTok{plot.show()}
 \end{Highlighting}
@@ -1361,14 +1428,53 @@ of the marginal posterior distributions.
 \NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta1[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ] }\OperatorTok{+} \OperatorTok{\textbackslash{}}
 \NormalTok{        [ }\SpecialStringTok{f\textquotesingle{}beta2\_d[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ] }\OperatorTok{+} \OperatorTok{\textbackslash{}}
 \NormalTok{        [ }\SpecialStringTok{f\textquotesingle{}beta2\_o[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
-\NormalTok{putil.plot\_disc\_pushforward\_quantiles(plot.gca(), samples, names,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{,}
-\NormalTok{                                      ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(}
+\NormalTok{  plot.gca(), samples, names,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{,}
+\NormalTok{  ylabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
 
 \includegraphics{demo_files/figure-pdf/cell-38-output-1.pdf}
+
+This plot style can also be rotated, which is helpful when working with
+longer labels.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
+
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta1[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+          \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles\_vert(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, names,}
+\NormalTok{  yticklabels}\OperatorTok{=}\NormalTok{names,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
+
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta2\_o[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+          \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles\_vert(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, names,}
+\NormalTok{  yticklabels}\OperatorTok{=}\NormalTok{names,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
+
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta2\_d[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}
+          \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles\_vert(}
+\NormalTok{  axarr[}\DecValTok{2}\NormalTok{], samples, names,}
+\NormalTok{  yticklabels}\OperatorTok{=}\NormalTok{names,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
+
+\NormalTok{plot.show()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/cell-39-output-1.pdf}
 
 This function also includes an optional \texttt{baseline\_values}
 argument and \texttt{residual} configuration which we can use to compare
@@ -1377,26 +1483,34 @@ posterior inferences to the true values when analyzing simulated data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{names }\OperatorTok{=}\NormalTok{ [ }\SpecialStringTok{f\textquotesingle{}beta1[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}}   \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ] }\OperatorTok{+} \OperatorTok{\textbackslash{}}
+\NormalTok{        [ }\SpecialStringTok{f\textquotesingle{}beta2\_d[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ] }\OperatorTok{+} \OperatorTok{\textbackslash{}}
+\NormalTok{        [ }\SpecialStringTok{f\textquotesingle{}beta2\_o[}\SpecialCharTok{\{}\NormalTok{m }\OperatorTok{+} \DecValTok{1}\SpecialCharTok{\}}\SpecialStringTok{]\textquotesingle{}} \ControlFlowTok{for}\NormalTok{ m }\KeywordTok{in} \BuiltInTok{range}\NormalTok{(data[}\StringTok{\textquotesingle{}M\textquotesingle{}}\NormalTok{]) ]}
+
 \NormalTok{true\_slopes }\OperatorTok{=}\NormalTok{ [}\OperatorTok{{-}}\FloatTok{6.00}\NormalTok{, }\OperatorTok{{-}}\FloatTok{1.50}\NormalTok{, }\FloatTok{13.00}\NormalTok{,  }\FloatTok{0.50}\NormalTok{, }\FloatTok{0.25}\NormalTok{,}
                \FloatTok{1.00}\NormalTok{, }\OperatorTok{{-}}\FloatTok{0.50}\NormalTok{, }\OperatorTok{{-}}\FloatTok{2.00}\NormalTok{, }\OperatorTok{{-}}\FloatTok{1.00}\NormalTok{]}
 
 \NormalTok{f, axarr }\OperatorTok{=}\NormalTok{ plot.subplots(}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, layout}\OperatorTok{=}\StringTok{"constrained"}\NormalTok{)}
 
-\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{0}\NormalTok{], samples, names,}
-\NormalTok{                                      baseline\_values}\OperatorTok{=}\NormalTok{true\_slopes,}
-\NormalTok{                                      baseline\_color}\OperatorTok{=}\NormalTok{putil.mid\_teal,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{0}\NormalTok{], samples, names,}
+\NormalTok{  baseline\_values}\OperatorTok{=}\NormalTok{true\_slopes,}
+\NormalTok{  baseline\_color}\OperatorTok{=}\NormalTok{putil.mid\_teal,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
 
-\NormalTok{putil.plot\_disc\_pushforward\_quantiles(axarr[}\DecValTok{1}\NormalTok{], samples, names,}
-\NormalTok{                                      baseline\_values}\OperatorTok{=}\NormalTok{true\_slopes,}
-\NormalTok{                                      residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
-\NormalTok{                                      xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}\NormalTok{)}
+\NormalTok{putil.plot\_disc\_pushforward\_quantiles(}
+\NormalTok{  axarr[}\DecValTok{1}\NormalTok{], samples, names,}
+\NormalTok{  baseline\_values}\OperatorTok{=}\NormalTok{true\_slopes,}
+\NormalTok{  residual}\OperatorTok{=}\VariableTok{True}\NormalTok{,}
+\NormalTok{  xlabel}\OperatorTok{=}\StringTok{"All Slopes"}\NormalTok{, ylabel}\OperatorTok{=}\StringTok{""}
+\NormalTok{)}
 
 \NormalTok{plot.show()}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/cell-39-output-1.pdf}
+\includegraphics{demo_files/figure-pdf/cell-40-output-1.pdf}
 
 \section*{License}\label{license}
 \addcontentsline{toc}{section}{License}
@@ -1423,7 +1537,7 @@ Environment}\label{original-computing-environment}
 \end{Shaded}
 
 \begin{verbatim}
-Last updated: 2025-04-23T23:11:09.503093-04:00
+Last updated: 2026-04-11T22:05:04.629786-04:00
 
 Python implementation: CPython
 Python version       : 3.9.6
@@ -1431,7 +1545,7 @@ IPython version      : 8.18.1
 
 Compiler    : Clang 12.0.0 (clang-1200.0.32.29)
 OS          : Darwin
-Release     : 23.4.0
+Release     : 24.6.0
 Machine     : x86_64
 Processor   : i386
 CPU cores   : 16

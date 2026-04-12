@@ -488,6 +488,238 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
   ax.set_ylabel("Counts")
   ax.set_ylim(display_ylim)
 
+# Plot disconnected nested quantile intervals and/or
+# disconnected values.
+# @ax Matplotlib axis object
+# @param samples A named list of two-dimensional arrays for
+#                each expectand.  The first dimension of each element
+#                indexes the Markov chains and the second dimension
+#                indexes the sequential states within each Markov chain.
+# @param names List of relevant variable names
+# @param vals Values to plot; defaults to None
+# @param col Color for plotting values; defaults to "black"
+# @params residual Boolean value indicating whether to overlay quantiles and
+#                  baseline values or plot their differences
+# @param var_label Variable label; defaults to empty string
+# @param var_names Individual variable names; defaults to None
+# @param val_label Value label; defaults to None
+# @param val_lim Value limits; defaults to None
+# @param main Plot title; defaults to empty string
+# @param rotate Boolean value indicating whether to rotate the axes or not
+def plot_disc_pushforward_prime(ax, samples, names,
+                                values=None, color="black",
+                                residual=False,
+                                var_label="", var_names=None,
+                                val_label="", val_lim=None,
+                                title="", rotate=False):
+  valid_samples = (samples is not None) and (names is not None)
+  valid_values = values is not None
+
+  if valid_samples:
+    if valid_values:
+      # Check that values are well-defined
+      if len(values) != len(names):
+        print('The list of values has the wrong '
+              'dimension.  Values will not be plotted.')
+        valid_values = False
+
+    # Check that names are in samples
+    names = check_expectand_names(names, samples)
+
+    N = len(names)
+  elif valid_values:
+    # Only valid values
+    if residual:
+      print('The argument `residuals` will be ignored')
+    residual = False
+
+    N = len(names)
+  else:
+    # Neither valid samples nor values; plot nothing
+    return
+
+  if var_names is not None:
+    if len(var_names) != N:
+      print('The list of variable names has the wrong dimension '
+            'and values will not be plotted.')
+      var_names = None
+
+
+  # Construct bins
+  breaks = [ n + 0.5 for n in range(N + 1) ]
+  plot_idxs, plot_pos = configure_bin_plotting(breaks)
+
+  # Construct marginal quantiles if needed
+  if valid_samples:
+    probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+
+    if valid_values and residual:
+      def calc(n):
+        return util.ensemble_mcmc_quantile_est(
+          samples[names[n]] - values[n], probs
+        )
+      quantiles = [ calc(n) for n in range(N) ]
+    else:
+      def calc(n):
+        return util.ensemble_mcmc_quantile_est(
+          samples[names[n]], probs
+        )
+      quantiles = [ calc(n) for n in range(N) ]
+
+    plot_quantiles = [ quantiles[idx] for idx in plot_idxs ]
+
+  # Plot
+  if val_lim is None:
+    mins = []
+    maxs = []
+
+    if valid_samples:
+      mins.extend([ q[0] for q in quantiles ])
+      maxs.extend([ q[8] for q in quantiles ])
+
+    if valid_values and not residual:
+      mins.extend(values)
+      maxs.extend(values)
+
+    if valid_values and residual:
+      mins.append(0)
+      maxs.append(0)
+
+    val_lim = [ min(mins), max(maxs) ]
+
+    delta = 0.05 * (val_lim[1] - val_lim[0])
+    val_lim[0] -= delta
+    val_lim[1] += delta
+
+  if val_label is None:
+    if valid_samples and not valid_values:
+      val_label = "Marginal Quantiles"
+    if valid_samples and valid_values and residual:
+      val_label = "Marginal Quantiles - Baselines"
+    if not valid_samples:
+      val_label = "Values"
+
+  if rotate:
+    if var_names is not None:
+      ax.set_yticks([ n + 1 for n in range(N) ])
+      ax.set_yticklabels(var_names)
+
+    if valid_samples:
+      for n in range(N):
+        idx1 = 2 * n
+        idx2 = 2 * n + 1
+        h = plot_pos[idx2] - plot_pos[idx1]
+
+        w = plot_quantiles[idx1][8] - plot_quantiles[idx1][0]
+        rect1 = plot.Rectangle((plot_quantiles[idx1][0],
+                                plot_pos[idx1]),
+                               w, h, facecolor=light)
+        ax.add_patch(rect1)
+
+        w = plot_quantiles[idx1][7] - plot_quantiles[idx1][1]
+        rect2 = plot.Rectangle((plot_quantiles[idx1][1],
+                                plot_pos[idx1]),
+                               w, h, facecolor=light_highlight)
+        ax.add_patch(rect2)
+
+        w = plot_quantiles[idx1][6] - plot_quantiles[idx1][2]
+        rect3 = plot.Rectangle((plot_quantiles[idx1][2],
+                                plot_pos[idx1]),
+                               w, h, facecolor=mid)
+        ax.add_patch(rect3)
+
+        w = plot_quantiles[idx1][5] - plot_quantiles[idx1][3]
+        rect4 = plot.Rectangle((plot_quantiles[idx1][3],
+                                plot_pos[idx1]),
+                               w, h, facecolor=mid_highlight)
+        ax.add_patch(rect4)
+
+        ax.plot([ plot_quantiles[idx1][4],
+                  plot_quantiles[idx1][4] ],
+                [ plot_pos[idx1], plot_pos[idx2] ],
+                linewidth=1, color=dark)
+
+    if valid_values and residual:
+      ax.axhline(x=0, linewidth=2, linestyle="dashed",
+                 color='#DDDDDD')
+
+    if valid_values and not residual:
+      for n in range(N):
+        idx1 = 2 * n
+        idx2 = 2 * n + 1
+        ax.plot([values[n], values[n]],
+                [plot_pos[idx1], plot_pos[idx2]],
+                color="white", linewidth=4)
+        ax.plot([values[n], values[n]],
+                [plot_pos[idx1], plot_pos[idx2]],
+                color=color, linewidth=2)
+
+    ax.set_title(title)
+    ax.set_xlabel(val_label)
+    ax.set_xlim(val_lim)
+    ax.set_ylabel(var_label)
+    ax.set_ylim([0.5, N + 0.5])
+  else:
+    if var_names is not None:
+      ax.set_xticks([ n + 1 for n in range(N) ])
+      ax.set_xticklabels(var_names)
+
+    if valid_samples:
+      for n in range(N):
+        idx1 = 2 * n
+        idx2 = 2 * n + 1
+        w = plot_pos[idx2] - plot_pos[idx1]
+
+        h = plot_quantiles[idx1][8] - plot_quantiles[idx1][0]
+        rect1 = plot.Rectangle((plot_pos[idx1],
+                                plot_quantiles[idx1][0]),
+                               w, h, facecolor=light)
+        ax.add_patch(rect1)
+
+        h = plot_quantiles[idx1][7] - plot_quantiles[idx1][1]
+        rect2 = plot.Rectangle((plot_pos[idx1],
+                                plot_quantiles[idx1][1]),
+                               w, h, facecolor=light_highlight)
+        ax.add_patch(rect2)
+
+        h = plot_quantiles[idx1][6] - plot_quantiles[idx1][2]
+        rect3 = plot.Rectangle((plot_pos[idx1],
+                                plot_quantiles[idx1][2]),
+                               w, h, facecolor=mid)
+        ax.add_patch(rect3)
+
+        h = plot_quantiles[idx1][5] - plot_quantiles[idx1][3]
+        rect4 = plot.Rectangle((plot_pos[idx1],
+                                plot_quantiles[idx1][3]),
+                               w, h, facecolor=mid_highlight)
+        ax.add_patch(rect4)
+
+        ax.plot([ plot_pos[idx1], plot_pos[idx2] ],
+                [ plot_quantiles[idx1][4],
+                  plot_quantiles[idx1][4] ],
+                linewidth=1, color=dark)
+
+    if valid_values and residual:
+      ax.axhline(y=0, linewidth=2, linestyle="dashed",
+                 color='#DDDDDD')
+
+    if valid_values and not residual:
+      for n in range(N):
+        idx1 = 2 * n
+        idx2 = 2 * n + 1
+        ax.plot([plot_pos[idx1], plot_pos[idx2]],
+                [values[n], values[n]],
+                color="white", linewidth=4)
+        ax.plot([plot_pos[idx1], plot_pos[idx2]],
+                [values[n], values[n]],
+                color=color, linewidth=2)
+
+    ax.set_title(title)
+    ax.set_xlabel(var_label)
+    ax.set_xlim([0.5, N + 0.5])
+    ax.set_ylabel(val_label)
+    ax.set_ylim(val_lim)
+
 # Overlay disconnected nested quantile intervals to visualize an ensemble of
 # one-dimensional pushforward distributions.
 # Individual quantiles are estimated as the average of the empirical quantiles
@@ -500,7 +732,7 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
 #                indexes the sequential states within each Markov chain.
 # @param names List of relevant variable names
 # @param baseline_values Baseline values; defaults to None
-# @param baseline_color Color for plotting baseline value; defaults to "black"
+# @param baseline_col Color for plotting baseline value; defaults to "black"
 # @params residual Boolean value indicating whether to overlay quantiles and
 #                  baseline values or plot their differences
 # @param xlabel Label for x-axis; defaults to empty string
@@ -515,117 +747,62 @@ def plot_disc_pushforward_quantiles(ax, samples, names,
                                     xlabel="", xticklabels=None,
                                     ylabel="", display_ylim=None,
                                     title=""):
-  # Check that baseline values are well-defined
-  if baseline_values is not None:
-    if len(baseline_values) != len(names):
-      print('The list of baseline values has the wrong '
-            'dimension.  Baselines will not be plotted.')
-      baseline_values = None
+  plot_disc_pushforward_prime(ax, samples, names,
+                              baseline_values, baseline_color,
+                              residual,
+                              xlabel, xticklabels,
+                              ylabel, display_ylim, title)
 
-  # Check that names are in samples
-  names = check_expectand_names(names, samples)
+# Plot disconnected values.
+# @ax Matplotlib axis object
+# @param values Values; defaults to None
+# @param color Color for plotting baseline value; defaults to "black"
+# @param xlabel Label for x-axis; defaults to empty string
+# @param xticklabels Labels for x-axis tics; defaults to None
+# @param ylabel Label for y-axis; defaults to None
+# @param display_ylim Plot limits for y-axis; defaults to None
+# @param title Plot title; defaults to empty string
+def plot_disc_vals(ax, values, color="black",
+                   xlabel="", xticklabels=None,
+                   ylabel=None, display_ylim=None,
+                   title=""):
+  plot_disc_pushforward_prime(ax, None, None, values, color, False,
+                              xlabel, xticklabels,
+                              ylabel, display_ylim, title)
 
-  # Construct bins
-  N = len(names)
-  breaks = [ n + 0.5 for n in range(N + 1) ]
-  plot_idxs, plot_xs = configure_bin_plotting(breaks)
-
-  # Construct marginal quantiles
-  probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-
-  if baseline_values is not None and residual:
-    def calc(n):
-      return util.ensemble_mcmc_quantile_est(samples[names[n]] - \
-                                             baseline_values[n],
-                                             probs)
-    quantiles = [ calc(n) for n in range(N) ]
-  else:
-    def calc(n):
-      return util.ensemble_mcmc_quantile_est(samples[names[n]],
-                                             probs)
-    quantiles = [ calc(n) for n in range(N) ]
-
-  plot_quantiles = [ quantiles[idx] for idx in plot_idxs ]
-
-  # Plot
-  if display_ylim is None:
-    if baseline_values is None:
-      display_ylim = [ min([ q[0] for q in quantiles ]),
-                       max([ q[8] for q in quantiles ]) ]
-    else:
-      if residual:
-        display_ylim = [ min([0] + [ q[0] for q in quantiles ]),
-                         max([0] + [ q[8] for q in quantiles ]) ]
-      else:
-        display_ylim = [ min(min([ q[0] for q in quantiles ]),
-                             min(baseline_values)),
-                         max(max([ q[8] for q in quantiles ]),
-                             max(baseline_values)) ]
-    delta = 0.05 * (display_ylim[1] - display_ylim[0])
-    display_ylim[0] -= delta
-    display_ylim[1] += delta
-
-  if ylabel is None:
-    if baseline_values is not None or not residual:
-      ylabel = "Marginal Quantiles"
-    else:
-      ylabel = "Marginal Quantiles - Baselines"
-
-  if xticklabels is not None:
-    if len(xticklabels) == N:
-      ax.set_xticks([ n + 1 for n in range(N) ])
-      ax.set_xticklabels(xticklabels)
-    else:
-      print('The list of x tick labels has the wrong dimension '
-            'and baselines will not be plotted.')
-  for n in range(N):
-    idx1 = 2 * n
-    idx2 = 2 * n + 1
-    w = plot_xs[idx2] - plot_xs[idx1]
-
-    h = plot_quantiles[idx1][8] - plot_quantiles[idx1][0]
-    rect1 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][0]),
-                           w, h, facecolor=light)
-    ax.add_patch(rect1)
-
-    h = plot_quantiles[idx1][7] - plot_quantiles[idx1][1]
-    rect2 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][1]),
-                           w, h, facecolor=light_highlight)
-    ax.add_patch(rect2)
-
-    h = plot_quantiles[idx1][6] - plot_quantiles[idx1][2]
-    rect3 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][2]),
-                           w, h, facecolor=mid)
-    ax.add_patch(rect3)
-
-    h = plot_quantiles[idx1][5] - plot_quantiles[idx1][3]
-    rect4 = plot.Rectangle((plot_xs[idx1], plot_quantiles[idx1][3]),
-                           w, h, facecolor=mid_highlight)
-    ax.add_patch(rect4)
-
-    ax.plot([ plot_xs[idx1], plot_xs[idx2] ],
-            [ plot_quantiles[idx1][4], plot_quantiles[idx1][4] ],
-            linewidth=1, color=dark)
-
-  if baseline_values is not None:
-    if residual:
-      ax.axhline(y=0, linewidth=2, linestyle="dashed", color='#DDDDDD')
-    else:
-      for n in range(N):
-        idx1 = 2 * n
-        idx2 = 2 * n + 1
-        ax.plot([plot_xs[idx1], plot_xs[idx2]],
-                [baseline_values[n], baseline_values[n]],
-                color="white", linewidth=4)
-        ax.plot([plot_xs[idx1], plot_xs[idx2]],
-                [baseline_values[n], baseline_values[n]],
-                color=baseline_color, linewidth=2)
-
-  ax.set_title(title)
-  ax.set_xlabel(xlabel)
-  ax.set_xlim([0.5, N + 0.5])
-  ax.set_ylabel(ylabel)
-  ax.set_ylim(display_ylim)
+# Overlay disconnected nested quantile intervals to visualize an ensemble of
+# one-dimensional pushforward distributions.
+# Individual quantiles are estimated as the average of the empirical quantiles
+# across each Markov chain, a consistent quantile estimator for Markov chain
+# Monte Carlo.
+# @ax Matplotlib axis object
+# @param samples A named list of two-dimensional arrays for
+#                each expectand.  The first dimension of each element
+#                indexes the Markov chains and the second dimension
+#                indexes the sequential states within each Markov chain.
+# @param names List of relevant variable names
+# @param baseline_values Baseline values; defaults to None
+# @param baseline_col Color for plotting baseline value; defaults to "black"
+# @params residual Boolean value indicating whether to overlay quantiles and
+#                  baseline values or plot their differences
+# @param ylabel Label for y-axis; defaults to empty string
+# @param yticklabels Labels for y-axis tics; defaults to None
+# @param xlabel Label for x-axis; defaults to None
+# @param display_xlim Plot limits for x-axis; defaults to None
+# @param title Plot title; defaults to empty string
+def plot_disc_pushforward_quantiles_vert(ax, samples, names,
+                                         baseline_values=None,
+                                         baseline_color="black",
+                                         residual=False,
+                                         ylabel="", yticklabels=None,
+                                         xlabel=None, display_xlim=None,
+                                         title=""):
+  plot_disc_pushforward_prime(ax, samples, names,
+                              baseline_values, baseline_color,
+                              residual,
+                              ylabel, yticklabels,
+                              xlabel, display_xlim, title,
+                              rotate=True)
 
 # Overlay connected nested quantile intervals to visualize an ensemble of
 # one-dimensional pushforward distributions.

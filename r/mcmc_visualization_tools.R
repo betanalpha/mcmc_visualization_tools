@@ -505,6 +505,244 @@ plot_hist_quantiles <- function(samples, val_name_prefix,
   }
 }
 
+# Plot disconnected nested quantile intervals and/or
+# disconnected values.
+# @param samples A named list of two-dimensional arrays for
+#                each expectand.  The first dimension of each element
+#                indexes the Markov chains and the second dimension
+#                indexes the sequential states within each Markov chain.
+# @param names List of relevant variable names
+# @param vals Values to plot; defaults to NULL
+# @param col Color for plotting values; defaults to "black"
+# @params residual Boolean value indicating whether to overlay quantiles and
+#                  baseline values or plot their differences
+# @param var_lab Variable label; defaults to empty string
+# @param var_names Individual variable names; defaults to NULL
+# @param val_lab Value label; defaults to NULL
+# @param val_lim Value limits; defaults to NULL
+# @param main Plot title; defaults to empty string
+# @param rotate Boolean value indicating whether to rotate the axes or not
+plot_disc_pushforward_prime <- function(samples=NULL, names=NULL,
+                                        vals=NULL, col="black",
+                                        residual=FALSE,
+                                        var_lab="", var_names=NULL,
+                                        val_lab=NULL, val_lim=NULL,
+                                        main="", rotate=FALSE) {
+
+
+  valid_samples <- !is.null(samples) && !is.null(names)
+  valid_values <- !is.null(vals)
+
+  if (valid_samples) {
+    # Valid samples
+
+    if (valid_values) {
+      if (length(vals) != length(names)) {
+        # Check that values are well-defined
+        warning(paste0('The list of values has the wrong',
+                       ' dimension.  Values will not be',
+                       ' plotted.'))
+        valid_values <- FALSE
+      }
+    }
+
+    # Check that names are in samples
+    names <- check_expectand_names(names, samples)
+
+    N <- length(names)
+  } else if (valid_values) {
+    # Only valid values
+    if (residual)
+      warning('The argument `residuals` will be ignored')
+    residual <- FALSE
+
+    N <- length(vals)
+  } else {
+    # Neither valid samples nor values; plot nothing
+    return()
+  }
+
+  if (!is.null(var_names)) {
+    if (length(var_names) != N) {
+      warning(paste0('The list of variable names has the wrong',
+                     ' dimension and values will not be',
+                     ' plotted.'))
+      var_names <- NULL
+    }
+  }
+
+  # Construct bins
+  bin_min <- 0.5
+  bin_max <- N + 0.5
+  bin_delta <- 1
+  breaks <- seq(bin_min, bin_max, bin_delta)
+
+  plot_config <- configure_bin_plotting(breaks)
+  plot_idxs <- plot_config[[1]]
+  plot_pos <- plot_config[[2]]
+
+  # Construct marginal quantiles if needed
+  if (valid_samples) {
+    probs <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
+
+    if(valid_values && residual) {
+      calc <- function(n) {
+        util$ensemble_mcmc_quantile_est(samples[[names[n]]] -
+                                        vals[n],
+                                        probs)
+      }
+      quantiles <- sapply(1:N, calc)
+    } else {
+      calc <- function(n) {
+        util$ensemble_mcmc_quantile_est(samples[[names[n]]],
+                                        probs)
+      }
+      quantiles <- sapply(1:N, calc)
+    }
+
+    plot_quantiles <-
+      do.call(cbind,
+              lapply(plot_idxs, function(n) quantiles[1:9, n]))
+  }
+
+  # Plot
+  if (is.null(val_lim)) {
+    mins <- c()
+    maxs <- c()
+
+    if (valid_samples) {
+      mins <- c(mins, quantiles[1,])
+      maxs <- c(maxs, quantiles[9,])
+    }
+
+    if (valid_values && !residual) {
+      mins <- c(mins, vals)
+      maxs <- c(maxs, vals)
+    }
+
+    if (valid_values && residual) {
+      mins <- c(mins, 0)
+      maxs <- c(maxs, 0)
+    }
+
+    val_lim <- c(min(mins), max(maxs))
+
+    delta <- 0.05 * (val_lim[2] - val_lim[1])
+    val_lim[1] <- val_lim[1] - delta
+    val_lim[2] <- val_lim[2] + delta
+  }
+
+  if (is.null(val_lab)) {
+    if (valid_samples && !valid_values)
+      val_lab <- "Marginal Quantiles"
+
+    if (valid_samples && valid_values && residual)
+      val_lab <- "Marginal Quantiles - Baselines"
+
+    if (!valid_samples)
+      val_lab <- "Values"
+  }
+
+  if (rotate) {
+    if (is.null(var_names)) {
+      # Default ticks
+      plot(NULL, type="n", main=main,
+           xlim=val_lim, xlab=val_lab,
+           ylim=c(bin_min, bin_max), ylab=var_lab)
+    } else {
+      # Custom ticks
+      plot(NULL, type="n", main=main,
+           xlim=val_lim, xlab=val_lab,
+           ylim=c(bin_min, bin_max), ylab=var_lab, yaxt="n")
+      axis(2, at=1:N, labels=var_names)
+    }
+
+    if (valid_samples) {
+      polygon(c(plot_quantiles[1,], rev(plot_quantiles[9,])),
+              c(plot_pos, rev(plot_pos)),
+              col = c_light, border = NA)
+      polygon(c(plot_quantiles[2,], rev(plot_quantiles[8,])),
+              c(plot_pos, rev(plot_pos)),
+              col = c_light_highlight, border = NA)
+      polygon(c(plot_quantiles[3,], rev(plot_quantiles[7,])),
+              c(plot_pos, rev(plot_pos)),
+              col = c_mid, border = NA)
+      polygon(c(plot_quantiles[4,], rev(plot_quantiles[6,])),
+              c(plot_pos, rev(plot_pos)),
+              col = c_mid_highlight, border = NA)
+      for (n in 1:N) {
+        idx1 <- 2 * n - 1
+        idx2 <- 2 * n
+        lines(plot_quantiles[5, idx1:idx2],
+              plot_pos[idx1:idx2],
+              col=c_dark, lwd=2)
+      }
+    }
+
+    if (valid_values && residual)
+      abline(v=0, col="#DDDDDD", lwd=2, lty=3)
+
+    if (valid_values && !residual) {
+      for (n in 1:N) {
+        idx1 <- 2 * n - 1
+        idx2 <- 2 * n
+        lines(rep(vals[n], 2), plot_pos[idx1:idx2],
+              col="white", lwd=4)
+        lines(rep(vals[n], 2), plot_pos[idx1:idx2],
+              col=col, lwd=2)
+      }
+    }
+  } else {
+    if (is.null(var_names)) {
+      # Default ticks
+      plot(NULL, type="n", main=main,
+           xlim=c(bin_min, bin_max), xlab=var_lab,
+           ylim=val_lim, ylab=val_lab)
+    } else {
+      # Custom ticks
+      plot(NULL, type="n", main=main,
+           xlim=c(bin_min, bin_max), xlab=var_lab, xaxt="n",
+           ylim=val_lim, ylab=val_lab)
+      axis(1, at=1:N, labels=var_names)
+    }
+
+    if (valid_samples) {
+      polygon(c(plot_pos, rev(plot_pos)),
+              c(plot_quantiles[1,], rev(plot_quantiles[9,])),
+              col = c_light, border = NA)
+      polygon(c(plot_pos, rev(plot_pos)),
+              c(plot_quantiles[2,], rev(plot_quantiles[8,])),
+              col = c_light_highlight, border = NA)
+      polygon(c(plot_pos, rev(plot_pos)),
+              c(plot_quantiles[3,], rev(plot_quantiles[7,])),
+              col = c_mid, border = NA)
+      polygon(c(plot_pos, rev(plot_pos)),
+              c(plot_quantiles[4,], rev(plot_quantiles[6,])),
+              col = c_mid_highlight, border = NA)
+      for (n in 1:N) {
+        idx1 <- 2 * n - 1
+        idx2 <- 2 * n
+        lines(plot_pos[idx1:idx2], plot_quantiles[5, idx1:idx2],
+              col=c_dark, lwd=2)
+      }
+    }
+
+    if (valid_values && residual)
+      abline(h=0, col="#DDDDDD", lwd=2, lty=3)
+
+    if (valid_values && !residual) {
+      for (n in 1:N) {
+        idx1 <- 2 * n - 1
+        idx2 <- 2 * n
+        lines(plot_pos[idx1:idx2], rep(vals[n], 2),
+              col="white", lwd=4)
+        lines(plot_pos[idx1:idx2], rep(vals[n], 2),
+              col=col, lwd=2)
+      }
+    }
+  }
+}
+
 # Overlay disconnected nested quantile intervals to visualize an ensemble of
 # one-dimensional pushforward distributions.
 # Individual quantiles are estimated as the average of the empirical quantiles
@@ -531,130 +769,78 @@ plot_disc_pushforward_quantiles <- function(samples, names,
                                             xlab="", xticklabs=NULL,
                                             ylab=NULL, display_ylim=NULL,
                                             main="") {
-  # Check that baseline values are well-defined
-  if (!is.null(baseline_values)) {
-    if (length(baseline_values) != length(names)) {
-      warning(paste0('The list of baseline values has the wrong',
-                     ' dimension.  Baselines will not be plotted.'))
-      baseline_values <- NULL
-    }
-  }
+  plot_disc_pushforward_prime(samples, names,
+                              baseline_values, baseline_col,
+                              residual,
+                              xlab, xticklabs,
+                              ylab, display_ylim, main)
+}
 
-  # Check that names are in samples
-  names <- check_expectand_names(names, samples)
+# Plot disconnected values.
+# @param values Values; defaults to NULL
+# @param col Color for plotting baseline value; defaults to "black"
+# @param xlab Label for x-axis; defaults to empty string
+# @param xticklabs Labels for x-axis tics; defaults to NULL
+# @param ylab Label for y-axis; defaults to NULL
+# @param display_ylim Plot limits for y-axis; defaults to NULL
+# @param main Plot title; defaults to empty string
+plot_disc_vals <- function(values, col="black",
+                           xlab="", xticklabs=NULL,
+                           ylab=NULL, display_ylim=NULL,
+                           main="") {
+  plot_disc_pushforward_prime(NULL, NULL, values, col, FALSE,
+                              xlab, xticklabs,
+                              ylab, display_ylim, main)
+}
 
-  # Construct bins
-  N <- length(names)
-  bin_min <- 0.5
-  bin_max <- N + 0.5
-  bin_delta <- 1
-  breaks <- seq(bin_min, bin_max, bin_delta)
+# Overlay disconnected nested quantile intervals to visualize an ensemble of
+# one-dimensional pushforward distributions.
+# Individual quantiles are estimated as the average of the empirical quantiles
+# across each Markov chain, a consistent quantile estimator for Markov chain
+# Monte Carlo.
+# @param samples A named list of two-dimensional arrays for
+#                each expectand.  The first dimension of each element
+#                indexes the Markov chains and the second dimension
+#                indexes the sequential states within each Markov chain.
+# @param names List of relevant variable names
+# @param baseline_values Baseline values; defaults to NULL
+# @param baseline_col Color for plotting baseline value; defaults to "black"
+# @params residual Boolean value indicating whether to overlay quantiles and
+#                  baseline values or plot their differences
+# @param ylab Label for y-axis; defaults to NULL
+# @param yticklabs Labels for y-axis tics; defaults to NULL
+# @param xlab Label for x-axis; defaults to empty string
+# @param display_xlim Plot limits for x-axis; defaults to NULL
+# @param main Plot title; defaults to empty string
+plot_disc_pushforward_quantiles_vert <- function(samples, names,
+                                                 baseline_values=NULL,
+                                                 baseline_col="black",
+                                                 residual=FALSE,
+                                                 ylab="", yticklabs=NULL,
+                                                 xlab=NULL, display_xlim=NULL,
+                                                 main="") {
+  plot_disc_pushforward_prime(samples, names,
+                              baseline_values, baseline_col,
+                              residual,
+                              ylab, yticklabs,
+                              xlab, display_xlim, main, TRUE)
+}
 
-  plot_config <- configure_bin_plotting(breaks)
-  plot_idxs <- plot_config[[1]]
-  plot_xs <- plot_config[[2]]
-
-  # Construct marginal quantiles
-  probs <- c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
-
-  if(!is.null(baseline_values) & residual) {
-    calc <- function(n) {
-      util$ensemble_mcmc_quantile_est(samples[[names[n]]] -
-                                      baseline_values[n],
-                                      probs)
-    }
-    quantiles <- sapply(1:N, calc)
-  } else {
-    calc <- function(n) {
-      util$ensemble_mcmc_quantile_est(samples[[names[n]]], probs)
-    }
-    quantiles <- sapply(1:N, calc)
-  }
-
-  plot_quantiles <- do.call(cbind, lapply(plot_idxs,
-                                          function(n) quantiles[1:9, n]))
-
-  # Plot
-  if (is.null(display_ylim)) {
-    if (is.null(baseline_values)) {
-      display_ylim <- c(min(quantiles[1,]),
-                        max(quantiles[9,]))
-    }
-    else {
-      if (residual) {
-        display_ylim <- c(min(c(0, quantiles[1,])),
-                          max(c(0, quantiles[9,])))
-      } else {
-        display_ylim <- c(min(min(quantiles[1,]),
-                              min(baseline_values)),
-                          max(max(quantiles[9,]),
-                              max(baseline_values)))
-      }
-    }
-    delta <- 0.05 * (display_ylim[2] - display_ylim[1])
-    display_ylim[1] <- display_ylim[1] - delta
-    display_ylim[2] <- display_ylim[2] + delta
-  }
-
-  if (is.null(ylab)) {
-    if (is.null(baseline_values) | !residual)
-      ylab <- "Marginal Quantiles"
-    else
-      ylab <- "Marginal Quantiles - Baselines"
-  }
-
-  if (is.null(xticklabs)) {
-    plot(1, type="n", main=main,
-         xlim=c(bin_min, bin_max), xlab=xlab,
-         ylim=display_ylim, ylab=ylab)
-  } else {
-    if (length(xticklabs) == N) {
-      plot(1, type="n", main=main,
-           xlim=c(bin_min, bin_max), xlab=xlab, xaxt="n",
-           ylim=display_ylim, ylab=ylab)
-      axis(1, at=1:N, labels=xticklabs)
-    } else {
-      warning(paste0('The list of x labels tick has the wrong',
-                     ' dimension and baselines will not be plotted.'))
-      plot(1, type="n", main=main,
-           xlim=c(bin_min, bin_max), xlab=xlab,
-           ylim=display_ylim, ylab=ylab)
-    }
-  }
-
-  polygon(c(plot_xs, rev(plot_xs)),
-          c(plot_quantiles[1,], rev(plot_quantiles[9,])),
-          col = c_light, border = NA)
-  polygon(c(plot_xs, rev(plot_xs)),
-          c(plot_quantiles[2,], rev(plot_quantiles[8,])),
-          col = c_light_highlight, border = NA)
-  polygon(c(plot_xs, rev(plot_xs)),
-          c(plot_quantiles[3,], rev(plot_quantiles[7,])),
-          col = c_mid, border = NA)
-  polygon(c(plot_xs, rev(plot_xs)),
-          c(plot_quantiles[4,], rev(plot_quantiles[6,])),
-          col = c_mid_highlight, border = NA)
-  for (n in 1:N) {
-    idx1 <- 2 * n - 1
-    idx2 <- 2 * n
-    lines(plot_xs[idx1:idx2], plot_quantiles[5, idx1:idx2],
-          col=c_dark, lwd=2)
-  }
-
-  if (!is.null(baseline_values)) {
-    if (residual) {
-      abline(h=0, col="#DDDDDD", lwd=2, lty=3)
-    } else {
-      for (n in 1:N) {
-        idx1 <- 2 * n - 1
-        idx2 <- 2 * n
-        lines(plot_xs[idx1:idx2], rep(baseline_values[n], 2),
-              col="white", lwd=4)
-        lines(plot_xs[idx1:idx2], rep(baseline_values[n], 2),
-              col=baseline_col, lwd=2)
-      }
-    }
-  }
+# Plot disconnected values.
+# @param values Values; defaults to NULL
+# @param col Color for plotting baseline value; defaults to "black"
+# @param xlab Label for x-axis; defaults to empty string
+# @param xticklabs Labels for x-axis tics; defaults to NULL
+# @param ylab Label for y-axis; defaults to NULL
+# @param display_ylim Plot limits for y-axis; defaults to NULL
+# @param main Plot title; defaults to empty string
+plot_disc_vals_vert <- function(values, col="black",
+                                ylab="", yticklabs=NULL,
+                                xlab=NULL, display_xlim=NULL,
+                                main="") {
+  plot_disc_pushforward_prime(NULL, NULL, values, col, FALSE,
+                              ylab, yticklabs,
+                              xlab, display_xlim, main, TRUE)
 }
 
 # Overlay connected nested quantile intervals to visualize an ensemble of

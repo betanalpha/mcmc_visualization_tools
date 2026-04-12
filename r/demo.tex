@@ -336,8 +336,10 @@ to overlay multiple histogram outlines onto an existing axis.
      \AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{), }\AttributeTok{xlab=}\StringTok{""}\NormalTok{,}
      \AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{160}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"Counts"}\NormalTok{)}
 
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_line\_hist}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{x, }\SpecialCharTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{, }\AttributeTok{add=}\ConstantTok{TRUE}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_line\_hist}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{y, }\SpecialCharTok{{-}}\DecValTok{4}\NormalTok{, }\DecValTok{7}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\AttributeTok{col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal, }\AttributeTok{add=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_line\_hist}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{x, }\SpecialCharTok{{-}}\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+                    \AttributeTok{col=}\StringTok{"black"}\NormalTok{, }\AttributeTok{add=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_line\_hist}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{y, }\SpecialCharTok{{-}}\DecValTok{4}\NormalTok{, }\DecValTok{7}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+                    \AttributeTok{col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal, }\AttributeTok{add=}\ConstantTok{TRUE}\NormalTok{)}
 
 \FunctionTok{text}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{3.5}\NormalTok{, }\DecValTok{90}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.25}\NormalTok{, }\AttributeTok{label=}\StringTok{"Observed}\SpecialCharTok{\textbackslash{}n}\StringTok{Inputs"}\NormalTok{,}
      \AttributeTok{pos=}\DecValTok{4}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{)}
@@ -463,8 +465,10 @@ individual marginal quantiles are connected into continuous polygons.
                   \ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}f\_grid[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_realizations}\NormalTok{(samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
                        \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
-                                     \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
+  \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -480,8 +484,10 @@ predictive behavior at each element of \texttt{data\$x\_grid}.
 
 \NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N\_grid,}
                      \ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred\_grid[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
-                                     \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"y"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
+  \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"y"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -630,8 +636,10 @@ is facilitated with the new visualization functions.
                   \ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}f\_grid[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_realizations}\NormalTok{(samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
                        \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
-                                     \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
+  \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -679,10 +687,12 @@ simulation studies.
                        \AttributeTok{baseline\_values=}\NormalTok{true\_fs,}
                        \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal,}
                        \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
-                                     \AttributeTok{baseline\_values=}\NormalTok{true\_fs,}
-                                     \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal,}
-                                     \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
+  \AttributeTok{baseline\_values=}\NormalTok{true\_fs,}
+  \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal,}
+  \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -701,10 +711,12 @@ probabilistic behavior varies around the baseline values.
                        \AttributeTok{baseline\_values=}\NormalTok{true\_fs,}
                        \AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
                        \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
-                                     \AttributeTok{baseline\_values=}\NormalTok{true\_fs,}
-                                     \AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
-                                     \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conn\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, f\_names, data}\SpecialCharTok{$}\NormalTok{x\_grid,}
+  \AttributeTok{baseline\_values=}\NormalTok{true\_fs,}
+  \AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
+  \AttributeTok{xlab=}\StringTok{"x"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"f"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -740,23 +752,29 @@ component of the observed inputs.
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_line\_hist}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{], }\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
 \NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_line\_hist}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{], }\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
 
-\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{], }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{,}
-     \AttributeTok{main=}\StringTok{""}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"x2"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
+     \AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{, }\AttributeTok{main=}\StringTok{""}\NormalTok{,}
+     \AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"x2"}\NormalTok{)}
 
-\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{], }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{,}
-     \AttributeTok{main=}\StringTok{""}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"x3"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
+     \AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{, }\AttributeTok{main=}\StringTok{""}\NormalTok{,}
+     \AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"x3"}\NormalTok{)}
 
-\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{], }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{,}
-     \AttributeTok{main=}\StringTok{""}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"x3"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
+     \AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{, }\AttributeTok{main=}\StringTok{""}\NormalTok{,}
+     \AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"x3"}\NormalTok{)}
 
-\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{,}
-     \AttributeTok{main=}\StringTok{""}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"y"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{y,}
+     \AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{, }\AttributeTok{main=}\StringTok{""}\NormalTok{,}
+     \AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"y"}\NormalTok{)}
 
-\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{,}
-     \AttributeTok{main=}\StringTok{""}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"y"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{y,}
+     \AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{, }\AttributeTok{main=}\StringTok{""}\NormalTok{,}
+     \AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"y"}\NormalTok{)}
 
-\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{,}
-     \AttributeTok{main=}\StringTok{""}\NormalTok{, }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"y"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{], data}\SpecialCharTok{$}\NormalTok{y,}
+     \AttributeTok{pch=}\DecValTok{16}\NormalTok{, }\AttributeTok{cex=}\FloatTok{1.0}\NormalTok{, }\AttributeTok{col=}\StringTok{"black"}\NormalTok{, }\AttributeTok{main=}\StringTok{""}\NormalTok{,}
+     \AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{), }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{25}\NormalTok{, }\DecValTok{325}\NormalTok{), }\AttributeTok{ylab=}\StringTok{"y"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -977,13 +995,20 @@ prior predictive behavior of these summary statistics.
 \begin{Highlighting}[]
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{))}
 
-\NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N, }\ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N,}
+                     \ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}
+\NormalTok{  )}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{,}\AttributeTok{xlab=}\StringTok{"x2"}
+\NormalTok{  )}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x3"}
+\NormalTok{  )}
 \end{Highlighting}
 \end{Shaded}
 
@@ -993,13 +1018,20 @@ prior predictive behavior of these summary statistics.
 \begin{Highlighting}[]
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{))}
 
-\NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N, }\ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N,}
+                     \ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}
+\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x2"}
+\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x3"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1148,7 +1180,8 @@ behavior.
 \begin{Highlighting}[]
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
 
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_hist\_quantiles}\NormalTok{(samples, }\StringTok{\textquotesingle{}y\_pred\textquotesingle{}}\NormalTok{, }\AttributeTok{baseline\_values=}\NormalTok{data}\SpecialCharTok{$}\NormalTok{y)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_hist\_quantiles}\NormalTok{(samples, }\StringTok{\textquotesingle{}y\_pred\textquotesingle{}}\NormalTok{,}
+                         \AttributeTok{baseline\_values=}\NormalTok{data}\SpecialCharTok{$}\NormalTok{y)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1165,22 +1198,26 @@ problems.
 \begin{Highlighting}[]
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{))}
 
-\NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N, }\ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
-                                     \AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
-                                     \AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
-                                     \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
-                                     \AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N,}
+                     \ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_mean\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1190,22 +1227,32 @@ problems.
 \begin{Highlighting}[]
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{))}
 
-\NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N, }\ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
-                                       \AttributeTok{xlab=}\StringTok{"x1"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
-                                       \AttributeTok{xlab=}\StringTok{"x2"}\NormalTok{)}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
-                                       \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
-                                       \AttributeTok{xlab=}\StringTok{"x3"}\NormalTok{)}
+\NormalTok{pred\_names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{N,}
+                     \ControlFlowTok{function}\NormalTok{(n) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}y\_pred[\textquotesingle{}}\NormalTok{, n, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x1"}
+\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x2"}
+\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{xlab=}\StringTok{"x3"}
+\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{1}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x1"}
+\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{2}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x2"}
+\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_conditional\_median\_quantiles}\NormalTok{(}
+\NormalTok{  samples, pred\_names, data}\SpecialCharTok{$}\NormalTok{X[,}\DecValTok{3}\NormalTok{],}
+  \SpecialCharTok{{-}}\DecValTok{9}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{1}\NormalTok{, data}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"x3"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1258,20 +1305,32 @@ of the marginal posterior distributions.
 \begin{Highlighting}[]
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{))}
 
-\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M, }\ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta1[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(samples, names,}
-                                     \AttributeTok{xlab=}\StringTok{"beta1"}\NormalTok{,}
-                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta1[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{xlab=}\StringTok{"beta1"}\NormalTok{,}
+  \AttributeTok{xticklabs=}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+  \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
 
-\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M, }\ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_d[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(samples, names,}
-                                     \AttributeTok{xlab=}\StringTok{"beta2\_d"}\NormalTok{,}
-                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_d[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{xlab=}\StringTok{"beta2\_d"}\NormalTok{,}
+  \AttributeTok{xticklabs=}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+  \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
 
-\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M, }\ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_o[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(samples, names,}
-                                     \AttributeTok{xlab=}\StringTok{"beta2\_o"}\NormalTok{,}
-                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_o[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{xlab=}\StringTok{"beta2\_o"}\NormalTok{,}
+  \AttributeTok{xticklabs=}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+  \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1281,16 +1340,56 @@ of the marginal posterior distributions.
 \begin{Highlighting}[]
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{))}
 
-\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M, }\ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta1[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)),}
-           \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M, }\ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_d[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)),}
-           \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M, }\ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_o[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)))}
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(samples, names,}
-                                     \AttributeTok{xlab=}\StringTok{"All Slopes"}\NormalTok{,}
-                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{)}
+\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                  \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta1[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)),}
+           \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                  \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_d[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)),}
+           \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                  \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_o[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{xlab=}\StringTok{"All Slopes"}\NormalTok{,}
+  \AttributeTok{ylab=}\StringTok{"Marginal Posterior Quantiles"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
 \includegraphics{demo_files/figure-pdf/unnamed-chunk-38-1.pdf}
+
+This plot style can also be rotated, which is helpful when working with
+longer labels.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{))}
+
+\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta1[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles\_vert}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{xlab=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{,}
+  \AttributeTok{yticklabs=}\NormalTok{names}
+\NormalTok{)}
+
+\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_d[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles\_vert}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{xlab=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{,}
+  \AttributeTok{yticklabs=}\NormalTok{names}
+\NormalTok{)}
+
+\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_o[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{))}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles\_vert}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{xlab=}\StringTok{"Marginal Posterior Quantiles"}\NormalTok{,}
+  \AttributeTok{yticklabs=}\NormalTok{names}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-39-1.pdf}
 
 This function also includes an optional \texttt{baseline\_values}
 argument and \texttt{residual} configuration which we can use to compare
@@ -1299,26 +1398,37 @@ posterior inferences to the true values when analyzing simulated data.
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\NormalTok{names }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                  \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta1[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)),}
+           \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                  \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_d[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)),}
+           \FunctionTok{sapply}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{data}\SpecialCharTok{$}\NormalTok{M,}
+                  \ControlFlowTok{function}\NormalTok{(m) }\FunctionTok{paste0}\NormalTok{(}\StringTok{\textquotesingle{}beta2\_o[\textquotesingle{}}\NormalTok{, m, }\StringTok{\textquotesingle{}]\textquotesingle{}}\NormalTok{)))}
+
 \NormalTok{true\_slopes }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{6.00}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{1.50}\NormalTok{, }\FloatTok{13.00}\NormalTok{,  }\FloatTok{0.50}\NormalTok{, }\FloatTok{0.25}\NormalTok{,}
                  \FloatTok{1.00}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{0.50}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{2.00}\NormalTok{, }\SpecialCharTok{{-}}\FloatTok{1.00}\NormalTok{)}
 
 \FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow=}\FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{))}
 
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(samples, names,}
-                                     \AttributeTok{baseline\_values=}\NormalTok{true\_slopes,}
-                                     \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal,}
-                                     \AttributeTok{xlab=}\StringTok{"All Slopes"}\NormalTok{,}
-                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior}\SpecialCharTok{\textbackslash{}n}\StringTok{Quantiles"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{baseline\_values=}\NormalTok{true\_slopes,}
+  \AttributeTok{baseline\_col=}\NormalTok{util}\SpecialCharTok{$}\NormalTok{c\_mid\_teal,}
+  \AttributeTok{xlab=}\StringTok{"All Slopes"}\NormalTok{,}
+  \AttributeTok{ylab=}\StringTok{"Marginal Posterior}\SpecialCharTok{\textbackslash{}n}\StringTok{Quantiles"}
+\NormalTok{)}
 
-\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(samples, names,}
-                                     \AttributeTok{baseline\_values=}\NormalTok{true\_slopes,}
-                                     \AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
-                                     \AttributeTok{xlab=}\StringTok{"All Slopes"}\NormalTok{,}
-                                     \AttributeTok{ylab=}\StringTok{"Marginal Posterior}\SpecialCharTok{\textbackslash{}n}\StringTok{Quantile Residuals"}\NormalTok{)}
+\NormalTok{util}\SpecialCharTok{$}\FunctionTok{plot\_disc\_pushforward\_quantiles}\NormalTok{(}
+\NormalTok{  samples, names,}
+  \AttributeTok{baseline\_values=}\NormalTok{true\_slopes,}
+  \AttributeTok{residual=}\ConstantTok{TRUE}\NormalTok{,}
+  \AttributeTok{xlab=}\StringTok{"All Slopes"}\NormalTok{,}
+  \AttributeTok{ylab=}\StringTok{"Marginal Posterior}\SpecialCharTok{\textbackslash{}n}\StringTok{Quantile Residuals"}
+\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{demo_files/figure-pdf/unnamed-chunk-39-1.pdf}
+\includegraphics{demo_files/figure-pdf/unnamed-chunk-40-1.pdf}
 
 \section*{License}\label{license}
 \addcontentsline{toc}{section}{License}
@@ -1362,7 +1472,7 @@ CXX14=clang++ -arch x86_64 -ftemplate-depth-256
 \begin{verbatim}
 R version 4.3.2 (2023-10-31)
 Platform: x86_64-apple-darwin20 (64-bit)
-Running under: macOS Sonoma 14.4.1
+Running under: macOS 15.7.4
 
 Matrix products: default
 BLAS:   /Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/lib/libRblas.0.dylib 
@@ -1383,7 +1493,7 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] gtable_0.3.4       jsonlite_1.8.8     compiler_4.3.2     Rcpp_1.0.11       
  [5] stringr_1.5.1      parallel_4.3.2     gridExtra_2.3      scales_1.3.0      
- [9] yaml_2.3.8         fastmap_1.1.1      ggplot2_3.4.4      R6_2.5.1          
+ [9] yaml_2.3.8         fastmap_1.1.1      ggplot2_3.4.4      R6_2.6.1          
 [13] curl_5.2.0         knitr_1.45         tibble_3.2.1       munsell_0.5.0     
 [17] pillar_1.9.0       rlang_1.1.2        utf8_1.2.4         V8_4.4.1          
 [21] stringi_1.8.3      inline_0.3.19      xfun_0.41          RcppParallel_5.1.7

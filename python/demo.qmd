@@ -184,7 +184,7 @@ Note that I'm using a less-aggressive step size adaptation here because the
 half-normal prior model for $\sigma$ results in an slightly awkward tail for the
 unconstrained $\log(\sigma)$ values that can be a bit difficult to navigate.
 
-```{python }
+```{python}
 #| warning: false
 #| message: false
 data['N_grid'] = 1000
@@ -243,9 +243,10 @@ of `data$x_grid`.
 
 ```{python}
 pred_names = util.name_nested_list('y_pred_grid', [data['N_grid']])
-putil.plot_conn_pushforward_quantiles(plot.gca(), samples,
-                                      pred_names, data['x_grid'],
-                                      xlabel="x", ylabel="f")
+putil.plot_conn_pushforward_quantiles(
+  plot.gca(), samples, pred_names,
+  data['x_grid'], xlabel="x", ylabel="f"
+)
 plot.show()
 ```
 
@@ -291,10 +292,12 @@ $$
 to the observed input-output pairs, $(x_{n}, y_{n})$.
 
 ```{python}
-pred_names = [ f'y_pred_grid[{n + 1}]' for n in range(data['N_grid']) ]
-putil.plot_conn_pushforward_quantiles(plot.gca(), samples,
-                                      pred_names, data['x_grid'],
-                                      xlabel="x", ylabel="f")
+pred_names = [ f'y_pred_grid[{n + 1}]'
+               for n in range(data['N_grid']) ]
+putil.plot_conn_pushforward_quantiles(
+  plot.gca(), samples, pred_names,
+  data['x_grid'], xlabel="x", ylabel="f"
+)
 plot.scatter(data['x'], data['y'], s=1, color="white", zorder=4)
 plot.scatter(data['x'], data['y'], s=0.8, color="black", zorder=4)
 
@@ -379,11 +382,11 @@ putil.plot_realizations(axarr[0], samples,
                         baseline_values=true_fs,
                         baseline_color=putil.mid_teal,
                         xlabel="x", ylabel="f")
-putil.plot_conn_pushforward_quantiles(axarr[1], samples,
-                                      f_names, data['x_grid'],
-                                      baseline_values=true_fs,
-                                      baseline_color=putil.mid_teal,
-                                      xlabel="x", ylabel="f")
+putil.plot_conn_pushforward_quantiles(
+  axarr[1], samples, f_names, data['x_grid'],
+  baseline_values=true_fs, baseline_color=putil.mid_teal,
+  xlabel="x", ylabel="f"
+)
 
 plot.show()
 ```
@@ -399,11 +402,11 @@ putil.plot_realizations(axarr[0], samples,
                         baseline_values=true_fs,
                         residual=True,
                         xlabel="x", ylabel="f")
-putil.plot_conn_pushforward_quantiles(axarr[1], samples,
-                                      f_names, data['x_grid'],
-                                      residual=True,
-                                      baseline_values=true_fs,
-                                      xlabel="x", ylabel="f")
+putil.plot_conn_pushforward_quantiles(
+  axarr[1], samples, f_names, data['x_grid'],
+  residual=True, baseline_values=true_fs,
+  xlabel="x", ylabel="f"
+)
 
 plot.show()
 ```
@@ -436,45 +439,54 @@ data['X'] = numpy.asarray(data['X'])
 
 f, axarr = plot.subplots(1, 3, layout="constrained")
 
-putil.plot_line_hist(axarr[0], data['X'][:,0], -9, 9, 1, xlabel="x1")
-putil.plot_line_hist(axarr[1], data['X'][:,1], -9, 9, 1, xlabel="x2")
-putil.plot_line_hist(axarr[2], data['X'][:,2], -9, 9, 1, xlabel="x3")
+putil.plot_line_hist(axarr[0], data['X'][:,0],
+                     -9, 9, 1, xlabel="x1")
+putil.plot_line_hist(axarr[1], data['X'][:,1],
+                     -9, 9, 1, xlabel="x2")
+putil.plot_line_hist(axarr[2], data['X'][:,2],
+                     -9, 9, 1, xlabel="x3")
 
 plot.show()
 
 f, axarr = plot.subplots(2, 3, layout="constrained")
 
-axarr[0, 0].scatter(data['X'][:,0], data['X'][:,1], color="black", s=2)
+axarr[0, 0].scatter(data['X'][:,0], data['X'][:,1],
+                    color="black", s=2)
 axarr[0, 0].set_xlim([-9, 9])
 axarr[0, 0].set_xlabel("x1")
 axarr[0, 0].set_ylim([-9, 9])
 axarr[0, 0].set_ylabel("x2")
 
-axarr[0, 1].scatter(data['X'][:,0], data['X'][:,2], color="black", s=2)
+axarr[0, 1].scatter(data['X'][:,0], data['X'][:,2],
+                    color="black", s=2)
 axarr[0, 1].set_xlim([-9, 9])
 axarr[0, 1].set_xlabel("x1")
 axarr[0, 1].set_ylim([-9, 9])
 axarr[0, 1].set_ylabel("x3")
 
-axarr[0, 2].scatter(data['X'][:,1], data['X'][:,2], color="black", s=2)
+axarr[0, 2].scatter(data['X'][:,1], data['X'][:,2],
+                    color="black", s=2)
 axarr[0, 2].set_xlim([-9, 9])
 axarr[0, 2].set_xlabel("x2")
 axarr[0, 2].set_ylim([-9, 9])
 axarr[0, 2].set_ylabel("x3")
 
-axarr[1, 0].scatter(data['X'][:,0], data['y'], color="black", s=2)
+axarr[1, 0].scatter(data['X'][:,0], data['y'],
+                    color="black", s=2)
 axarr[1, 0].set_xlim([-9, 9])
 axarr[1, 0].set_xlabel("x1")
 axarr[1, 0].set_ylim([-25, 325])
 axarr[1, 0].set_ylabel("y")
 
-axarr[1, 1].scatter(data['X'][:,1], data['y'], color="black", s=2)
+axarr[1, 1].scatter(data['X'][:,1], data['y'],
+                    color="black", s=2)
 axarr[1, 1].set_xlim([-9, 9])
 axarr[1, 1].set_xlabel("x2")
 axarr[1, 1].set_ylim([-25, 325])
 axarr[1, 1].set_ylabel("y")
 
-axarr[1, 2].scatter(data['X'][:,2], data['y'], color="black", s=2)
+axarr[1, 2].scatter(data['X'][:,2], data['y'],
+                    color="black", s=2)
 axarr[1, 2].set_xlim([-9, 9])
 axarr[1, 2].set_xlabel("x3")
 axarr[1, 2].set_ylim([-25, 325])
@@ -537,7 +549,8 @@ We can also set the binning by hand, either with bounds a fixed bin width
 or an arbitrary bin configuration.
 
 ```{python}
-putil.plot_hist_quantiles(plot.gca(), samples, 'y_pred', -400, 400, 50)
+putil.plot_hist_quantiles(plot.gca(), samples, 'y_pred',
+                          -400, 400, 50)
 plot.show()
 ```
 
@@ -563,16 +576,23 @@ behavior of these summary statistics.
 f, axarr = plot.subplots(1, 3, layout="constrained")
 f.suptitle("Marginal Quantiles of Conditional Means")
 
-pred_names = [ f'y_pred[{n + 1}]' for n in range(data['N']) ]
-putil.plot_conditional_mean_quantiles(axarr[0], samples, pred_names,
-                                      data['X'][:,0], -9, 9, 1,
-                                      xlabel="x1", ylabel="")
-putil.plot_conditional_mean_quantiles(axarr[1], samples, pred_names,
-                                      data['X'][:,1], -9, 9, 1,
-                                      xlabel="x2", ylabel="")
-putil.plot_conditional_mean_quantiles(axarr[2], samples, pred_names,
-                                      data['X'][:,2], -9, 9, 1,
-                                      xlabel="x3", ylabel="")
+pred_names = [ f'y_pred[{n + 1}]'
+               for n in range(data['N']) ]
+putil.plot_conditional_mean_quantiles(
+  axarr[0], samples, pred_names,
+  data['X'][:,0], -9, 9, 1,
+  xlabel="x1", ylabel=""
+)
+putil.plot_conditional_mean_quantiles(
+  axarr[1], samples, pred_names,
+  data['X'][:,1], -9, 9, 1,
+  xlabel="x2", ylabel=""
+)
+putil.plot_conditional_mean_quantiles(
+  axarr[2], samples, pred_names,
+  data['X'][:,2], -9, 9, 1,
+  xlabel="x3", ylabel=""
+)
 plot.show()
 ```
 
@@ -580,16 +600,23 @@ plot.show()
 f, axarr = plot.subplots(1, 3, layout="constrained")
 f.suptitle("Marginal Quantiles of Conditional Medians")
 
-pred_names = [ f'y_pred[{n + 1}]' for n in range(data['N']) ]
-putil.plot_conditional_median_quantiles(axarr[0], samples, pred_names,
-                                        data['X'][:,0], -9, 9, 1,
-                                        xlabel="x1", ylabel="")
-putil.plot_conditional_median_quantiles(axarr[1], samples, pred_names,
-                                        data['X'][:,1], -9, 9, 1,
-                                        xlabel="x2", ylabel="")
-putil.plot_conditional_median_quantiles(axarr[2], samples, pred_names,
-                                        data['X'][:,2], -9, 9, 1,
-                                        xlabel="x3", ylabel="")
+pred_names = [ f'y_pred[{n + 1}]'
+               for n in range(data['N']) ]
+putil.plot_conditional_median_quantiles(
+  axarr[0], samples, pred_names,
+  data['X'][:,0], -9, 9, 1,
+  xlabel="x1", ylabel=""
+)
+putil.plot_conditional_median_quantiles(
+  axarr[1], samples, pred_names,
+  data['X'][:,1], -9, 9, 1,
+  xlabel="x2", ylabel=""
+)
+putil.plot_conditional_median_quantiles(
+  axarr[2], samples, pred_names,
+  data['X'][:,2], -9, 9, 1,
+  xlabel="x3", ylabel=""
+)
 plot.show()
 ```
 
@@ -646,33 +673,47 @@ however, there don't seem to be any problems.
 f, axarr = plot.subplots(1, 3, layout="constrained")
 f.suptitle("Marginal Quantiles of Conditional Means")
 
-pred_names = [ f'y_pred[{n + 1}]' for n in range(data['N']) ]
-putil.plot_conditional_mean_quantiles(axarr[0], samples, pred_names,
-                                      data['X'][:,0], -9, 9, 1,
-                                      data['y'], xlabel="x1", ylabel="")
-putil.plot_conditional_mean_quantiles(axarr[1], samples, pred_names,
-                                      data['X'][:,1], -9, 9, 1,
-                                      data['y'], xlabel="x2", ylabel="")
-putil.plot_conditional_mean_quantiles(axarr[2], samples, pred_names,
-                                      data['X'][:,2], -9, 9, 1,
-                                      data['y'], xlabel="x3", ylabel="")
+pred_names = [ f'y_pred[{n + 1}]'
+               for n in range(data['N']) ]
+putil.plot_conditional_mean_quantiles(
+  axarr[0], samples, pred_names,
+  data['X'][:,0], -9, 9, 1,
+  data['y'], xlabel="x1", ylabel=""
+)
+putil.plot_conditional_mean_quantiles(
+  axarr[1], samples, pred_names,
+  data['X'][:,1], -9, 9, 1,
+  data['y'], xlabel="x2", ylabel=""
+)
+putil.plot_conditional_mean_quantiles(
+  axarr[2], samples, pred_names,
+  data['X'][:,2], -9, 9, 1,
+  data['y'], xlabel="x3", ylabel=""
+)
 plot.show()
 
 f, axarr = plot.subplots(1, 3, layout="constrained")
-f.suptitle("Marginal Quantiles of Conditional Means Minus Baselines")
+f.suptitle("Marginal Quantiles of Conditional Means"
+           "Minus Baselines")
 
-putil.plot_conditional_mean_quantiles(axarr[0], samples, pred_names,
-                                      data['X'][:,0], -9, 9, 1,
-                                      data['y'], residual=True,
-                                      xlabel="x1", ylabel="")
-putil.plot_conditional_mean_quantiles(axarr[1], samples, pred_names,
-                                      data['X'][:,1], -9, 9, 1,
-                                      data['y'], residual=True,
-                                      xlabel="x2", ylabel="")
-putil.plot_conditional_mean_quantiles(axarr[2], samples, pred_names,
-                                      data['X'][:,2], -9, 9, 1,
-                                      data['y'], residual=True,
-                                      xlabel="x3", ylabel="")
+putil.plot_conditional_mean_quantiles(
+  axarr[0], samples, pred_names,
+  data['X'][:,0], -9, 9, 1,
+  data['y'], residual=True,
+  xlabel="x1", ylabel=""
+)
+putil.plot_conditional_mean_quantiles(
+  axarr[1], samples, pred_names,
+  data['X'][:,1], -9, 9, 1,
+  data['y'], residual=True,
+  xlabel="x2", ylabel=""
+)
+putil.plot_conditional_mean_quantiles(
+  axarr[2], samples, pred_names,
+  data['X'][:,2], -9, 9, 1,
+  data['y'], residual=True,
+  xlabel="x3", ylabel=""
+)
 plot.show()
 ```
 
@@ -680,33 +721,47 @@ plot.show()
 f, axarr = plot.subplots(1, 3, layout="constrained")
 f.suptitle("Marginal Quantiles of Conditional Medians")
 
-pred_names = [ f'y_pred[{n + 1}]' for n in range(data['N']) ]
-putil.plot_conditional_median_quantiles(axarr[0], samples, pred_names,
-                                        data['X'][:,0], -9, 9, 1,
-                                        data['y'], xlabel="x1", ylabel="")
-putil.plot_conditional_median_quantiles(axarr[1], samples, pred_names,
-                                        data['X'][:,1], -9, 9, 1,
-                                        data['y'], xlabel="x2", ylabel="")
-putil.plot_conditional_median_quantiles(axarr[2], samples, pred_names,
-                                        data['X'][:,2], -9, 9, 1,
-                                        data['y'], xlabel="x3", ylabel="")
+pred_names = [ f'y_pred[{n + 1}]'
+              for n in range(data['N']) ]
+putil.plot_conditional_median_quantiles(
+  axarr[0], samples, pred_names,
+  data['X'][:,0], -9, 9, 1,
+  data['y'], xlabel="x1", ylabel=""
+)
+putil.plot_conditional_median_quantiles(
+  axarr[1], samples, pred_names,
+  data['X'][:,1], -9, 9, 1,
+  data['y'], xlabel="x2", ylabel=""
+)
+putil.plot_conditional_median_quantiles(
+  axarr[2], samples, pred_names,
+  data['X'][:,2], -9, 9, 1,
+  data['y'], xlabel="x3", ylabel=""
+)
 plot.show()
 
 f, axarr = plot.subplots(1, 3, layout="constrained")
-f.suptitle("Marginal Quantiles of Conditional Medians Minus Baselines")
+f.suptitle("Marginal Quantiles of Conditional Medians"
+           "Minus Baselines")
 
-putil.plot_conditional_median_quantiles(axarr[0], samples, pred_names,
-                                        data['X'][:,0], -9, 9, 1,
-                                        data['y'], residual=True,
-                                        xlabel="x1", ylabel="")
-putil.plot_conditional_median_quantiles(axarr[1], samples, pred_names,
-                                        data['X'][:,1], -9, 9, 1,
-                                        data['y'], residual=True,
-                                        xlabel="x2", ylabel="")
-putil.plot_conditional_median_quantiles(axarr[2], samples, pred_names,
-                                        data['X'][:,2], -9, 9, 1,
-                                        data['y'], residual=True,
-                                        xlabel="x3", ylabel="")
+putil.plot_conditional_median_quantiles(
+  axarr[0], samples, pred_names,
+  data['X'][:,0], -9, 9, 1,
+  data['y'], residual=True,
+  xlabel="x1", ylabel=""
+)
+putil.plot_conditional_median_quantiles(
+  axarr[1], samples, pred_names,
+  data['X'][:,1], -9, 9, 1,
+  data['y'], residual=True,
+  xlabel="x2", ylabel=""
+)
+putil.plot_conditional_median_quantiles(
+  axarr[2], samples, pred_names,
+  data['X'][:,2], -9, 9, 1,
+  data['y'], residual=True,
+  xlabel="x3", ylabel=""
+)
 plot.show()
 ```
 
@@ -750,20 +805,32 @@ allows for a more compact visualization of the marginal posterior distributions.
 ```{python}
 f, axarr = plot.subplots(1, 3, layout="constrained")
 
-names = [ f'beta1[{m + 1}]' for m in range(data['M']) ]
-putil.plot_disc_pushforward_quantiles(axarr[0], samples, names,
-                                      xlabel="beta1",
-                                      ylabel="Marginal Posterior Quantiles")
+names = [ f'beta1[{m + 1}]'
+          for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles(
+  axarr[0], samples, names,
+  xlabel="beta1",
+  xticklabels=[ m + 1 for m in range(data['M']) ],
+  ylabel="Marginal Posterior Quantiles"
+)
 
-names = [ f'beta2_o[{m + 1}]' for m in range(data['M']) ]
-putil.plot_disc_pushforward_quantiles(axarr[1], samples, names,
-                                      xlabel="beta2_d",
-                                      ylabel="Marginal Posterior Quantiles")
+names = [ f'beta2_o[{m + 1}]'
+          for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles(
+  axarr[1], samples, names,
+  xlabel="beta2_d",
+  xticklabels=[ m + 1 for m in range(data['M']) ],
+  ylabel="Marginal Posterior Quantiles"
+)
 
-names = [ f'beta2_d[{m + 1}]' for m in range(data['M']) ]
-putil.plot_disc_pushforward_quantiles(axarr[2], samples, names,
-                                      xlabel="beta2_o",
-                                      ylabel="Marginal Posterior Quantiles")
+names = [ f'beta2_d[{m + 1}]'
+          for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles(
+  axarr[2], samples, names,
+  xlabel="beta2_o",
+  xticklabels=[ m + 1 for m in range(data['M']) ],
+  ylabel="Marginal Posterior Quantiles"
+)
 
 plot.show()
 ```
@@ -772,9 +839,44 @@ plot.show()
 names = [ f'beta1[{m + 1}]' for m in range(data['M']) ] + \
         [ f'beta2_d[{m + 1}]' for m in range(data['M']) ] + \
         [ f'beta2_o[{m + 1}]' for m in range(data['M']) ]
-putil.plot_disc_pushforward_quantiles(plot.gca(), samples, names,
-                                      xlabel="All Slopes",
-                                      ylabel="Marginal Posterior Quantiles")
+putil.plot_disc_pushforward_quantiles(
+  plot.gca(), samples, names,
+  xlabel="All Slopes",
+  ylabel="Marginal Posterior Quantiles"
+)
+plot.show()
+```
+
+This plot style can also be rotated, which is helpful when working
+with longer labels.
+
+```{python}
+f, axarr = plot.subplots(3, 1, layout="constrained")
+
+names = [ f'beta1[{m + 1}]'
+          for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles_vert(
+  axarr[0], samples, names,
+  yticklabels=names,
+  xlabel="Marginal Posterior Quantiles"
+)
+
+names = [ f'beta2_o[{m + 1}]'
+          for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles_vert(
+  axarr[1], samples, names,
+  yticklabels=names,
+  xlabel="Marginal Posterior Quantiles"
+)
+
+names = [ f'beta2_d[{m + 1}]'
+          for m in range(data['M']) ]
+putil.plot_disc_pushforward_quantiles_vert(
+  axarr[2], samples, names,
+  yticklabels=names,
+  xlabel="Marginal Posterior Quantiles"
+)
+
 plot.show()
 ```
 
@@ -784,20 +886,28 @@ point values, for example our marginal posterior inferences to the true values
 when analyzing simulated data.
 
 ```{python}
+names = [ f'beta1[{m + 1}]'   for m in range(data['M']) ] + \
+        [ f'beta2_d[{m + 1}]' for m in range(data['M']) ] + \
+        [ f'beta2_o[{m + 1}]' for m in range(data['M']) ]
+
 true_slopes = [-6.00, -1.50, 13.00,  0.50, 0.25,
                1.00, -0.50, -2.00, -1.00]
 
 f, axarr = plot.subplots(2, 1, layout="constrained")
 
-putil.plot_disc_pushforward_quantiles(axarr[0], samples, names,
-                                      baseline_values=true_slopes,
-                                      baseline_color=putil.mid_teal,
-                                      xlabel="All Slopes", ylabel="")
+putil.plot_disc_pushforward_quantiles(
+  axarr[0], samples, names,
+  baseline_values=true_slopes,
+  baseline_color=putil.mid_teal,
+  xlabel="All Slopes", ylabel=""
+)
 
-putil.plot_disc_pushforward_quantiles(axarr[1], samples, names,
-                                      baseline_values=true_slopes,
-                                      residual=True,
-                                      xlabel="All Slopes", ylabel="")
+putil.plot_disc_pushforward_quantiles(
+  axarr[1], samples, names,
+  baseline_values=true_slopes,
+  residual=True,
+  xlabel="All Slopes", ylabel=""
+)
 
 plot.show()
 ```
