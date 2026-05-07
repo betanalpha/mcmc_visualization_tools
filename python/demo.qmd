@@ -694,7 +694,7 @@ plot.show()
 
 f, axarr = plot.subplots(1, 3, layout="constrained")
 f.suptitle("Marginal Quantiles of Conditional Means"
-           "Minus Baselines")
+           " Minus Baselines")
 
 putil.plot_conditional_mean_quantiles(
   axarr[0], samples, pred_names,
@@ -742,7 +742,7 @@ plot.show()
 
 f, axarr = plot.subplots(1, 3, layout="constrained")
 f.suptitle("Marginal Quantiles of Conditional Medians"
-           "Minus Baselines")
+           " Minus Baselines")
 
 putil.plot_conditional_median_quantiles(
   axarr[0], samples, pred_names,

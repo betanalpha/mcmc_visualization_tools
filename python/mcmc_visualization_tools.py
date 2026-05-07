@@ -1085,41 +1085,41 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
 
   nonempty_bins = [ b for b in range(B)
                     if sum([ 1 for x in obs_xs
-                             if breaks[b] <= x and x < breaks[b + 1] ]) > 0]
+                             if     breaks[b] <= x
+                                and x < breaks[b + 1] ]) > 0]
 
   baseline_cond_means = [numpy.nan] * B
 
-  def cond_mean(ys, xs, b_low, b_high):
-    bin_idxs = [ n for n, x in enumerate(xs)
-                 if b_low <= x and x < b_high ]
+  def cond_mean(ys, bin_idxs):
     if len(bin_idxs):
       return numpy.mean([ ys[n] for n in bin_idxs ])
     else:
       return 0
 
-  def cond_mean_residual(ys, xs, b_low, b_high, baseline):
-    return cond_mean(ys, xs, b_low, b_high) - baseline
+  def cond_mean_residual(ys, bin_idxs, baseline):
+    return cond_mean(ys, bin_idxs) - baseline
 
   if baseline_values is not None:
     for b in range(B):
-      baseline_cond_means[b] = cond_mean(baseline_values, obs_xs,
-                                         breaks[b], breaks[b + 1])
+      bin_idxs = [ n for n, x in enumerate(obs_xs)
+                   if breaks[b] <= x and x < breaks[b + 1] ]
+      baseline_cond_means[b] = cond_mean(baseline_values, bin_idxs)
 
   if baseline_values is None or not residual:
     expectands = {}
     for b in range(B):
+      bin_idxs = [ n for n, x in enumerate(obs_xs)
+                   if breaks[b] <= x and x < breaks[b + 1] ]
       expectands[b] = partial(cond_mean,
-                              xs=obs_xs,
-                              b_low=breaks[b],
-                              b_high=breaks[b + 1])
+                              bin_idxs=bin_idxs)
   else:
     expectands = {}
     for b in range(B):
       baseline = baseline_cond_means[b]
+      bin_idxs = [ n for n, x in enumerate(obs_xs)
+                   if breaks[b] <= x and x < breaks[b + 1] ]
       expectands[b] = partial(cond_mean_residual,
-                              xs=obs_xs,
-                              b_low=breaks[b],
-                              b_high=breaks[b + 1],
+                              bin_idxs=bin_idxs,
                               baseline=baseline)
 
   cond_mean_samples = \
@@ -1128,9 +1128,11 @@ def plot_conditional_mean_quantiles(ax, samples, names, obs_xs,
                                      {'ys': numpy.array(names)})
 
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-  mean_quantiles = [ util.ensemble_mcmc_quantile_est(cond_mean_samples[b],
-                                                     probs)
-                     for b in range(B)                                    ]
+  mean_quantiles = [
+    util.ensemble_mcmc_quantile_est(cond_mean_samples[b],
+                                    probs)
+    for b in range(B)
+  ]
 
   plot_quantiles = [ mean_quantiles[idx] for idx in plot_idxs ]
 
@@ -1284,41 +1286,42 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
 
   nonempty_bins = [ b for b in range(B)
                     if sum([ 1 for x in obs_xs
-                             if breaks[b] <= x and x < breaks[b + 1] ]) > 0]
+                             if     breaks[b] <= x
+                                and x < breaks[b + 1] ]) > 0]
 
   baseline_cond_medians = [numpy.nan] * B
 
-  def cond_median(ys, xs, b_low, b_high):
-    bin_idxs = [ n for n, x in enumerate(xs)
-                 if b_low <= x and x < b_high ]
+  def cond_median(ys, bin_idxs):
     if len(bin_idxs):
       return numpy.median([ ys[n] for n in bin_idxs ])
     else:
       return 0
 
-  def cond_median_residual(ys, xs, b_low, b_high, baseline):
-    return cond_median(ys, xs, b_low, b_high) - baseline
+  def cond_median_residual(ys, bin_idxs, baseline):
+    return cond_median(ys, bin_idxs) - baseline
 
   if baseline_values is not None:
     for b in range(B):
-      baseline_cond_medians[b] = cond_median(baseline_values, obs_xs,
-                                             breaks[b], breaks[b + 1])
+      bin_idxs = [ n for n, x in enumerate(obs_xs)
+                   if breaks[b] <= x and x < breaks[b + 1] ]
+      baseline_cond_medians[b] = cond_median(baseline_values,
+                                             bin_idxs)
 
   if baseline_values is None or not residual:
     expectands = {}
     for b in range(B):
+      bin_idxs = [ n for n, x in enumerate(obs_xs)
+                   if breaks[b] <= x and x < breaks[b + 1] ]
       expectands[b] = partial(cond_median,
-                              xs=obs_xs,
-                              b_low=breaks[b],
-                              b_high=breaks[b + 1])
+                              bin_idxs=bin_idxs)
   else:
     expectands = {}
     for b in range(B):
+      bin_idxs = [ n for n, x in enumerate(obs_xs)
+                   if breaks[b] <= x and x < breaks[b + 1] ]
       baseline = baseline_cond_medians[b]
       expectands[b] = partial(cond_median_residual,
-                              xs=obs_xs,
-                              b_low=breaks[b],
-                              b_high=breaks[b + 1],
+                              bin_idxs=bin_idxs,
                               baseline=baseline)
 
   cond_median_samples = \
@@ -1327,9 +1330,11 @@ def plot_conditional_median_quantiles(ax, samples, names, obs_xs,
                                      {'ys': numpy.array(names)})
 
   probs = [10, 20, 30, 40, 50, 60, 70, 80, 90]
-  median_quantiles = [ util.ensemble_mcmc_quantile_est(cond_median_samples[b],
-                                                       probs)
-                       for b in range(B)                                      ]
+  median_quantiles = [
+    util.ensemble_mcmc_quantile_est(cond_median_samples[b],
+                                    probs)
+    for b in range(B)
+  ]
 
   plot_quantiles = [ median_quantiles[idx] for idx in plot_idxs ]
 

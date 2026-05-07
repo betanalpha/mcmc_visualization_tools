@@ -1137,46 +1137,44 @@ plot_conditional_mean_quantiles <- function(samples, names, obs_xs,
   B <- length(breaks) - 1
   nonempty_bins <- sapply(1:B,
                           function(b)
-                          sum(breaks[b] <= obs_xs & obs_xs < breaks[b + 1]) > 0)
+                          sum(breaks[b] <= obs_xs &
+                              obs_xs < breaks[b + 1]) > 0)
 
   baseline_cond_means <- rep(NA, B)
 
-  cond_mean <- function(y, x, b_low, b_high) {
-    bin_idx <- which(b_low <= x & x < b_high)
+  cond_mean <- function(y, bin_idx) {
     if (length(bin_idx))
       return(mean(y[bin_idx]))
     else
-      return(mean(y))
+      return(0)
   }
 
   if (!is.null(baseline_values)) {
     for (b in 1:B) {
-      baseline_cond_means[b] <- cond_mean(baseline_values, obs_xs,
-                                          breaks[b], breaks[b + 1])
+      bin_idx <- which(breaks[b] <= obs_xs & obs_xs < breaks[b + 1])
+      baseline_cond_means[b] <- cond_mean(baseline_values, bin_idx)
     }
   }
 
   if (is.null(baseline_values) | !residual) {
     expectands <- list()
     for (b in 1:B) {
+      bin_idx <- which(breaks[b] <= obs_xs & obs_xs < breaks[b + 1])
       expectands[[b]] <-
         local({
-          x <- obs_xs;
-          b_low <- breaks[b];
-          b_high <- breaks[b + 1];
-          function(y) cond_mean(y, x, b_low, b_high)
+          bin_idx <- bin_idx;
+          function(y) cond_mean(y, bin_idx)
         })
     }
   } else {
     expectands <- list()
     for (b in 1:B) {
+      bin_idx <- which(breaks[b] <= obs_xs & obs_xs < breaks[b + 1])
       expectands[[b]] <-
         local({
-          x <- obs_xs;
-          b_low <- breaks[b];
-          b_high <- breaks[b + 1];
+          bin_idx <- bin_idx;
           baseline <- baseline_cond_means[b];
-          function(y) cond_mean(y, x, b_low, b_high) - baseline
+          function(y) cond_mean(y, bin_idx) - baseline
         })
     }
   }
@@ -1338,46 +1336,45 @@ plot_conditional_median_quantiles <- function(samples, names, obs_xs,
   B <- length(breaks) - 1
   nonempty_bins <- sapply(1:B,
                           function(b)
-                          sum(breaks[b] <= obs_xs & obs_xs < breaks[b + 1]) > 0)
+                          sum(breaks[b] <= obs_xs &
+                              obs_xs < breaks[b + 1]) > 0)
 
   baseline_cond_medians <- rep(NA, B)
 
-  cond_median <- function(y, x, b_low, b_high) {
-    bin_idx <- which(b_low <= x & x < b_high)
+  cond_median <- function(y, bin_idx) {
     if (length(bin_idx))
       return(median(y[bin_idx]))
     else
-      return(median(y))
+      return(0)
   }
 
   if (!is.null(baseline_values)) {
     for (b in 1:B) {
-      baseline_cond_medians[b] <- cond_median(baseline_values, obs_xs,
-                                              breaks[b], breaks[b + 1])
+      bin_idx <- which(breaks[b] <= obs_xs & obs_xs < breaks[b + 1])
+      baseline_cond_medians[b] <- cond_median(baseline_values,
+                                              bin_idx)
     }
   }
 
   if (is.null(baseline_values) | !residual) {
     expectands <- list()
     for (b in 1:B) {
+      bin_idx <- which(breaks[b] <= obs_xs & obs_xs < breaks[b + 1])
       expectands[[b]] <-
         local({
-          x <- obs_xs;
-          b_low <- breaks[b];
-          b_high <- breaks[b + 1];
-          function(y) cond_median(y, x, b_low, b_high)
+          bin_idx <- bin_idx;
+          function(y) cond_median(y, bin_idx)
         })
     }
   } else {
     expectands <- list()
     for (b in 1:B) {
+      bin_idx <- which(breaks[b] <= obs_xs & obs_xs < breaks[b + 1])
       expectands[[b]] <-
         local({
-          x <- obs_xs;
-          b_low <- breaks[b];
-          b_high <- breaks[b + 1];
+          bin_idx <- bin_idx;
           baseline <- baseline_cond_medians[b];
-          function(y) cond_median(y, x, b_low, b_high) - baseline
+          function(y) cond_median(y, bin_idx) - baseline
         })
     }
   }
