@@ -533,7 +533,7 @@ def plot_disc_pushforward_prime(ax, samples, names,
       print('The argument `residuals` will be ignored')
     residual = False
 
-    N = len(names)
+    N = len(values)
   else:
     # Neither valid samples nor values; plot nothing
     return
