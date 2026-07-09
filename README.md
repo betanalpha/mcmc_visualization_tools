@@ -12,3 +12,5 @@ This format is also used in https://github.com/betanalpha/mcmc_diagnostics.
 
 Each folder contains an extensive demonstration of the visualization functions
 applied to Bayesian inference.
+
+Some of these visualizations have also been implemented in the [FlexiChains.jl](https://pysm.dev/FlexiChains.jl/stable/makie/#Pushforward-plots) Julia library.
