@@ -158,6 +158,9 @@ def configure_bins(bin_min, bin_max, bin_delta,
     bin_min = bin_min - 0.5 * bin_delta * excess
     bin_max = bin_max + 0.5 * bin_delta * excess
 
+  # Perturb bin_max so that NumPy's arange includes the endpoint
+  bin_max = bin_max + 1e-6 * bin_delta
+
   return [bin_min, bin_max, bin_delta]
 
 # Compute bin plotting.
@@ -365,7 +368,7 @@ def plot_hist_quantiles(ax, samples, val_name_prefix,
   # Construct relevant variable names and format corresponding values.
   # Order of the variables does not affect the shape of the histogram.
   names = [ key for key in samples.keys()
-            if re.match('^' + val_name_prefix + '\[', key) ]
+            if re.match('^' + val_name_prefix + r'\[', key) ]
   collapsed_values = numpy.hstack([ samples[name].flatten()
                                     for name in names ])
 
