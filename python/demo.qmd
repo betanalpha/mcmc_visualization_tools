@@ -53,6 +53,8 @@ import matplotlib.pyplot as plot
 plot.rcParams['figure.figsize'] = [5, 2.5]
 plot.rcParams['figure.dpi'] = 100
 plot.rcParams['font.family'] = "Serif"
+plot.rcParams['axes.spines.top'] = False
+plot.rcParams['axes.spines.right'] = False
 
 import numpy
 import scipy.stats as stats
